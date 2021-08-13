@@ -1,15 +1,12 @@
 package com.revature.ncu.datasources.documents;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
 // UserCourses POJO
-// TODO: Map BsonProperties
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCourses {
 
     private String id;
@@ -22,9 +19,9 @@ public class UserCourses {
     public UserCourses(String username){ this.username = username; }
 
     // For adding multiple courses at instantiation, was not implemented but might have come in handy some time.
-    public UserCourses(String username, String... regCourses){
+    public UserCourses(String username, ArrayList<String> regCourses){
         this.username = username;
-        this.courses.addAll(Arrays.asList(regCourses));
+        this.courses = regCourses;
     }
 
     // For adding multiple courses, was not implemented but might have come in handy some time.
