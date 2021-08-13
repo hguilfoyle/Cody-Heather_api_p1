@@ -20,7 +20,7 @@ public class UserServiceTestSuite {
 
     // Mock dependencies required for the system under test
     private UserRepository mockUserRepo;
-    private UserSession mockSession;
+//    private UserSession mockSession;
     private InputValidatorService mockValidator;
 
     // Initialize objects before testing
@@ -28,9 +28,9 @@ public class UserServiceTestSuite {
     public void setup(){
 
         mockUserRepo = mock(UserRepository.class);
-        mockSession = mock(UserSession.class);
+//        mockSession = mock(UserSession.class);
         mockValidator = mock(InputValidatorService.class);
-        sut = new UserService( mockUserRepo, mockSession, mockValidator);
+//        sut = new UserService( mockUserRepo, mockSession, mockValidator);
 
     }
 
@@ -38,7 +38,7 @@ public class UserServiceTestSuite {
     @After
     public void cleanUp(){
         mockUserRepo = null;
-        mockSession = null;
+//        mockSession = null;
         sut = null;
     }
 
@@ -136,7 +136,7 @@ public class UserServiceTestSuite {
         // Assert
         Assert.assertEquals(expectedUser,actualUser);
         verify(mockUserRepo, times(1)).findUserByCredentials(validUsername,validPassword);
-        verify(mockSession, times(1)).setCurrentUser(actualUser);
+//        verify(mockSession, times(1)).setCurrentUser(actualUser);
 
 
     }

@@ -7,14 +7,21 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
 import com.revature.ncu.util.exceptions.DataSourceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+
+import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 /*
  *  An eager Singleton Factory pattern for supplying DAO (data access object)
@@ -31,7 +38,7 @@ public class MongoClientFactory {
     // Eager singleton, instantiated as soon as the class is loaded.
     private static final MongoClientFactory mongoClientFactory = new MongoClientFactory();
 
-    private final Logger logger = LogManager.getLogger(MongoClientFactory.class);
+    private final Logger logger = LoggerFactory.getLogger(MongoClientFactory.class);
 
     private MongoClientFactory() {
 
@@ -39,7 +46,8 @@ public class MongoClientFactory {
 
         try{
             // Retrieving the application.properties file
-            appProperties.load(new FileReader("src/main/resources/application.properties"));
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            appProperties.load(loader.getResourceAsStream("application.properties"));
 
             // Retrieving information from the application.properties file
             String ipAddress = appProperties.getProperty("ipAddress");
@@ -54,11 +62,18 @@ public class MongoClientFactory {
             // Using MongoDB's native SCRAM-SHA-1 support to encrypt sensitive information.
             MongoCredential credentials = MongoCredential.createScramSha1Credential(username, dbName, password);
 
+            // Getting Codec registry and POJO Codec provider so that mongo knows what to do with POJOs
+            CodecRegistry defaultCodecRegistry = getDefaultCodecRegistry();
+            PojoCodecProvider pojoCodecProvider= PojoCodecProvider.builder().automatic(true).build();
+            CodecRegistry pojoCodecRegistry = fromRegistries(defaultCodecRegistry, fromProviders(pojoCodecProvider));
+
             // Building the MongoDB client settings file.
             MongoClientSettings settings = MongoClientSettings.builder()
                     .applyToClusterSettings(builder -> builder.hosts(hosts))
                     .credential(credentials)
+                    .codecRegistry(pojoCodecRegistry)
                     .build();
+
 
             this.mongoClient = MongoClients.create(settings);
 

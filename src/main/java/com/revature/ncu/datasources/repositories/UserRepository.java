@@ -8,9 +8,9 @@ import com.mongodb.client.MongoDatabase;
 import com.revature.ncu.util.exceptions.DataSourceException;
 import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 //Repository for performing CRUD operations on the Mongo user collection.
@@ -20,7 +20,7 @@ public class UserRepository implements CrudRepository<AppUser>{
     private static final String DATABASE = "p0";
     private static final String COLLECTION = "users";
 
-    private final Logger logger = LogManager.getLogger(UserRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
     public AppUser findUserByCredentials(String username, String password) {
 

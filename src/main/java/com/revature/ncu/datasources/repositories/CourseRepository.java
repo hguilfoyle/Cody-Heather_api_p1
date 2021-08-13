@@ -9,9 +9,9 @@ import com.mongodb.client.MongoDatabase;
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.util.exceptions.DataSourceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class CourseRepository implements CrudRepository<Course> {
     private static final String DATABASE = "p0";
     private static final String COLLECTION = "courses";
 
-    private final Logger logger = LogManager.getLogger(CourseRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(CourseRepository.class);
 
 
     public Course findCourseByName(String courseName) {
