@@ -1,10 +1,12 @@
 com\revature\ncu\util\exceptions\InvalidEntryException.class
+com\revature\ncu\web\dtos\UserCoursesDTO.class
 com\revature\ncu\util\exceptions\InvalidPasswordException.class
 com\revature\ncu\web\dtos\Principal.class
 com\revature\ncu\services\CourseService.class
 com\revature\ncu\web\servlets\AuthServlet.class
 com\revature\ncu\util\exceptions\NoOpenCoursesException.class
 com\revature\ncu\util\exceptions\NoSuchCourseException.class
+com\revature\ncu\web\dtos\CourseDTO.class
 com\revature\ncu\util\exceptions\NoCoursesJoinedException.class
 com\revature\ncu\util\exceptions\InvalidCourseAbbreviationException.class
 com\revature\ncu\util\exceptions\InvalidUsernameException.class
@@ -16,6 +18,7 @@ com\revature\ncu\util\exceptions\InvalidCourseNameException.class
 com\revature\ncu\web\util\ContextLoaderListener.class
 com\revature\ncu\web\dtos\ErrorResponse.class
 com\revature\ncu\util\exceptions\AuthenticationException.class
+com\revature\ncu\web\servlets\HelloWorld.class
 com\revature\ncu\util\exceptions\CourseNotJoinedException.class
 com\revature\ncu\services\UserCoursesService.class
 com\revature\ncu\util\exceptions\InvalidEmailException.class

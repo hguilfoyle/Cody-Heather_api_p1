@@ -2,7 +2,7 @@ package com.revature.ncu.datasources.repositories;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.client.FindIterable;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -13,7 +13,7 @@ import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 // Repository for performing CRUD operations on the Mongo usercourses collection
@@ -47,7 +47,7 @@ public class CourseRepository implements CrudRepository<Course> {
             Course course = mapper.readValue(courseDoc.toJson(), Course.class);
             // Handling the ID set by mongodb
             course.setId(courseDoc.get("_id").toString());
-            course.setOpen((boolean)courseDoc.get("isOpen"));
+//            course.setOpen((boolean)courseDoc.get("isOpen"));
             return course;
 
         } catch (JsonMappingException jme) {
@@ -82,7 +82,7 @@ public class CourseRepository implements CrudRepository<Course> {
             Course course = mapper.readValue(courseDoc.toJson(), Course.class);
             // Handling the ID set by mongodb
             course.setId(courseDoc.get("_id").toString());
-            course.setOpen((boolean)courseDoc.get("isOpen"));
+//            course.setOpen((boolean)courseDoc.get("isOpen"));
             return course;
 
         } catch (JsonMappingException jme) {
@@ -96,38 +96,7 @@ public class CourseRepository implements CrudRepository<Course> {
 
 
     public List<Course> retrieveOpenCourses() {
-        try {
-            // ArrayList to hold courses
-            List<Course> courses = new ArrayList<>();
-
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> usersCollection = p0Db.getCollection(COLLECTION);
-
-            // Retrieve classes that are open
-            Document queryDoc = new Document("isOpen", true);
-            // Retrieve an iterable document of all collections
-            FindIterable<Document> openCoursesDoc = usersCollection.find(queryDoc);
-            // Create jackson object mapper
-            ObjectMapper mapper = new ObjectMapper();
-            Course openCourse;
-
-            for(Document a: openCoursesDoc){
-                openCourse = mapper.readValue(a.toJson(), Course.class);
-                openCourse.setId(a.get("_id").toString());
-                openCourse.setOpen((boolean)a.get("isOpen"));
-                courses.add(openCourse);
-            }
-            return courses;
-
-        } catch (JsonMappingException jme) {
-            logger.error("An exception occurred while mapping the document.", jme);
-            throw new DataSourceException("An exception occurred while mapping the document.", jme);
-        } catch (Exception e) {
-            logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
-        }
+            return null;
     }
 
     public void updatingCourseName(Course original,String newName){
@@ -193,33 +162,7 @@ public class CourseRepository implements CrudRepository<Course> {
 
     }
 
-    // if/else switch to set course to open or closed.
-    public void openClose(Course course){
-        try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> coursesCollection = p0Db.getCollection(COLLECTION);
 
-            if(course.isOpen()) {
-                Document updateDoc = new Document("isOpen", false);
-                Document appendDoc = new Document("$set", updateDoc);
-                Document searchDoc = new Document("courseAbbreviation", course.getCourseAbbreviation());
-                coursesCollection.updateOne(searchDoc, appendDoc);
-            }else
-            {
-                Document updateDoc = new Document("isOpen", true);
-                Document appendDoc = new Document("$set", updateDoc);
-                Document searchDoc = new Document("courseAbbreviation", course.getCourseAbbreviation());
-                coursesCollection.updateOne(searchDoc, appendDoc);
-            }
-
-
-        } catch (Exception e) {
-            logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
-        }
-    }
 
     // Remove a course from the database
     public void removeCourse(Course course){
@@ -256,8 +199,8 @@ public class CourseRepository implements CrudRepository<Course> {
             // Create new course document with provided values
             Document newCourserDoc = new Document("courseName", newCourse.getCourseName())
                     .append("courseAbbreviation", newCourse.getCourseAbbreviation())
-                    .append("courseDetail", newCourse.getCourseDetail())
-                    .append("isOpen", newCourse.isOpen());
+                    .append("courseDetail", newCourse.getCourseDetail());
+
 
             //Insert the new course document into the database
             courseCollection.insertOne(newCourserDoc);

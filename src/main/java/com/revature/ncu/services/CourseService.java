@@ -116,11 +116,7 @@ public class CourseService {
         {
             System.out.println("No course found with provided abbreviation!");
             throw new NoSuchCourseException("Invalid course abbreviation provided.");
-        }else if(!verifiedCourse.isOpen())
-        {
-            System.out.println("The registration and withdrawal windows for this course have closed!");
-            throw new CourseNotOpenException("The registration and withdrawal windows for this course have closed!");
-        }
+       }
 
         return verifiedCourse;
 
@@ -140,10 +136,6 @@ public class CourseService {
         {
             System.out.println("No course found with provided name!");
             throw new NoSuchCourseException("No course found with provided name!");
-        }else if(!verifiedCourse.isOpen())
-        {
-            System.out.println("The registration and withdrawal windows for this course have closed!");
-            throw new CourseNotOpenException("User attempted to join or withdraw from a closed course.");
         }
 
         return verifiedCourse;
