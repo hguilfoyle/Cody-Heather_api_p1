@@ -1,7 +1,7 @@
 package com.revature.ncu.services;
 
-import com.revature.ncu.documents.Course;
-import com.revature.ncu.repositories.CourseRepository;
+import com.revature.ncu.datasources.documents.Course;
+import com.revature.ncu.datasources.repositories.CourseRepository;
 import com.revature.ncu.util.InputValidator;
 import com.revature.ncu.util.exceptions.*;
 import org.junit.After;

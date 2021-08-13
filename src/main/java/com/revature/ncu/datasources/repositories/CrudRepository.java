@@ -1,4 +1,4 @@
-package com.revature.ncu.repositories;
+package com.revature.ncu.datasources.repositories;
 
 // Interface for repositories.
 // I left this as-is even though I did not use all of the methods

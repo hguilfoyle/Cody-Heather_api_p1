@@ -1,11 +1,8 @@
 package com.revature.ncu.services;
 
-import com.revature.ncu.documents.AppUser;
-import com.revature.ncu.documents.UserCourses;
-import com.revature.ncu.repositories.UserCoursesRepository;
-import com.revature.ncu.util.exceptions.AlreadyRegisteredForCourseException;
-import com.revature.ncu.util.exceptions.CourseNotJoinedException;
-import com.revature.ncu.util.exceptions.NoCoursesJoinedException;
+import com.revature.ncu.datasources.documents.AppUser;
+import com.revature.ncu.datasources.documents.UserCourses;
+import com.revature.ncu.datasources.repositories.UserCoursesRepository;
 import com.revature.ncu.util.exceptions.NotRegisteredForCourseException;
 
 import java.util.List;

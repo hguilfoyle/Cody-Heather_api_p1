@@ -1,4 +1,4 @@
-package com.revature.ncu.documents;
+package com.revature.ncu.datasources.documents;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

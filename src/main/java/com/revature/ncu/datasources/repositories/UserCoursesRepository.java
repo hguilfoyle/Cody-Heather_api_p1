@@ -1,4 +1,4 @@
-package com.revature.ncu.repositories;
+package com.revature.ncu.datasources.repositories;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -6,8 +6,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import com.revature.ncu.documents.UserCourses;
-import com.revature.ncu.util.MongoClientFactory;
+import com.revature.ncu.datasources.documents.UserCourses;
+import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.util.exceptions.DataSourceException;
 
 import org.apache.logging.log4j.LogManager;

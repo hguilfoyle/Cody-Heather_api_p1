@@ -1,7 +1,7 @@
 package com.revature.ncu.util;
 
-import com.revature.ncu.documents.AppUser;
-import com.revature.ncu.documents.Course;
+import com.revature.ncu.datasources.documents.AppUser;
+import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.util.exceptions.*;
 
 import java.util.regex.Matcher;

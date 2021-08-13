@@ -1,7 +1,7 @@
 package com.revature.ncu.services;
 
-import com.revature.ncu.documents.AppUser;
-import com.revature.ncu.repositories.UserRepository;
+import com.revature.ncu.datasources.documents.AppUser;
+import com.revature.ncu.datasources.repositories.UserRepository;
 import com.revature.ncu.util.InputValidator;
 import com.revature.ncu.util.exceptions.AuthenticationException;
 import com.revature.ncu.util.exceptions.InvalidEntryException;

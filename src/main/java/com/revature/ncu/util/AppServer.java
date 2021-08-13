@@ -1,7 +1,7 @@
 package com.revature.ncu.util;
-import com.revature.ncu.repositories.CourseRepository;
-import com.revature.ncu.repositories.UserCoursesRepository;
-import com.revature.ncu.repositories.UserRepository;
+import com.revature.ncu.datasources.repositories.CourseRepository;
+import com.revature.ncu.datasources.repositories.UserCoursesRepository;
+import com.revature.ncu.datasources.repositories.UserRepository;
 import com.revature.ncu.services.CourseService;
 import com.revature.ncu.services.UserCoursesService;
 import com.revature.ncu.services.UserService;
@@ -13,13 +13,13 @@ import com.revature.ncu.services.UserService;
  *
  */
 
-public class AppState {
+public class AppServer {
 
 
     private static boolean appRunning;
 
 
-    public AppState() {
+    public AppServer() {
 
         // Dependencies for injection
         InputValidator inputValidator = new InputValidator();

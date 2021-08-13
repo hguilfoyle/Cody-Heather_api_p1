@@ -1,7 +1,7 @@
 package com.revature.ncu;
 
 
-import com.revature.ncu.util.AppState;
+import com.revature.ncu.util.AppServer;
 
 /*
  * Console-Based Student Management Console for Project 0
@@ -31,7 +31,7 @@ public class CourseManagementApp {
     // Main method creates an AppState object and uses it to run the startup method to build the project.
     public static void main(String[] args) {
 
-        AppState app = new AppState();
+        AppServer app = new AppServer();
         app.startup();
 
     }
