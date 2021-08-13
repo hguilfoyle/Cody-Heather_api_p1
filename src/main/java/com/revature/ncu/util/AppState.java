@@ -26,15 +26,15 @@ public class AppState {
 
 
         // Create app components and dependencies
-        UserSession userSession = new UserSession();
+
         UserRepository userRepo = new UserRepository();
-        UserService userService = new UserService(userRepo, userSession, inputValidator);
+        UserService userService = new UserService(userRepo, inputValidator);
 
         CourseRepository courseRepo = new CourseRepository();
         CourseService courseService = new CourseService(courseRepo, inputValidator);
 
         UserCoursesRepository courseListRepo = new UserCoursesRepository();
-        UserCoursesService userCoursesService = new UserCoursesService(courseListRepo, userSession);
+        UserCoursesService userCoursesService = new UserCoursesService(courseListRepo);
     }
 
 

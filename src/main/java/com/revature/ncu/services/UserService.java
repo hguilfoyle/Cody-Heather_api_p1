@@ -1,7 +1,6 @@
 package com.revature.ncu.services;
 
 import com.revature.ncu.util.InputValidator;
-import com.revature.ncu.util.UserSession;
 import com.revature.ncu.util.exceptions.AuthenticationException;
 import com.revature.ncu.documents.AppUser;
 import com.revature.ncu.repositories.UserRepository;
@@ -12,13 +11,12 @@ import com.revature.ncu.util.exceptions.ResourcePersistenceException;
 public class UserService {
 
     private final UserRepository userRepo;
-    private final UserSession session;
+
     private final InputValidator inputValidator;
 
     // Injecting Dependencies
-    public UserService(UserRepository userRepo, UserSession session, InputValidator inputValidator) {
+    public UserService(UserRepository userRepo, InputValidator inputValidator) {
         this.userRepo = userRepo;
-        this.session = session;
         this.inputValidator = inputValidator;
     }
 
@@ -36,7 +34,6 @@ public class UserService {
         {
             throw new ResourcePersistenceException("Provided email is already taken!");
         }
-        session.setCurrentUser(newUser);
         return userRepo.save(newUser);
 
     }
@@ -50,13 +47,9 @@ public class UserService {
             throw new AuthenticationException("Invalid credentials provided!");
         }
 
-        session.setCurrentUser(authUser);
 
         return authUser;
     }
 
-    // Getter
-    public UserSession getSession() {
-        return session;
-    }
+
 }

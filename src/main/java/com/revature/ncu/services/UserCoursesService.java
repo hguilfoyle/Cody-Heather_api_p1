@@ -3,7 +3,6 @@ package com.revature.ncu.services;
 import com.revature.ncu.documents.AppUser;
 import com.revature.ncu.documents.UserCourses;
 import com.revature.ncu.repositories.UserCoursesRepository;
-import com.revature.ncu.util.UserSession;
 import com.revature.ncu.util.exceptions.AlreadyRegisteredForCourseException;
 import com.revature.ncu.util.exceptions.CourseNotJoinedException;
 import com.revature.ncu.util.exceptions.NoCoursesJoinedException;
@@ -16,39 +15,20 @@ import java.util.List;
 public class UserCoursesService {
 
     private final UserCoursesRepository userCourseListRepo;
-    private final UserSession session;
 
-    public UserCoursesService(UserCoursesRepository userCourseRepo, UserSession session) {
+
+    public UserCoursesService(UserCoursesRepository userCourseRepo) {
         this.userCourseListRepo = userCourseRepo;
-        this.session = session;
+
     }
 
     // Initialize a user's course list on the database when they register
     public void initialize(){
-        AppUser newUser = session.getCurrentUser();
-        UserCourses newUserCourseList = new UserCourses(newUser.getUsername());
-        userCourseListRepo.save(newUserCourseList);
     }
 
     // Checks to see if the user has already joined a course, passes the course requested and the username to the Repo if not
     public void joinCourse(String courseToJoin){
 
-        String un = session.getCurrentUser().getUsername();
-        List<String> userCourses = userCourseListRepo.findRegisteredCoursesByUsername(un);
-
-        // No need to check for duplicate courses if the list is null
-        if(!userCourses.isEmpty()) {
-            // Check list for requested course
-            for (String course : userCourses) {
-                if (courseToJoin.equals(course))
-                {
-                    System.out.println("You are already registered for this course!");
-                    throw new AlreadyRegisteredForCourseException("You have already registered for this course!");
-                }
-            }
-        }
-
-        userCourseListRepo.joinCourse(courseToJoin, un);
     }
 
 
@@ -70,35 +50,10 @@ public class UserCoursesService {
     // Verifies if a user is in any courses before attempting to remove the course.
     public void leaveCourse(String courseToLeave) {
 
-        String un = session.getCurrentUser().getUsername();
-        List<String> userCourses = userCourseListRepo.findRegisteredCoursesByUsername(un);
-
-        // Should not actually be reached, but keeping for posterity
-        if (userCourses.isEmpty())
-        {
-            System.out.println("You have not registered for any courses!");
-            throw new NoCoursesJoinedException("The user has not registered for any courses.");
-        }
-        if(!userCourses.contains(courseToLeave))
-        {
-            System.out.println("You have not joined that course!");
-            throw new CourseNotJoinedException("User attempted to leave a course they have not joined.");
-        }
-
-        userCourseListRepo.removeCourseFromUserList(courseToLeave,un);
-
     }
 
     public List<String> getCourses(){
-
-        String un = session.getCurrentUser().getUsername();
-
-        if(userCourseListRepo.findRegisteredCoursesByUsername(un).isEmpty()){
-            System.out.println("You have not registered for any courses!");
-            throw new NoCoursesJoinedException("User has not registered for any courses.");
-        }
-
-        return userCourseListRepo.findRegisteredCoursesByUsername(session.getCurrentUser().getUsername());
+        return null;
     }
 
     public void updateCourseNameInUserList(String originalName, String newName){

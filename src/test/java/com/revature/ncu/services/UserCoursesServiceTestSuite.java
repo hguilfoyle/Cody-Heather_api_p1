@@ -2,7 +2,6 @@ package com.revature.ncu.services;
 
 import com.revature.ncu.documents.AppUser;
 import com.revature.ncu.repositories.UserCoursesRepository;
-import com.revature.ncu.util.UserSession;
 import com.revature.ncu.util.exceptions.AlreadyRegisteredForCourseException;
 import com.revature.ncu.util.exceptions.NoCoursesJoinedException;
 import com.revature.ncu.util.exceptions.NotRegisteredForCourseException;
@@ -24,23 +23,22 @@ public class UserCoursesServiceTestSuite {
 
     // Mock dependencies required for the system under test
     private AppUser mockUser;
-    private UserSession mockUserSession;
+
     private UserCoursesRepository mockUserCourseRepo;
 
     @Before
     public void setup(){
 
         mockUserCourseRepo = mock(UserCoursesRepository.class);
-        mockUserSession = mock(UserSession.class);
+
         mockUser = mock(AppUser.class);
-        mockUserSession.setCurrentUser(mockUser);
-        sut = new UserCoursesService(mockUserCourseRepo,mockUserSession);
+
     }
 
     @After
     public void cleanUp(){
         mockUserCourseRepo = null;
-        mockUserSession = null;
+
         sut = null;
     }
 
@@ -53,12 +51,12 @@ public class UserCoursesServiceTestSuite {
         // Arrange
         String validCourse = "validCourseToJoin";
         List<String> validCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
-        when(mockUserSession.getCurrentUser()).thenReturn(mockUser);
+
         when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(validCourseList);
         // Act
         sut.joinCourse(validCourse);
         // Assert
-        verify(mockUserSession,times(1)).getCurrentUser();
+
         verify(mockUserCourseRepo,times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
 
     }
@@ -69,12 +67,12 @@ public class UserCoursesServiceTestSuite {
         // Arrange
         String validCourse = "validCourseToJoin";
         List<String> validCourseList = new ArrayList<>();
-        when(mockUserSession.getCurrentUser()).thenReturn(mockUser);
+
         when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(validCourseList);
         // Act
         sut.joinCourse(validCourse);
         // Assert
-        verify(mockUserSession,times(1)).getCurrentUser();
+
         verify(mockUserCourseRepo,times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
 
     }
@@ -85,13 +83,13 @@ public class UserCoursesServiceTestSuite {
         String duplicateCourse = "Course Already Joined!";
         List<String> originalCourseList = new ArrayList<>();
         originalCourseList.add(duplicateCourse);
-        when(mockUserSession.getCurrentUser()).thenReturn(mockUser);
+
         when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(originalCourseList);
         // Act
         try{
             sut.joinCourse(duplicateCourse);
         } finally { // Assert
-            verify(mockUserSession,times(1)).getCurrentUser();
+
             verify(mockUserCourseRepo,times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
         }
 
@@ -104,7 +102,7 @@ public class UserCoursesServiceTestSuite {
         // Arrange
         List<String> validCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
         List<String> expectedCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
-        when(mockUserSession.getCurrentUser()).thenReturn(mockUser);
+
         when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(validCourseList);
 
         // Act
@@ -112,7 +110,7 @@ public class UserCoursesServiceTestSuite {
 
         // Assert
         Assert.assertEquals(expectedCourseList,actualResult);
-        verify(mockUserSession, times(2)).getCurrentUser();
+
         verify(mockUserCourseRepo, times(2)).findRegisteredCoursesByUsername(mockUser.getUsername());
 
     }
@@ -121,13 +119,13 @@ public class UserCoursesServiceTestSuite {
     public void getCourses_throwsException_whenUser_hasNotRegistered_forAnyCourses(){
         // Arrange
         List<String> emptyCourseList = new ArrayList<>();
-        when(mockUserSession.getCurrentUser()).thenReturn(mockUser);
+
         when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(emptyCourseList);
         // Act
         try{
             sut.getCourses();
         } finally { // Assert
-            verify(mockUserSession,times(1)).getCurrentUser();
+
             verify(mockUserCourseRepo, times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
         }
     }
@@ -138,13 +136,13 @@ public class UserCoursesServiceTestSuite {
         // Arrange
         String validCourseToLeave = "Course1";
         List<String> validCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
-        when(mockUserSession.getCurrentUser()).thenReturn(mockUser);
+
         when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(validCourseList);
 
         // Act
         sut.leaveCourse(validCourseToLeave);
         // Assert
-        verify(mockUserSession,times(1)).getCurrentUser();
+
         verify(mockUserCourseRepo,times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
         verify(mockUserCourseRepo,times(1))
                 .removeCourseFromUserList(validCourseToLeave,mockUser.getUsername());
@@ -155,13 +153,13 @@ public class UserCoursesServiceTestSuite {
     public void leaveCourse_throwsException_whenUser_hasNotRegistered_forAnyCourse(){
         // Arrange
         List<String> emptyCourseList = new ArrayList<>();
-        when(mockUserSession.getCurrentUser()).thenReturn(mockUser);
+
         when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(emptyCourseList);
         // Act
         try{
             sut.getCourses();
         } finally { // Assert
-            verify(mockUserSession,times(1)).getCurrentUser();
+
             verify(mockUserCourseRepo, times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
         }
     }
