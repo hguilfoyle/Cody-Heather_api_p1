@@ -18,7 +18,6 @@ import java.util.List;
 
 // Repository for performing CRUD operations on the Mongo usercourses collection
 // Creates JSON files for injection into Mongo
-// TODO: Could be cleaner. Need to ask about/research the other Mongo mapping method.
 
 public class CourseRepository implements CrudRepository<Course> {
 
