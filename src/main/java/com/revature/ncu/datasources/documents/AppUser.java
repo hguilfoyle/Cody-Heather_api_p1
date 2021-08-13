@@ -1,13 +1,10 @@
 package com.revature.ncu.datasources.documents;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.Objects;
 
 
 // AppUser POJO
 // TODO: Map BsonProperties
-
 
 public class AppUser {
 
@@ -18,7 +15,7 @@ public class AppUser {
     private String email;
     private String username;
     private String password;
-    private boolean isFaculty; //boolean to determine if the user is faculty or student
+    private boolean faculty; //boolean to determine if the user is faculty or student
 
     //Jackson requires a no-args constructor
     public AppUser(){ super(); }
@@ -29,7 +26,7 @@ public class AppUser {
         this.email = email;
         this.username = un;
         this.password = pw;
-        this.isFaculty = userType;
+        this.faculty = userType;
     }
 
     // Getters and Setters
@@ -42,11 +39,11 @@ public class AppUser {
     }
 
     public boolean isFaculty() {
-        return isFaculty;
+        return faculty;
     }
 
     public void setFaculty(boolean adminUser) {
-        this.isFaculty = adminUser;
+        this.faculty = adminUser;
     }
 
     public String getFirstName() {
@@ -91,7 +88,7 @@ public class AppUser {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, username, password, isFaculty);
+        return Objects.hash(id, firstName, lastName, email, username, password, faculty);
     }
 
     @Override
@@ -99,7 +96,7 @@ public class AppUser {
         if (this == obj ) return true;
         else if (obj == null || getClass() != obj.getClass()) return false;
         AppUser appUser = (AppUser) obj;
-        return Objects.equals(id, appUser.id) && Objects.equals(firstName, appUser.firstName) && Objects.equals(lastName, appUser.lastName) && Objects.equals(email, appUser.email) && Objects.equals(username, appUser.username) && Objects.equals(password, appUser.password) && Objects.equals(isFaculty, appUser.isFaculty);
+        return Objects.equals(id, appUser.id) && Objects.equals(firstName, appUser.firstName) && Objects.equals(lastName, appUser.lastName) && Objects.equals(email, appUser.email) && Objects.equals(username, appUser.username) && Objects.equals(password, appUser.password) && Objects.equals(faculty, appUser.faculty);
     }
 
     @Override
@@ -111,7 +108,7 @@ public class AppUser {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", isFaculty=" + isFaculty +
+                ", faculty=" + faculty +
                 '}';
     }
 }

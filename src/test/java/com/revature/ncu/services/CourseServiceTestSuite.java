@@ -45,9 +45,9 @@ public class CourseServiceTestSuite {
     public void add_returnsSuccessfully_whenGivenValidCourse(){
         //Arrange
         Course expectedResult = new Course("ValidCourse","VLDCS",
-                "This is a valid course description",true);
+                "This is a valid course description");
         Course validCourse = new Course("ValidCourse","VLDCS",
-                "This is a valid course description",true);
+                "This is a valid course description");
         when(mockValidator.newCourseEntryValidator(validCourse)).thenReturn(true);
         when(mockCourseRepo.findCourseByName(anyString())).thenReturn(null);
         when(mockCourseRepo.findCourseByAbbreviation(anyString())).thenReturn(null);
@@ -69,9 +69,9 @@ public class CourseServiceTestSuite {
     public void add_throwsException_whenGivenCourse_withDuplicateCourseName(){
         //Arrange
         Course existingCourse = new Course("Duplicate","ORGNL",
-                "Original course.",true);
+                "Original course.");
         Course duplicate = new Course("Duplicate","TEST",
-                "This course has a duplicate name",true);
+                "This course has a duplicate name");
         when(mockCourseRepo.findCourseByName(duplicate.getCourseName())).thenReturn(existingCourse);
 
         //Act
@@ -90,9 +90,9 @@ public class CourseServiceTestSuite {
     public void add_throwsException_whenGivenCourse_withDuplicateCourseAbbreviation(){
         //Arrange
         Course existingCourse = new Course("Original","DUPE",
-                "Original course.",true);
+                "Original course.");
         Course duplicate = new Course("Tester","DUPE",
-                "This course has a duplicate abbreviation",true);
+                "This course has a duplicate abbreviation");
         when(mockCourseRepo.findCourseByAbbreviation(duplicate.getCourseAbbreviation())).thenReturn(existingCourse);
 
         //Act
@@ -111,7 +111,7 @@ public class CourseServiceTestSuite {
     @Test(expected = InvalidEntryException.class)
     public void add_throwsException_whenGivenCourse_withEmptyValues(){
         //Arrange
-        Course invalidCourse = new Course("","","",true);
+        Course invalidCourse = new Course("","","");
         when(mockValidator.newCourseEntryValidator(invalidCourse)).thenThrow(InvalidEntryException.class);
         //Act
         try {
@@ -130,7 +130,7 @@ public class CourseServiceTestSuite {
         //Arrange
         String validName = "ValidName";
         Course originalCourse = new Course("ValidCourse","VLDCS",
-                "This is a valid course description",true);
+                "This is a valid course description");
         when(mockValidator.newCourseNameValidator(originalCourse,validName)).thenReturn(true);
         when(mockCourseRepo.findCourseByName(validName)).thenReturn(null);
 
@@ -148,7 +148,7 @@ public class CourseServiceTestSuite {
         // Arrange
         String duplicate = "Duplicate";
         Course originalCourse = new Course("Duplicate","VLDCS",
-                "This is a valid course description",true);
+                "This is a valid course description");
         when(mockValidator.newCourseNameValidator(originalCourse,duplicate)).thenReturn(true);
         when(mockCourseRepo.findCourseByName(duplicate)).thenReturn(originalCourse);
         // Act
@@ -167,7 +167,7 @@ public class CourseServiceTestSuite {
         //Arrange
         String validAbv = "VLDABV";
         Course originalCourse = new Course("ValidCourse","VLDCS",
-                "This is a valid course description",true);
+                "This is a valid course description");
         when(mockValidator.newCourseAbvValidator(originalCourse,validAbv)).thenReturn(true);
         when(mockCourseRepo.findCourseByAbbreviation(validAbv)).thenReturn(null);
 
@@ -185,7 +185,7 @@ public class CourseServiceTestSuite {
         // Arrange
         String duplicate = "DUPE";
         Course originalCourse = new Course("Original","DUPE",
-                "This is a valid course description",true);
+                "This is a valid course description");
         when(mockValidator.newCourseAbvValidator(originalCourse,duplicate)).thenReturn(true);
         when(mockCourseRepo.findCourseByAbbreviation(duplicate)).thenReturn(originalCourse);
         // Act
@@ -204,7 +204,7 @@ public class CourseServiceTestSuite {
         //Arrange
         String validDescription = "This is also a valid course description.";
         Course originalCourse = new Course("ValidCourse","VLDCS",
-                "This is a valid course description",true);
+                "This is a valid course description");
         when(mockValidator.newCourseDetailsValidator(validDescription)).thenReturn(true);
 
         //Act
@@ -222,9 +222,9 @@ public class CourseServiceTestSuite {
         // Arrange
         String validAbv = "VALID";
         Course expectedResult = new Course("ValidCourse","VALID",
-                "This is a valid course description",true);
+                "This is a valid course description");
         Course validCourse = new Course("ValidCourse","VALID",
-                "This is a valid course description",true);
+                "This is a valid course description");
         when(mockCourseRepo.findCourseByAbbreviation(validAbv)).thenReturn(validCourse);
         // Act
         Course actualResult = sut.verifyCourse(validAbv);
@@ -263,9 +263,9 @@ public class CourseServiceTestSuite {
         // Arrange
         String validAbv = "VALID";
         Course expectedResult = new Course("ValidCourse","VALID",
-                "This is a valid course description",true);
+                "This is a valid course description");
         Course validCourse = new Course("ValidCourse","VALID",
-                "This is a valid course description",true);
+                "This is a valid course description");
         when(mockCourseRepo.findCourseByAbbreviation(validAbv)).thenReturn(validCourse);
         // Act
         Course actualResult = sut.verifyCourseOpenByAbbreviation(validAbv);
@@ -279,7 +279,7 @@ public class CourseServiceTestSuite {
         // Arrange
         String closedAbv = "TEST";
         Course closedCourse = new Course("ValidCourse","TEST",
-                "This test will fail because open is false.",false);
+                "This test will fail because open is false.");
         when(mockCourseRepo.findCourseByAbbreviation(closedAbv)).thenReturn(closedCourse);
         // Act
         try{sut.verifyCourseOpenByAbbreviation(closedAbv);}
@@ -315,9 +315,9 @@ public class CourseServiceTestSuite {
         // Arrange
         String validName = "ValidCourse";
         Course expectedResult = new Course("ValidCourse","VALID",
-                "This is a valid course description",true);
+                "This is a valid course description");
         Course validCourse = new Course("ValidCourse","VALID",
-                "This is a valid course description",true);
+                "This is a valid course description");
         when(mockCourseRepo.findCourseByName(validName)).thenReturn(validCourse);
         // Act
         Course actualResult = sut.verifyCourseOpenByName(validName);
@@ -331,7 +331,7 @@ public class CourseServiceTestSuite {
         // Arrange
         String closedName = "Closed-course";
         Course closedCourse = new Course("Closed-course","TEST",
-                "This test will fail because open is false.",false);
+                "This test will fail because open is false.");
         when(mockCourseRepo.findCourseByName(closedName)).thenReturn(closedCourse);
         // Act
         try{sut.verifyCourseOpenByName(closedName);}
@@ -366,8 +366,8 @@ public class CourseServiceTestSuite {
     @Test
     public void getCourses_returnsListOfOpenCourses_whenListIsPopulated(){
         // Arrange
-        Course testCourse1 = new Course("","","",true);
-        Course testCourse2 = new Course("","","",true);
+        Course testCourse1 = new Course("","","");
+        Course testCourse2 = new Course("","","");
         List<Course> validCourseList = new ArrayList<Course>();
             validCourseList.add(testCourse1);
             validCourseList.add(testCourse2);

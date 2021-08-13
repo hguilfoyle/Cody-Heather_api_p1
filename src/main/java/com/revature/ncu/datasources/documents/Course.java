@@ -3,22 +3,22 @@ package com.revature.ncu.datasources.documents;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
 // Course POJO
-// TODO: Map BsonProperties
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Course {
 
     private String id;
     private String courseName;
     private String courseAbbreviation;
     private String courseDetail;
-    private boolean isOpen;
+    private String professorName;
+    private LocalDateTime courseOpenDate;      //TODO logic for these
+    private LocalDateTime courseCloseDate;
 
-    //Jackson requires a no-args constructor
     public Course(){ super(); }
 
     public Course(String cn, String cAbv){
@@ -26,28 +26,25 @@ public class Course {
         this.courseAbbreviation = cAbv;
     }
 
-    public Course(String cn, String cAbv, String detail, boolean open) {
+    public Course(String cn, String cAbv, String detail) {
         this.courseName = cn;
         this.courseAbbreviation = cAbv;
         this.courseDetail = detail;
-        this.isOpen = open;
     }
 
 
-    public Course(String id, String cn, String cAbv, String detail){
+    public Course(String id, String cn, String cAbv, String detail, String prof,
+                  LocalDateTime openDate, LocalDateTime closeDate){
         this.id = id;
         this.courseName = cn;
         this.courseAbbreviation = cAbv;
         this.courseDetail = detail;
+        this.professorName = prof;
+        this.courseOpenDate = openDate;
+        this.courseCloseDate = closeDate;
+
     }
 
-    public Course(String id, String cn, String cAbv, String detail, boolean open){
-        this.id = id;
-        this.courseName = cn;
-        this.courseAbbreviation = cAbv;
-        this.courseDetail = detail;
-        this.isOpen = open;
-    }
 
 
     // Setters and getters
@@ -77,21 +74,29 @@ public class Course {
 
     public void setCourseAbbreviation(String courseAbbreviation) { this.courseAbbreviation = courseAbbreviation; }
 
-    public boolean isOpen() { return isOpen; }
+    public String getProfessorName() { return professorName; }
 
-    public void setOpen(boolean open) { isOpen = open; }
+    public void setProfessorName(String professorName) { this.professorName = professorName;}
+
+    public LocalDateTime getCourseOpenDate() { return courseOpenDate; }
+
+    public void setCourseOpenDate(LocalDateTime courseOpenDate) { this.courseOpenDate = courseOpenDate; }
+
+    public LocalDateTime getCourseCloseDate() { return courseCloseDate; }
+
+    public void setCourseCloseDate(LocalDateTime courseCloseDate) { this.courseCloseDate = courseCloseDate; }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, courseName, courseAbbreviation, courseDetail, isOpen);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return Objects.equals(id, course.id) && Objects.equals(courseName, course.courseName) && Objects.equals(courseAbbreviation, course.courseAbbreviation) && Objects.equals(courseDetail, course.courseDetail) && Objects.equals(professorName, course.professorName) && Objects.equals(courseOpenDate, course.courseOpenDate) && Objects.equals(courseCloseDate, course.courseCloseDate);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj ) return true;
-        else if (obj == null || getClass() != obj.getClass()) return false;
-        Course course = (Course) obj;
-        return Objects.equals(id, course.id) && Objects.equals(courseName, course.courseName) && Objects.equals(courseAbbreviation, course.courseAbbreviation) && Objects.equals(courseDetail, course.courseDetail) && Objects.equals(isOpen, course.isOpen);
+    public int hashCode() {
+        return Objects.hash(id, courseName, courseAbbreviation, courseDetail, professorName, courseOpenDate, courseCloseDate);
     }
 
     @Override
@@ -101,7 +106,9 @@ public class Course {
                 ", courseName='" + courseName + '\'' +
                 ", courseAbbreviation='" + courseAbbreviation + '\'' +
                 ", courseDetail='" + courseDetail + '\'' +
-                ", isOpen='" + isOpen + '\'' +
+                ", professorName='" + professorName + '\'' +
+                ", courseOpenDate=" + courseOpenDate +
+                ", courseCloseDate=" + courseCloseDate +
                 '}';
     }
 }
