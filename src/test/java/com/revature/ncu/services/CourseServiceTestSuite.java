@@ -2,7 +2,6 @@ package com.revature.ncu.services;
 
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.datasources.repositories.CourseRepository;
-import com.revature.ncu.util.InputValidator;
 import com.revature.ncu.util.exceptions.*;
 import org.junit.After;
 import org.junit.Assert;
@@ -23,12 +22,12 @@ public class CourseServiceTestSuite {
 
     // Mock dependencies required for the system under test
     private CourseRepository mockCourseRepo;
-    private InputValidator mockValidator;
+    private InputValidatorService mockValidator;
 
     @Before
     public void setup(){
         mockCourseRepo = mock(CourseRepository.class);
-        mockValidator = mock(InputValidator.class);
+        mockValidator = mock(InputValidatorService.class);
         sut = new CourseService(mockCourseRepo, mockValidator);
     }
 

@@ -1,4 +1,4 @@
-package com.revature.ncu.util;
+package com.revature.ncu.services;
 
 import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.documents.Course;
@@ -7,13 +7,13 @@ import com.revature.ncu.util.exceptions.*;
 import org.junit.*;
 
 
-public class InputValidatorTestSuite {
+public class InputValidatorServiceTestSuite {
 
-    private InputValidator sut;
+    private InputValidatorService sut;
 
     @Before
     public void setup(){
-        sut = new InputValidator();
+        sut = new InputValidatorService();
     }
 
     @After

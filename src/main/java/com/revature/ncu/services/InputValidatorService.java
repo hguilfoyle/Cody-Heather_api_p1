@@ -1,4 +1,4 @@
-package com.revature.ncu.util;
+package com.revature.ncu.services;
 
 import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.documents.Course;
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  *
  */
 
-public class InputValidator {
+public class InputValidatorService {
 
     // User restrictions are defined here.
     private static final int MIN_USERNAME = 4;

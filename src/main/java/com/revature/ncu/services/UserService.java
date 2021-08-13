@@ -1,6 +1,5 @@
 package com.revature.ncu.services;
 
-import com.revature.ncu.util.InputValidator;
 import com.revature.ncu.util.exceptions.AuthenticationException;
 import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.repositories.UserRepository;
@@ -12,19 +11,19 @@ public class UserService {
 
     private final UserRepository userRepo;
 
-    private final InputValidator inputValidator;
+    private final InputValidatorService inputValidatorService;
 
     // Injecting Dependencies
-    public UserService(UserRepository userRepo, InputValidator inputValidator) {
+    public UserService(UserRepository userRepo, InputValidatorService inputValidatorService) {
         this.userRepo = userRepo;
-        this.inputValidator = inputValidator;
+        this.inputValidatorService = inputValidatorService;
     }
 
     // Register a new user
     public AppUser register(AppUser newUser) {
 
         // Throws exception if entry is invalid
-        inputValidator.newUserEntryValidator(newUser);
+        inputValidatorService.newUserEntryValidator(newUser);
 
         if (userRepo.findUserByUsername(newUser.getUsername()) != null)
         {
