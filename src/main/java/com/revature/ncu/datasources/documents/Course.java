@@ -8,6 +8,7 @@ import java.util.Objects;
 
 
 // Course POJO
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class Course {
 
