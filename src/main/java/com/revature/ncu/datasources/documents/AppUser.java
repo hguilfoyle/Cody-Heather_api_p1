@@ -1,11 +1,13 @@
 package com.revature.ncu.datasources.documents;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Objects;
 
 
 // AppUser POJO
 // TODO: Map BsonProperties
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AppUser {
 
 

@@ -46,6 +46,7 @@ public class MongoClientFactory {
 
         try{
             // Retrieving the application.properties file
+            //TODO Change all this to System.getProperties
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             appProperties.load(loader.getResourceAsStream("application.properties"));
 

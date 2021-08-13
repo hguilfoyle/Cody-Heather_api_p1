@@ -1,11 +1,14 @@
 package com.revature.ncu.datasources.documents;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
 // UserCourses POJO
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class UserCourses {
 

@@ -48,7 +48,6 @@ public class ContextLoaderListener implements ServletContextListener {
 
         configureLogback(servletContext);
 
-        logger.info("testing logger");
 
     }
 

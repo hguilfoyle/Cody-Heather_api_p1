@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class UserRepository implements CrudRepository<AppUser>{
 
-    private static final String DATABASE = "p0";
+    private static final String DATABASE = "p1";
     private static final String COLLECTION = "users";
 
     private final Logger logger = LoggerFactory.getLogger(UserRepository.class);
