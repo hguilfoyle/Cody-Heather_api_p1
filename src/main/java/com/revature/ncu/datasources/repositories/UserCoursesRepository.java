@@ -10,9 +10,9 @@ import com.revature.ncu.datasources.documents.UserCourses;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.util.exceptions.DataSourceException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
     private static final String DATABASE = "p0";
     private static final String COLLECTION = "usercourses";
 
-    private final Logger logger = LogManager.getLogger(UserCoursesRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(UserCoursesRepository.class);
 
     public List<String> findRegisteredCoursesByUsername(String username){
         try {
