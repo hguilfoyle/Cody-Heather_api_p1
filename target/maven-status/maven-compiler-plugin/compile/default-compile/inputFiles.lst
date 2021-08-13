@@ -28,10 +28,12 @@ C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\co
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\util\exceptions\InvalidCourseNameException.java
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\util\exceptions\InvalidPasswordException.java
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\util\PasswordUtils.java
+C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\web\dtos\UserCoursesDTO.java
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\web\servlets\UserServlet.java
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\datasources\documents\Course.java
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\datasources\repositories\UserCoursesRepository.java
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\datasources\repositories\CourseRepository.java
+C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\web\dtos\CourseDTO.java
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\web\dtos\Credentials.java
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\services\UserService.java
 C:\Users\Ke'Al\Desktop\revature\Training\p1\Cody-Heather_api_p1\src\main\java\com\revature\ncu\web\dtos\AppUserDTO.java

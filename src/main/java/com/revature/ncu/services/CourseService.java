@@ -76,10 +76,6 @@ public class CourseService {
 
     }
 
-    public void toggleOpen(Course course){
-
-        courseRepo.openClose(course);
-    }
 
     public Course verifyCourse(String abv){
 

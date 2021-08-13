@@ -27,24 +27,24 @@ public class ContextLoaderListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce){
-        MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
+//        MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
 //        PasswordUtils passwordUtils = new PasswordUtils();
-//        InputValidatorService inputValidatorService = new InputValidatorService();
+        InputValidatorService inputValidatorService = new InputValidatorService();
 
-//        ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
+        ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
         // TODO need to inject these still, will do when reworking repos
-//        UserRepository userRepo = new UserRepository();  //mongoClient
-//        UserService userService = new UserService(userRepo, inputValidatorService); //passwordUtils
+        UserRepository userRepo = new UserRepository();  //mongoClient
+        UserService userService = new UserService(userRepo, inputValidatorService); //passwordUtils
 
 //        UserServlet userServlet = new UserServlet(userService, mapper);
-//        AuthServlet authServlet = new AuthServlet(userService, mapper);
+        AuthServlet authServlet = new AuthServlet(userService, mapper);
         HelloWorld helloWorld = new HelloWorld();
 
         ServletContext servletContext = sce.getServletContext();
         servletContext.addServlet("HelloWorld", helloWorld).addMapping("/hello");
 //        servletContext.addServlet("UserServlet", userServlet).addMapping("/users/*");
-//        servletContext.addServlet("AuthServlet", authServlet).addMapping("/auth");
+        servletContext.addServlet("AuthServlet", authServlet).addMapping("/auth");
 
         configureLogback(servletContext);
 

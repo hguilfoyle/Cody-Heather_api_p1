@@ -122,24 +122,23 @@ public class UserServiceTestSuite {
 
     }
 
-    @Test
-    public void login_returnsSuccessfully_whenGivenValidCredentials(){
-        // Arrange
-        String validUsername = "valid";
-        String validPassword = "valid-password";
-        AppUser expectedUser = new AppUser("test","tester","test@test.test","valid","valid-password",false);
-        when(mockUserRepo.findUserByCredentials(validUsername,validPassword)).thenReturn(expectedUser);
-
-        // Act
-        AppUser actualUser = sut.login(validUsername, validPassword);
-
-        // Assert
-        Assert.assertEquals(expectedUser,actualUser);
-        verify(mockUserRepo, times(1)).findUserByCredentials(validUsername,validPassword);
-//        verify(mockSession, times(1)).setCurrentUser(actualUser);
-
-
-    }
+//    @Test
+//    public void login_returnsSuccessfully_whenGivenValidCredentials(){
+//        // Arrange
+//        String validUsername = "valid";
+//        String validPassword = "valid-password";
+//        AppUser expectedUser = new AppUser("test","tester","test@test.test","valid","valid-password",false);
+//        when(mockUserRepo.findUserByCredentials(validUsername,validPassword)).thenReturn(expectedUser);
+//
+//        // Act
+//        AppUser actualUser = sut.login(validUsername, validPassword);
+//
+//        // Assert
+//        Assert.assertEquals(expectedUser,actualUser);
+//        verify(mockUserRepo, times(1)).findUserByCredentials(validUsername,validPassword);
+////        verify(mockSession, times(1)).setCurrentUser(actualUser);
+//
+//    }
 
     @Test(expected = AuthenticationException.class)
     public void login_throwsException_whenProvidedWith_InvalidCredentials(){

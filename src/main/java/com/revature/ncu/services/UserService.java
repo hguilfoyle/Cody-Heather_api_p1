@@ -4,6 +4,7 @@ import com.revature.ncu.util.exceptions.AuthenticationException;
 import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.repositories.UserRepository;
 import com.revature.ncu.util.exceptions.ResourcePersistenceException;
+import com.revature.ncu.web.dtos.Principal;
 
 // Service for handling most User-related business logic and passing information into the User repository
 
@@ -38,7 +39,7 @@ public class UserService {
     }
 
     // Validate user credentials and log them in
-    public AppUser login(String username, String password) {
+    public Principal login(String username, String password) {
 
         AppUser authUser = userRepo.findUserByCredentials(username, password);
 
@@ -46,8 +47,7 @@ public class UserService {
             throw new AuthenticationException("Invalid credentials provided!");
         }
 
-
-        return authUser;
+        return new Principal(authUser);
     }
 
 
