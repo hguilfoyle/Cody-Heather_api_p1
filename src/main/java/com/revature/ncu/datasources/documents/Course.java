@@ -1,8 +1,6 @@
 package com.revature.ncu.datasources.documents;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -18,6 +16,7 @@ public class Course {
     //TODO logic for these
     private LocalDateTime courseOpenDate;
     private LocalDateTime courseCloseDate;
+    private int slotsTaken;
     private int courseCapacity;
 
     public Course(){ super(); }
@@ -27,15 +26,29 @@ public class Course {
         this.courseAbbreviation = cAbv;
     }
 
+    // Keeping this for the time being since removing it breaks hundreds of lines
     public Course(String cn, String cAbv, String detail) {
         this.courseName = cn;
         this.courseAbbreviation = cAbv;
         this.courseDetail = detail;
     }
 
+    // For creating a new course.
+    public Course(String cn, String cAbv, String detail, String prof,
+                  LocalDateTime openDate, LocalDateTime closeDate, int cap){
+        this.courseName = cn;
+        this.courseAbbreviation = cAbv;
+        this.courseDetail = detail;
+        this.professorName = prof;
+        this.courseOpenDate = openDate;
+        this.courseCloseDate = closeDate;
+        this.courseCapacity = cap;
+        this.slotsTaken = 0;
+    }
 
+    // For pulling a course from the database
     public Course(String id, String cn, String cAbv, String detail, String prof,
-                  LocalDateTime openDate, LocalDateTime closeDate){
+                  LocalDateTime openDate, LocalDateTime closeDate, int cap, int slots){
         this.id = id;
         this.courseName = cn;
         this.courseAbbreviation = cAbv;
@@ -43,7 +56,8 @@ public class Course {
         this.professorName = prof;
         this.courseOpenDate = openDate;
         this.courseCloseDate = closeDate;
-
+        this.courseCapacity = cap;
+        this.slotsTaken = slots;
     }
 
 
@@ -86,6 +100,14 @@ public class Course {
     public LocalDateTime getCourseCloseDate() { return courseCloseDate; }
 
     public void setCourseCloseDate(LocalDateTime courseCloseDate) { this.courseCloseDate = courseCloseDate; }
+
+    public int getSlotsTaken() { return slotsTaken; }
+
+    public void setSlotsTaken(int slotsTaken) { this.slotsTaken = slotsTaken; }
+
+    public int getCourseCapacity() { return courseCapacity; }
+
+    public void setCourseCapacity(int courseCapacity) { this.courseCapacity = courseCapacity; }
 
     @Override
     public boolean equals(Object o) {
