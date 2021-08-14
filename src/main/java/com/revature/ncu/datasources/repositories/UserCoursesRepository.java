@@ -1,142 +1,127 @@
 package com.revature.ncu.datasources.repositories;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 
 import com.revature.ncu.datasources.documents.UserCourses;
-import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.util.exceptions.DataSourceException;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // Repository for performing CRUD operations on the Mongo usercourses collection
-
 public class UserCoursesRepository implements CrudRepository<UserCourses> {
 
-    private static final String DATABASE = "p0";
-    private static final String COLLECTION = "usercourses";
-
     private final Logger logger = LoggerFactory.getLogger(UserCoursesRepository.class);
+    private final MongoCollection<UserCourses> userCoursesCollection;
+
+    // Get connection, access database, and create collection.
+    public UserCoursesRepository(MongoClient mongoClient) {
+        this.userCoursesCollection = mongoClient.getDatabase("p1").getCollection("usercourses", UserCourses.class);
+    }
 
     public List<String> findRegisteredCoursesByUsername(String username){
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> usersCollection = p0Db.getCollection(COLLECTION);
-
             Document queryDoc = new Document("username", username);
-            Document userCourseDoc = usersCollection.find(queryDoc).first();
-            if (userCourseDoc == null) return null;
-            ObjectMapper mapper = new ObjectMapper();
-            UserCourses userCourses = mapper.readValue(userCourseDoc.toJson(), UserCourses.class);
-            userCourses.setId(userCourseDoc.get("_id").toString());
-
-            return userCourses.getCourses();
+            return userCoursesCollection.find(queryDoc).first().getCourses();
         }
-        catch (JsonMappingException jme) {
-            logger.error("An exception occurred while mapping the document.", jme);
-            throw new DataSourceException("An exception occurred while mapping the document.", jme);
-        } catch (Exception e) {
+        catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
     public void joinCourse(String course,String username){
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> userCoursesCollection = p0Db.getCollection(COLLECTION);
+            // Search by username
+            Document searchDoc = new Document("username",username);
+
+            // Create $push command to push new course into array on database
             Document updateDoc = new Document("courses", course);
             Document appendDoc = new Document("$push",updateDoc);
-            Document searchDoc = new Document("username",username);
             userCoursesCollection.updateOne(searchDoc,appendDoc);
 
         }
         catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
     public void removeCourseFromUserList(String course, String username){
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> userCoursesCollection = p0Db.getCollection(COLLECTION);
+            // Search by username
+            Document searchDoc = new Document("username",username);
 
+            // Create $pull command to pull course from array on database
             Document removeDoc = new Document("courses", course);
             Document appendDoc = new Document("$pull",removeDoc);
-            Document searchDoc = new Document("username",username);
             userCoursesCollection.updateOne(searchDoc,appendDoc);
 
         }
         catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
     public void updateCourseNameInAllUserLists(String originalName, String newName){
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> userCoursesCollection = p0Db.getCollection(COLLECTION);
+            // Search
+            Document searchDoc = new Document("courses", originalName);
 
-            //push the new name
+            // Push the new name
             Document updateDoc = new Document("courses", newName);
             Document pushDoc = new Document("$push",updateDoc);
-            Document searchDoc = new Document("courses", originalName);
             userCoursesCollection.updateMany(searchDoc, pushDoc);
 
-            //pull the old name
-            Document removalDoc = new Document("courses", originalName);
-            Document pullDoc = new Document("$pull",removalDoc);
+            // Pull the old name
+            Document pullDoc = new Document("$pull",searchDoc);
             userCoursesCollection.updateMany(searchDoc,pullDoc);
-
-
         }
         catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
     public void removeCourseFromAllUserLists(String course){
 
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> userCoursesCollection = p0Db.getCollection(COLLECTION);
+            // Search
+            Document searchDoc = new Document("courses", course);
 
+            // Pull the course from all lists
             Document updateDoc = new Document("courses", course);
             Document appendDoc = new Document("$pull",updateDoc);
-            Document searchDoc = new Document("courses", course);
             userCoursesCollection.updateMany(searchDoc,appendDoc);
 
         }
         catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
 
     }
 
+    // For Listing all users and their registered courses
     @Override
     public List<UserCourses> findAll(){
-        return null;
+
+        List<UserCourses> userCourses = new ArrayList<>();
+
+        try{
+            userCoursesCollection.find().into(userCourses);
+        } catch (Exception e){
+            logger.error("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
+        }
+        return userCourses;
     }
 
     @Override
@@ -148,24 +133,14 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
     @Override
     public UserCourses save(UserCourses newCourseList) {
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> usersCollection = p0Db.getCollection(COLLECTION);
-
-            // Create new document with provided values
-            Document newListDoc = new Document("username", newCourseList.getUsername())
-                    .append("courses", newCourseList.getCourses());
-            //Insert the new user document into the database
-            usersCollection.insertOne(newListDoc);
-            //Set the ID to the ID generated by the database.
-            newCourseList.setId(newListDoc.get("_id").toString());
-
+            // Generate ID and insert into database.
+            newCourseList.setId(new ObjectId().toString());
+            userCoursesCollection.insertOne(newCourseList);
             return newCourseList;
 
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
@@ -178,6 +153,5 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
     public boolean deleteById(String id) {
         return false;
     }
-
 
 }

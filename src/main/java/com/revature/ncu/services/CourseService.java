@@ -37,7 +37,7 @@ public class CourseService {
 
     public void removeCourse(Course course){
 
-        courseRepo.removeCourse(course);
+        courseRepo.removeCourseByAbbreviation(course);
 
     }
 

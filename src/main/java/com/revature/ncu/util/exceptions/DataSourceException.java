@@ -2,8 +2,8 @@ package com.revature.ncu.util.exceptions;
 
 public class DataSourceException extends RuntimeException {
 
-    public DataSourceException(String message, Throwable cause) {
-        super(message, cause);
+    public DataSourceException(Throwable cause) {
+        super("An unexpected exception occurred.", cause);
     }
 
 }
