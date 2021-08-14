@@ -7,7 +7,6 @@ package com.revature.ncu.web.dtos;
 
 import com.revature.ncu.datasources.documents.Course;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class CourseDTO {
@@ -19,6 +18,9 @@ public class CourseDTO {
     private String professorName;
     private String courseOpenDate;      //TODO logic for these
     private String courseCloseDate;     // Not sure if we want them displayed as strings, though...
+    private int slotsTaken;
+    private int courseCapacity;
+
 
     public CourseDTO(Course subject) {
         this.id = subject.getId();
@@ -27,6 +29,8 @@ public class CourseDTO {
         this.professorName = subject.getCourseDetail();
         this.courseOpenDate = subject.getCourseOpenDate().toString();
         this.courseCloseDate = subject.getCourseCloseDate().toString();
+        this.courseCapacity = subject.getCourseCapacity();
+        this.slotsTaken = subject.getSlotsTaken();
     }
 
     public String getId() {
@@ -84,6 +88,14 @@ public class CourseDTO {
     public void setCourseCloseDate(String courseCloseDate) {
         this.courseCloseDate = courseCloseDate;
     }
+
+    public int getSlotsTaken() { return slotsTaken;}
+
+    public void setSlotsTaken(int slotsTaken) {this.slotsTaken = slotsTaken; }
+
+    public int getCourseCapacity() { return courseCapacity; }
+
+    public void setCourseCapacity(int courseCapacity) { this.courseCapacity = courseCapacity; }
 
     @Override
     public boolean equals(Object o) {
