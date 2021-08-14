@@ -142,7 +142,6 @@ public class CourseRepository implements CrudRepository<Course> {
 
     }
 
-
     public void updatingCourseDesc(Course original, String newDesc){
         try {
             // Get connection, access database, and access collection.
@@ -164,7 +163,6 @@ public class CourseRepository implements CrudRepository<Course> {
     }
 
 
-
     // Remove a course from the database
     public void removeCourse(Course course){
         try {
@@ -180,7 +178,6 @@ public class CourseRepository implements CrudRepository<Course> {
             logger.error("An unexpected exception occurred.", e);
             throw new DataSourceException("An unexpected exception occurred.", e);
         }
-
     }
 
     @Override

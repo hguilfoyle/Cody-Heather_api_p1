@@ -136,11 +136,8 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
 
     @Override
     public List<UserCourses> findAll(){
-
         return null;
-
     }
-
 
     @Override
     public UserCourses findById(String id) {
