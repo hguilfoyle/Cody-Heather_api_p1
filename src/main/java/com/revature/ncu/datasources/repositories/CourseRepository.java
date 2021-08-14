@@ -7,6 +7,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.revature.ncu.datasources.documents.Course;
+import com.revature.ncu.datasources.documents.UserCourses;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.util.exceptions.DataSourceException;
 import org.bson.Document;
@@ -183,7 +184,14 @@ public class CourseRepository implements CrudRepository<Course> {
     }
 
     @Override
-    public Course findByID(int id) {
+    public List<Course> findAll(){
+
+        return null;
+
+    }
+
+    @Override
+    public Course findById(String id) {
         return null;
     }
 
@@ -222,7 +230,7 @@ public class CourseRepository implements CrudRepository<Course> {
     }
 
     @Override
-    public boolean deleteByID(int id) {
+    public boolean deleteById(String id) {
         return false;
     }
 
