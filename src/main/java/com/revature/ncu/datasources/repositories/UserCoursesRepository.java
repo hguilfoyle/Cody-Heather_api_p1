@@ -154,5 +154,4 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
         return false;
     }
 
-
 }
