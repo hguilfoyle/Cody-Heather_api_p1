@@ -27,7 +27,7 @@ public class UserRepository implements CrudRepository<AppUser>{
     public AppUser findUserByCredentials(String username, String encryptedPassword) {
 
         try {
-            // p1.users.find({"username":"username","password":"encryptedpassword"})
+            // Create a Query JSON to
             Document queryDoc = new Document("username", username).append("password", encryptedPassword);
             return usersCollection.find(queryDoc).first();
         }

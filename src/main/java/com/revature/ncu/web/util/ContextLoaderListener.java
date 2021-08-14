@@ -5,7 +5,6 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoClient;
-import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.repositories.UserRepository;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.services.InputValidatorService;
@@ -33,8 +32,6 @@ public class ContextLoaderListener implements ServletContextListener {
 
         ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
-
-
         UserRepository userRepo = new UserRepository(mongoClient);
         UserService userService = new UserService(userRepo, inputValidatorService, passwordUtils);
 
@@ -49,6 +46,7 @@ public class ContextLoaderListener implements ServletContextListener {
 
         configureLogback(servletContext);
 
+        logger.info("ContextLoaderListener initialized.\nLogger initialized.");
     }
 
     @Override
