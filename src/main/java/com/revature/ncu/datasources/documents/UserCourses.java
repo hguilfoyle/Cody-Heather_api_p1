@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 // UserCourses POJO
@@ -14,20 +15,14 @@ public class UserCourses {
 
     private String id;
     private String username;
-    private ArrayList<String> courses = new ArrayList<>();
+    private List<String> courses = new ArrayList<>();
 
     // Jackson requires a no-args constructor (but I guess I didn't use Jackson for this one...)
     public UserCourses(){super();}
 
     public UserCourses(String username){ this.username = username; }
 
-    // For adding multiple courses at instantiation, was not implemented but might have come in handy some time.
-    public UserCourses(String username, ArrayList<String> regCourses){
-        this.username = username;
-        this.courses = regCourses;
-    }
-
-    // For adding multiple courses, was not implemented but might have come in handy some time.
+    // For adding multiple courses, was not implemented in p0 but might have come in handy some time.
     public UserCourses addCourses(String... regCourses){
         this.courses.addAll(Arrays.asList(regCourses));
         return this;
@@ -49,11 +44,11 @@ public class UserCourses {
         this.username = username;
     }
 
-    public ArrayList<String> getCourses() {
+    public List<String> getCourses() {
         return courses;
     }
 
-    public void setCourses(ArrayList<String> courses) {
+    public void setCourses(List<String> courses) {
         this.courses = courses;
     }
 

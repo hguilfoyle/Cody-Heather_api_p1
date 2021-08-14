@@ -9,13 +9,14 @@ package com.revature.ncu.web.dtos;
 import com.revature.ncu.datasources.documents.UserCourses;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class UserCoursesDTO {
 
     private String id;
     private String username;
-    private ArrayList<String> courses;
+    private List<String> courses;
 
     public UserCoursesDTO(UserCourses subject){
         this.id = subject.getId();
@@ -39,11 +40,11 @@ public class UserCoursesDTO {
         this.username = username;
     }
 
-    public ArrayList<String> getCourses() {
+    public List<String> getCourses() {
         return courses;
     }
 
-    public void setCourses(ArrayList<String> courses) {
+    public void setCourses(List<String> courses) {
         this.courses = courses;
     }
 
