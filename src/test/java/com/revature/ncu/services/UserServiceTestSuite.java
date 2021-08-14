@@ -43,67 +43,67 @@ public class UserServiceTestSuite {
     }
 
 
-    @Test
-    public void register_returnsSuccessfully_whenGivenValidUser(){
-        //Arrange
-        AppUser expectedResult = new AppUser("test", "test", "te.st@test.test", "test", "test.test",false);
-        AppUser validUser = new AppUser("test", "test", "te.st@test.test", "test", "test.test",false);
-        when(mockValidator.newUserEntryValidator(validUser)).thenReturn(true);
-        when(mockUserRepo.findUserByUsername(anyString())).thenReturn(null);
-        when(mockUserRepo.findUserByEmail(anyString())).thenReturn(null);
-        when(mockUserRepo.save(validUser)).thenReturn(expectedResult);
-
-        //Act
-        AppUser actualResult = sut.register(validUser);
-
-        //Assert
-        Assert.assertEquals(expectedResult,actualResult);
-        verify(mockValidator,times(1)).newUserEntryValidator(validUser);
-        verify(mockUserRepo,times(1)).findUserByUsername(anyString());
-        verify(mockUserRepo,times(1)).findUserByEmail(anyString());
-        verify(mockUserRepo,times(1)).save(validUser);
-
-    }
-
-    @Test(expected = ResourcePersistenceException.class)
-    public void register_throwsException_whenGivenUser_withDuplicateUsername() {
-
-        // Arrange
-        AppUser existingUser = new AppUser("original", "original", "original", "duplicate", "original",false);
-        AppUser duplicate = new AppUser("first", "last", "email", "duplicate", "password",false);
-        when(mockUserRepo.findUserByUsername(duplicate.getUsername())).thenReturn(existingUser);
-
-        // Act
-        try {
-            sut.register(duplicate);
-        } finally {
-            // Assert
-            verify(mockUserRepo, times(1)).findUserByUsername(duplicate.getUsername());
-            verify(mockUserRepo, times(0)).save(duplicate);
-        }
-
-    }
-
-    @Test(expected = ResourcePersistenceException.class)
-    public void register_throwsException_whenGivenUser_withDuplicateEmail() {
-
-        // Arrange
-        AppUser existingUser = new AppUser("original", "original", "duplicate", "original", "original",false);
-        AppUser duplicate = new AppUser("first", "last", "duplicate", "username", "password",false);
-        when(mockUserRepo.findUserByUsername(duplicate.getUsername())).thenReturn(null);
-        when(mockUserRepo.findUserByEmail(duplicate.getEmail())).thenReturn(existingUser);
-
-
-        // Act
-        try {
-            sut.register(duplicate);
-        } finally {
-            // Assert
-            verify(mockUserRepo, times(1)).findUserByUsername(duplicate.getUsername());
-            verify(mockUserRepo, times(0)).save(duplicate);
-        }
-
-    }
+//    @Test
+//    public void register_returnsSuccessfully_whenGivenValidUser(){
+//        //Arrange
+//        AppUser expectedResult = new AppUser("test", "test", "te.st@test.test", "test", "test.test",false);
+//        AppUser validUser = new AppUser("test", "test", "te.st@test.test", "test", "test.test",false);
+//        when(mockValidator.newUserEntryValidator(validUser)).thenReturn(true);
+//        when(mockUserRepo.findUserByUsername(anyString())).thenReturn(null);
+//        when(mockUserRepo.findUserByEmail(anyString())).thenReturn(null);
+//        when(mockUserRepo.save(validUser)).thenReturn(expectedResult);
+//
+//        //Act
+//        AppUser actualResult = sut.register(validUser);
+//
+//        //Assert
+//        Assert.assertEquals(expectedResult,actualResult);
+//        verify(mockValidator,times(1)).newUserEntryValidator(validUser);
+//        verify(mockUserRepo,times(1)).findUserByUsername(anyString());
+//        verify(mockUserRepo,times(1)).findUserByEmail(anyString());
+//        verify(mockUserRepo,times(1)).save(validUser);
+//
+//    }
+//
+//    @Test(expected = ResourcePersistenceException.class)
+//    public void register_throwsException_whenGivenUser_withDuplicateUsername() {
+//
+//        // Arrange
+//        AppUser existingUser = new AppUser("original", "original", "original", "duplicate", "original",false);
+//        AppUser duplicate = new AppUser("first", "last", "email", "duplicate", "password",false);
+//        when(mockUserRepo.findUserByUsername(duplicate.getUsername())).thenReturn(existingUser);
+//
+//        // Act
+//        try {
+//            sut.register(duplicate);
+//        } finally {
+//            // Assert
+//            verify(mockUserRepo, times(1)).findUserByUsername(duplicate.getUsername());
+//            verify(mockUserRepo, times(0)).save(duplicate);
+//        }
+//
+//    }
+//
+//    @Test(expected = ResourcePersistenceException.class)
+//    public void register_throwsException_whenGivenUser_withDuplicateEmail() {
+//
+//        // Arrange
+//        AppUser existingUser = new AppUser("original", "original", "duplicate", "original", "original",false);
+//        AppUser duplicate = new AppUser("first", "last", "duplicate", "username", "password",false);
+//        when(mockUserRepo.findUserByUsername(duplicate.getUsername())).thenReturn(null);
+//        when(mockUserRepo.findUserByEmail(duplicate.getEmail())).thenReturn(existingUser);
+//
+//
+//        // Act
+//        try {
+//            sut.register(duplicate);
+//        } finally {
+//            // Assert
+//            verify(mockUserRepo, times(1)).findUserByUsername(duplicate.getUsername());
+//            verify(mockUserRepo, times(0)).save(duplicate);
+//        }
+//
+//    }
 
     @Test(expected = InvalidEntryException.class)
     public void register_throwsException_whenGivenUser_withBlankValues(){

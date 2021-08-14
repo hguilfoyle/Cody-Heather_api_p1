@@ -12,7 +12,6 @@ import com.revature.ncu.services.UserService;
 import com.revature.ncu.util.PasswordUtils;
 import com.revature.ncu.web.servlets.AuthServlet;
 import com.revature.ncu.web.servlets.HelloWorld;
-import com.revature.ncu.web.servlets.UserServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,15 +26,14 @@ public class ContextLoaderListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce){
-//        MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-//        PasswordUtils passwordUtils = new PasswordUtils();
+        MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
+        PasswordUtils passwordUtils = new PasswordUtils();
         InputValidatorService inputValidatorService = new InputValidatorService();
 
         ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
-        // TODO need to inject these still, will do when reworking repos
-        UserRepository userRepo = new UserRepository();  //mongoClient
-        UserService userService = new UserService(userRepo, inputValidatorService); //passwordUtils
+        UserRepository userRepo = new UserRepository(mongoClient);
+        UserService userService = new UserService(userRepo, inputValidatorService, passwordUtils);
 
 //        UserServlet userServlet = new UserServlet(userService, mapper);
         AuthServlet authServlet = new AuthServlet(userService, mapper);
@@ -48,7 +46,7 @@ public class ContextLoaderListener implements ServletContextListener {
 
         configureLogback(servletContext);
 
-
+        logger.info("ContextLoaderListener initialized.\nLogger initialized.");
     }
 
     @Override

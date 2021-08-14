@@ -134,9 +134,13 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
 
     }
 
+    @Override
+    public List<UserCourses> findAll(){
+        return null;
+    }
 
     @Override
-    public UserCourses findByID(int id) {
+    public UserCourses findById(String id) {
         return null;
     }
 
@@ -171,7 +175,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
     }
 
     @Override
-    public boolean deleteByID(int id) {
+    public boolean deleteById(String id) {
         return false;
     }
 

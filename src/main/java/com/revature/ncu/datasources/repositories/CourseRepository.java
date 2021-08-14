@@ -7,6 +7,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.revature.ncu.datasources.documents.Course;
+import com.revature.ncu.datasources.documents.UserCourses;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.util.exceptions.DataSourceException;
 import org.bson.Document;
@@ -141,7 +142,6 @@ public class CourseRepository implements CrudRepository<Course> {
 
     }
 
-
     public void updatingCourseDesc(Course original, String newDesc){
         try {
             // Get connection, access database, and access collection.
@@ -163,7 +163,6 @@ public class CourseRepository implements CrudRepository<Course> {
     }
 
 
-
     // Remove a course from the database
     public void removeCourse(Course course){
         try {
@@ -179,11 +178,17 @@ public class CourseRepository implements CrudRepository<Course> {
             logger.error("An unexpected exception occurred.", e);
             throw new DataSourceException("An unexpected exception occurred.", e);
         }
+    }
+
+    @Override
+    public List<Course> findAll(){
+
+        return null;
 
     }
 
     @Override
-    public Course findByID(int id) {
+    public Course findById(String id) {
         return null;
     }
 
@@ -222,7 +227,7 @@ public class CourseRepository implements CrudRepository<Course> {
     }
 
     @Override
-    public boolean deleteByID(int id) {
+    public boolean deleteById(String id) {
         return false;
     }
 

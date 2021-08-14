@@ -1,56 +1,37 @@
 package com.revature.ncu.datasources.repositories;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import com.revature.ncu.util.exceptions.DataSourceException;
 import com.revature.ncu.datasources.documents.AppUser;
-import com.revature.ncu.datasources.utils.MongoClientFactory;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 //Repository for performing CRUD operations on the Mongo user collection.
-
 public class UserRepository implements CrudRepository<AppUser>{
 
-    private static final String DATABASE = "p1";
-    private static final String COLLECTION = "users";
-
     private final Logger logger = LoggerFactory.getLogger(UserRepository.class);
+    private final MongoCollection<AppUser> usersCollection;
 
-    public AppUser findUserByCredentials(String username, String password) {
+    // Get connection, access database, and create collection.
+    public UserRepository(MongoClient mongoClient) {
+        this.usersCollection = mongoClient.getDatabase("p1").getCollection("users", AppUser.class);
+    }
+
+    public AppUser findUserByCredentials(String username, String encryptedPassword) {
 
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> usersCollection = p0Db.getCollection(COLLECTION);
-
-            // Create new document with provided values to query database
-            Document queryDoc = new Document("username", username).append("password", password);
-            // Search the database for an instance of a collection with the matching values
-            Document authUserDoc = usersCollection.find(queryDoc).first();
-            // Return null if the values were not propagated and therefore not found
-            if (authUserDoc == null) return null;
-            // Create jackson object mapper
-            ObjectMapper mapper = new ObjectMapper();
-            // Converting the collection into a Json document and providing Jackson with the class
-            // Allows Jackson to read the values and map them to the corresponding object.
-            AppUser authUser = mapper.readValue(authUserDoc.toJson(), AppUser.class);
-            // Handling the ID set by mongodb
-            authUser.setId(authUserDoc.get("_id").toString());
-            // Have to manually pull this since booleans are being cast to an object that isn't a Boolean
-            authUser.setFaculty((boolean)authUserDoc.get("isFaculty"));
-            return authUser;
-
-        } catch (JsonMappingException jme) {
-            logger.error("An exception occurred while mapping the document.", jme);
-            throw new DataSourceException("An exception occurred while mapping the document.", jme);
-        } catch (Exception e) {
+            // Create a Query JSON to
+            Document queryDoc = new Document("username", username).append("password", encryptedPassword);
+            return usersCollection.find(queryDoc).first();
+        }
+            catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
             throw new DataSourceException("An unexpected exception occurred.", e);
         }
@@ -58,30 +39,9 @@ public class UserRepository implements CrudRepository<AppUser>{
     }
 
     public AppUser findUserByUsername(String username) {
+
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> usersCollection = p0Db.getCollection(COLLECTION);
-
-            // Create new document with provided values to query database
-            Document queryDoc = new Document("username", username);
-            // Search the database for an instance of a collection with the matching values
-            Document authUserDoc = usersCollection.find(queryDoc).first();
-            // Return null if the values were not propagated and therefore not found
-            if (authUserDoc == null) return null;
-            // Create jackson object mapper
-            ObjectMapper mapper = new ObjectMapper();
-            // Converting the collection into a Json document and providing Jackson with the class
-            // Allows Jackson to read the values and map them to the corresponding object.
-            AppUser authUser = mapper.readValue(authUserDoc.toJson(), AppUser.class);
-            // Handling the ID set by mongodb
-            authUser.setId(authUserDoc.get("_id").toString());
-            return authUser;
-
-        }catch (JsonMappingException jme) {
-            logger.error("An exception occurred while mapping the document.", jme);
-            throw new DataSourceException("An exception occurred while mapping the document.", jme);
+            return usersCollection.find(new Document("username", username)).first();
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
             throw new DataSourceException("An unexpected exception occurred.", e);
@@ -89,74 +49,56 @@ public class UserRepository implements CrudRepository<AppUser>{
 
     }
 
-
     public AppUser findUserByEmail(String email) {
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> usersCollection = p0Db.getCollection(COLLECTION);
-
-            // Create new document with provided values to query database
-            Document queryDoc = new Document("email", email);
-            // Search the database for an instance of a collection with the matching values
-            Document authUserDoc = usersCollection.find(queryDoc).first();
-            // Return null if the values were not propagated and therefore not found
-            if (authUserDoc == null)
-                return null;
-            // Create jackson object mapper
-            ObjectMapper mapper = new ObjectMapper();
-            // Converting the collection into a Json document and providing Jackson with the class
-            // Allows Jackson to read the values and map them to the corresponding object.
-            AppUser authUser = mapper.readValue(authUserDoc.toJson(), AppUser.class);
-            // Handling the ID set by mongodb
-            authUser.setId(authUserDoc.get("_id").toString());
-            return authUser;
-
-        }catch (JsonMappingException jme) {
-            logger.error("An exception occurred while mapping the document.", jme);
-            throw new DataSourceException("An exception occurred while mapping the document.", jme);
+            return usersCollection.find(new Document("email", email)).first();
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
             throw new DataSourceException("An unexpected exception occurred.", e);
         }
+    }
+
+    @Override
+    public List<AppUser> findAll() {
+
+        List<AppUser> users = new ArrayList<>();
+
+        try {
+            usersCollection.find().into(users);
+        } catch (Exception e) {
+            logger.error("An unexpected exception occurred.", e);
+            throw new DataSourceException("An unexpected exception occurred.", e);
+        }
+        return users;
     }
 
 
     @Override
-    public AppUser findByID(int id) {
-        return null;
+    public AppUser findById(String id) {
+
+        try {
+
+            Document queryDoc = new Document("_id", id);
+            return usersCollection.find(queryDoc).first();
+
+        } catch (Exception e) {
+            logger.error("An unexpected exception occurred.", e);
+            throw new DataSourceException("An unexpected exception occurred.", e);
+        }
+
     }
 
     @Override
     public AppUser save(AppUser newUser) {
-
-
         try {
-            // Get connection, access database, and access collection.
-            MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
-            MongoDatabase p0Db = mongoClient.getDatabase(DATABASE);
-            MongoCollection<Document> usersCollection = p0Db.getCollection(COLLECTION);
-
-            // Create new user document with provided values
-            Document newUserDoc = new Document("firstName", newUser.getFirstName())
-                    .append("lastName", newUser.getLastName())
-                    .append("email", newUser.getEmail())
-                    .append("username", newUser.getUsername())
-                    .append("password", newUser.getPassword())
-                    .append("isFaculty", newUser.isFaculty());
-            //Insert the new user document into the database
-            usersCollection.insertOne(newUserDoc);
-            //Set the user's ID to the ID generated by the database.
-            newUser.setId(newUserDoc.get("_id").toString());
-
+            newUser.setId(new ObjectId().toString());
+            usersCollection.insertOne(newUser);
             return newUser;
 
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
             throw new DataSourceException("An unexpected exception occurred.", e);
         }
-
     }
 
     @Override
@@ -165,7 +107,7 @@ public class UserRepository implements CrudRepository<AppUser>{
     }
 
     @Override
-    public boolean deleteByID(int id) {
+    public boolean deleteById(String id) {
         return false;
     }
 }

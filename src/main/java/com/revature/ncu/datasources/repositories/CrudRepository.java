@@ -4,11 +4,14 @@ package com.revature.ncu.datasources.repositories;
 // I left this as-is even though I did not use all of the methods
 // I felt like we learned these specific ones for a reason...
 
+import java.util.List;
+
 public interface CrudRepository<T> {
 
-    T findByID(int id);
+    List<T> findAll();
+    T findById(String id);
     T save(T newResource);
     boolean update(T updatedResource);
-    boolean deleteByID(int id);
+    boolean deleteById(String id);
 
 }
