@@ -8,8 +8,6 @@ import java.util.Objects;
 
 
 // Course POJO
-@JsonIgnoreProperties(ignoreUnknown = true)
-
 public class Course {
 
     private String id;
@@ -17,8 +15,10 @@ public class Course {
     private String courseAbbreviation;
     private String courseDetail;
     private String professorName;
-    private LocalDateTime courseOpenDate;      //TODO logic for these
+    //TODO logic for these
+    private LocalDateTime courseOpenDate;
     private LocalDateTime courseCloseDate;
+    private int courseCapacity;
 
     public Course(){ super(); }
 

@@ -6,7 +6,6 @@ import java.util.Objects;
 
 
 // AppUser POJO
-// TODO: Map BsonProperties
 public class AppUser {
 
 

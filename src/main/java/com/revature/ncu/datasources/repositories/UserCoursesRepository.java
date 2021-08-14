@@ -32,7 +32,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
         }
         catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
@@ -49,7 +49,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
         }
         catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
@@ -66,7 +66,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
         }
         catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
@@ -86,7 +86,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
         }
         catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
@@ -104,7 +104,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
         }
         catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
 
     }
@@ -119,7 +119,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
             userCoursesCollection.find().into(userCourses);
         } catch (Exception e){
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
         return userCourses;
     }
@@ -140,7 +140,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
 
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 

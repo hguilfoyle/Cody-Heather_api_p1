@@ -34,7 +34,7 @@ public class UserRepository implements CrudRepository<AppUser>{
         }
             catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
 
     }
@@ -46,7 +46,7 @@ public class UserRepository implements CrudRepository<AppUser>{
             return usersCollection.find(new Document("username", username)).first();
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
 
     }
@@ -57,7 +57,7 @@ public class UserRepository implements CrudRepository<AppUser>{
             return usersCollection.find(new Document("email", email)).first();
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 
@@ -71,7 +71,7 @@ public class UserRepository implements CrudRepository<AppUser>{
             usersCollection.find().into(users);
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
         return users;
     }
@@ -87,7 +87,7 @@ public class UserRepository implements CrudRepository<AppUser>{
 
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
 
     }
@@ -102,7 +102,7 @@ public class UserRepository implements CrudRepository<AppUser>{
 
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
     }
 

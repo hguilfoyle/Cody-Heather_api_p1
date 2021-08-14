@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Objects;
 
 // UserCourses POJO
-@JsonIgnoreProperties(ignoreUnknown = true)
-
 public class UserCourses {
 
     private String id;
