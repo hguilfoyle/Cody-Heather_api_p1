@@ -33,7 +33,6 @@ com\revature\ncu\util\exceptions\InvalidCourseDescriptionException.class
 com\revature\ncu\datasources\repositories\UserCoursesRepository.class
 com\revature\ncu\datasources\repositories\CourseRepository.class
 com\revature\ncu\util\exceptions\ScreenNotFoundException.class
-com\revature\ncu\services\InputValidatorService.class
 com\revature\ncu\util\exceptions\DataSourceException.class
 com\revature\ncu\web\servlets\UserServlet.class
 com\revature\ncu\web\dtos\Credentials.class
