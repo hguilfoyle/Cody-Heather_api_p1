@@ -7,13 +7,13 @@ import com.revature.ncu.util.exceptions.*;
 import org.junit.*;
 
 
-public class InputValidatorServiceTestSuite {
+public class UserValidatorServiceTestSuite {
 
-    private InputValidatorService sut;
+    private UserValidatorService sut;
 
     @Before
     public void setup(){
-        sut = new InputValidatorService();
+        sut = new UserValidatorService();
     }
 
     @After

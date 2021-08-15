@@ -4,9 +4,7 @@ import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.repositories.UserRepository;
 import com.revature.ncu.util.exceptions.AuthenticationException;
 import com.revature.ncu.util.exceptions.InvalidEntryException;
-import com.revature.ncu.util.exceptions.ResourcePersistenceException;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +19,7 @@ public class UserServiceTestSuite {
     // Mock dependencies required for the system under test
     private UserRepository mockUserRepo;
 //    private UserSession mockSession;
-    private InputValidatorService mockValidator;
+    private UserValidatorService mockValidator;
 
     // Initialize objects before testing
     @Before
@@ -29,7 +27,7 @@ public class UserServiceTestSuite {
 
         mockUserRepo = mock(UserRepository.class);
 //        mockSession = mock(UserSession.class);
-        mockValidator = mock(InputValidatorService.class);
+        mockValidator = mock(UserValidatorService.class);
 //        sut = new UserService( mockUserRepo, mockSession, mockValidator);
 
     }

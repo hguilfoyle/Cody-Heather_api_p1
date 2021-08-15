@@ -22,12 +22,12 @@ public class CourseServiceTestSuite {
 
     // Mock dependencies required for the system under test
     private CourseRepository mockCourseRepo;
-    private InputValidatorService mockValidator;
+    private CourseValidatorService mockValidator;
 
     @Before
     public void setup(){
         mockCourseRepo = mock(CourseRepository.class);
-        mockValidator = mock(InputValidatorService.class);
+        mockValidator = mock(CourseValidatorService.class);
         sut = new CourseService(mockCourseRepo, mockValidator);
     }
 
