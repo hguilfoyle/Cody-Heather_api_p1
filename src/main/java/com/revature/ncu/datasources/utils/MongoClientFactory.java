@@ -80,10 +80,10 @@ public class MongoClientFactory {
 
         }catch (FileNotFoundException fnfe) {
             logger.error("Unable to load database properties file.", fnfe);
-            throw new DataSourceException("Unable to load database properties file.", fnfe);
+            throw new DataSourceException(fnfe);
         } catch(Exception e){
             logger.error("An unexpected exception occurred.", e);
-            throw new DataSourceException("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
         }
 
     }
