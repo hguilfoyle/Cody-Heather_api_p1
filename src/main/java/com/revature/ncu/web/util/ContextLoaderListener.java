@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoClient;
 import com.revature.ncu.datasources.repositories.UserRepository;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
-import com.revature.ncu.services.InputValidatorService;
+import com.revature.ncu.services.UserValidatorService;
 import com.revature.ncu.services.UserService;
 import com.revature.ncu.util.PasswordUtils;
 import com.revature.ncu.web.servlets.AuthServlet;
@@ -28,12 +28,12 @@ public class ContextLoaderListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce){
         MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
         PasswordUtils passwordUtils = new PasswordUtils();
-        InputValidatorService inputValidatorService = new InputValidatorService();
+        UserValidatorService userValidatorService = new UserValidatorService();
 
         ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
         UserRepository userRepo = new UserRepository(mongoClient);
-        UserService userService = new UserService(userRepo, inputValidatorService, passwordUtils);
+        UserService userService = new UserService(userRepo, userValidatorService, passwordUtils);
 
 //        UserServlet userServlet = new UserServlet(userService, mapper);
         AuthServlet authServlet = new AuthServlet(userService, mapper);

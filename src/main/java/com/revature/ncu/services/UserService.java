@@ -10,7 +10,6 @@ import com.revature.ncu.util.exceptions.ResourcePersistenceException;
 import com.revature.ncu.web.dtos.AppUserDTO;
 import com.revature.ncu.web.dtos.Principal;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,12 +20,12 @@ public class UserService {
     private final UserRepository userRepo;
     private final PasswordUtils passwordUtils;
 
-    private final InputValidatorService inputValidatorService;
+    private final UserValidatorService userValidatorService;
 
     // Injecting Dependencies
-    public UserService(UserRepository userRepo, InputValidatorService inputValidatorService, PasswordUtils passwordUtils) {
+    public UserService(UserRepository userRepo, UserValidatorService userValidatorService, PasswordUtils passwordUtils) {
         this.userRepo = userRepo;
-        this.inputValidatorService = inputValidatorService;
+        this.userValidatorService = userValidatorService;
         this.passwordUtils = passwordUtils;
     }
 
@@ -34,7 +33,7 @@ public class UserService {
     public AppUser register(AppUser newUser) {
 
         // Throws exception if entry is invalid
-        inputValidatorService.newUserEntryValidator(newUser);
+        userValidatorService.newUserEntryValidator(newUser);
 
         if (userRepo.findUserByUsername(newUser.getUsername()) != null) {
             throw new ResourcePersistenceException("Provided username is already taken!");

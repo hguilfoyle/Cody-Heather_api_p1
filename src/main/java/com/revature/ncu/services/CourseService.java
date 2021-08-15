@@ -9,16 +9,16 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepo;
-    private final InputValidatorService inputValidatorService;
+    private final CourseValidatorService courseValidatorService;
 
-    public CourseService(CourseRepository courseRepo, InputValidatorService inputValidatorService) {
+    public CourseService(CourseRepository courseRepo, CourseValidatorService courseValidatorService) {
         this.courseRepo = courseRepo;
-        this.inputValidatorService = inputValidatorService;
+        this.courseValidatorService = courseValidatorService;
     }
 
     public Course add(Course newCourse) {
 
-        inputValidatorService.newCourseEntryValidator(newCourse);
+        courseValidatorService.newCourseEntryValidator(newCourse);
 
         if (courseRepo.findCourseByName(newCourse.getCourseName()) != null)
         {
@@ -44,7 +44,7 @@ public class CourseService {
     public void updateCourseName(Course editingCourse, String newName){
 
 
-        inputValidatorService.newCourseNameValidator(editingCourse, newName);
+        courseValidatorService.newCourseNameValidator(editingCourse, newName);
 
         if (courseRepo.findCourseByName(newName) != null)
         {
@@ -57,7 +57,7 @@ public class CourseService {
     }
     public void updateCourseAbv(Course editingCourse, String newAbv){
 
-        inputValidatorService.newCourseAbvValidator(editingCourse, newAbv);
+        courseValidatorService.newCourseAbvValidator(editingCourse, newAbv);
 
         if (courseRepo.findCourseByAbbreviation(newAbv) != null)
         {
@@ -70,7 +70,7 @@ public class CourseService {
     }
     public void updateCourseDesc(Course editingCourse, String newDesc){
 
-        inputValidatorService.newCourseDetailsValidator(newDesc);
+        courseValidatorService.newCourseDetailsValidator(newDesc);
 
         courseRepo.updatingCourseDesc(editingCourse, newDesc);
 
