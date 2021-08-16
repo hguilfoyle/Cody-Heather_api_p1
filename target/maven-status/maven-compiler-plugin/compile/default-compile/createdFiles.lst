@@ -1,5 +1,6 @@
 com\revature\ncu\util\exceptions\InvalidEntryException.class
 com\revature\ncu\web\dtos\UserCoursesDTO.class
+com\revature\ncu\util\exceptions\InvalidRequestException.class
 com\revature\ncu\util\exceptions\InvalidPasswordException.class
 com\revature\ncu\web\dtos\Principal.class
 com\revature\ncu\services\CourseService.class
@@ -13,6 +14,7 @@ com\revature\ncu\util\exceptions\InvalidUsernameException.class
 com\revature\ncu\util\exceptions\NotRegisteredForCourseException.class
 com\revature\ncu\util\PasswordUtils.class
 com\revature\ncu\datasources\repositories\UserRepository.class
+com\revature\ncu\util\exceptions\ResourceNotFoundException.class
 com\revature\ncu\web\filters\CorsFilter.class
 com\revature\ncu\util\exceptions\InvalidCourseNameException.class
 com\revature\ncu\web\util\ContextLoaderListener.class
@@ -23,12 +25,15 @@ com\revature\ncu\util\exceptions\CourseNotJoinedException.class
 com\revature\ncu\services\UserCoursesService.class
 com\revature\ncu\util\exceptions\InvalidEmailException.class
 com\revature\ncu\datasources\repositories\CrudRepository.class
+com\revature\ncu\web\servlets\HealthCheckServlet.class
 com\revature\ncu\datasources\documents\UserCourses.class
 com\revature\ncu\datasources\utils\MongoClientFactory.class
+com\revature\ncu\services\CourseValidatorService.class
 com\revature\ncu\util\exceptions\AlreadyRegisteredForCourseException.class
 com\revature\ncu\web\dtos\AppUserDTO.class
 com\revature\ncu\services\UserService.class
 com\revature\ncu\datasources\documents\Course.class
+com\revature\ncu\services\UserValidatorService.class
 com\revature\ncu\util\exceptions\InvalidCourseDescriptionException.class
 com\revature\ncu\datasources\repositories\UserCoursesRepository.class
 com\revature\ncu\datasources\repositories\CourseRepository.class
