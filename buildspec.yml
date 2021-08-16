@@ -18,4 +18,4 @@ phases:
 artifacts:
   files:
     - Project_1-1.0-SNAPSHOT.war
-    - .ebextensions/**/*
+    -
