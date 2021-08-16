@@ -46,13 +46,16 @@ public class MongoClientFactory {
 
         try{
             // Retrieving the application.properties file
+            //TODO Change all this to System.getProperties
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            appProperties.load(loader.getResourceAsStream("application.properties"));
 
             // Retrieving information from the application.properties file
-            String ipAddress = System.getProperty("ipAddress");
-            int port = Integer.parseInt(System.getProperty("port"));
-            String dbName = System.getProperty("dbName");
-            String username = System.getProperty("username");
-            char[] password = System.getProperty("password").toCharArray();
+            String ipAddress = appProperties.getProperty("ipAddress");
+            int port = Integer.parseInt(appProperties.getProperty("port"));
+            String dbName = appProperties.getProperty("dbName");
+            String username = appProperties.getProperty("username");
+            char[] password = appProperties.getProperty("password").toCharArray();
 
             // A serializable list containing only the ServerAddress to be sent to the MDB client
             List<ServerAddress> hosts = Collections.singletonList(new ServerAddress(ipAddress, port));
@@ -75,6 +78,9 @@ public class MongoClientFactory {
 
             this.mongoClient = MongoClients.create(settings);
 
+        }catch (FileNotFoundException fnfe) {
+            logger.error("Unable to load database properties file.", fnfe);
+            throw new DataSourceException(fnfe);
         } catch(Exception e){
             logger.error("An unexpected exception occurred.", e);
             throw new DataSourceException(e);
