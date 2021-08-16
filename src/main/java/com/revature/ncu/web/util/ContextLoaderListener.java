@@ -44,6 +44,7 @@ public class ContextLoaderListener implements ServletContextListener {
         servletContext.addServlet("HelloWorld", helloWorld).addMapping("/hello");
         servletContext.addServlet("UserServlet", userServlet).addMapping("/users/*");
         servletContext.addServlet("AuthServlet", authServlet).addMapping("/auth");
+        servletContext.addServlet("AuthServlet", authServlet).addMapping("/goodbye");
 
         configureLogback(servletContext);
 
