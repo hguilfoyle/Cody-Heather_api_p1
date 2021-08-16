@@ -11,9 +11,11 @@ phases:
     commands:
       - echo Build started on 'date'
       - mvn package
+      - mv target/Project_1-1.0-SNAPSHOT.war Project_1-1.0-SNAPSHOT.war
   post_build:
     commands:
       - echo Build completed on 'date'
 artifacts:
   files:
-    - target/Project_1-1.0-SNAPSHOT.war
+    - Project_1-1.0-SNAPSHOT.war
+    - .ebextensions/**/*
