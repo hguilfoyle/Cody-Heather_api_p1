@@ -112,7 +112,7 @@ public class UserServlet extends HttpServlet {
             ErrorResponse errResp = new ErrorResponse(400, e.getMessage());
             respWriter.write(mapper.writeValueAsString(errResp));
         } catch (ResourcePersistenceException rpe) {
-            resp.setStatus(409);   //409 conflict: user already exists
+            resp.setStatus(409);   //409 conflict: user/email already exists
             ErrorResponse errResp = new ErrorResponse(409, rpe.getMessage());
             respWriter.write(mapper.writeValueAsString(errResp));
         } catch (Exception e) {
