@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
+
 public class CourseValidatorServiceTestSuite {
 
     private CourseValidatorService sut;
@@ -29,7 +31,8 @@ public class CourseValidatorServiceTestSuite {
     @Test
     public void newCourseEntryValidator_returnsTrue_whenGivenValidCourse(){
         // Arrange
-        Course validCourse = new Course("ValidCourse","VLD101","This is a valid course.");
+        Course validCourse = new Course("ValidCourse","VLD101","This is a valid course."
+                ,"M.Bison", LocalDate.parse("2021-11-11"),LocalDate.parse("2021-11-13"),13);
 
         // Act
         sut.newCourseEntryValidator(validCourse);

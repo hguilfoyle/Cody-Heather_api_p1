@@ -12,6 +12,7 @@ import com.revature.ncu.services.UserService;
 import com.revature.ncu.util.PasswordUtils;
 import com.revature.ncu.web.servlets.AuthServlet;
 import com.revature.ncu.web.servlets.HelloWorld;
+import com.revature.ncu.web.servlets.UserServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,13 +36,13 @@ public class ContextLoaderListener implements ServletContextListener {
         UserRepository userRepo = new UserRepository(mongoClient);
         UserService userService = new UserService(userRepo, userValidatorService, passwordUtils);
 
-//        UserServlet userServlet = new UserServlet(userService, mapper);
+        UserServlet userServlet = new UserServlet(userService, mapper);
         AuthServlet authServlet = new AuthServlet(userService, mapper);
         HelloWorld helloWorld = new HelloWorld();
 
         ServletContext servletContext = sce.getServletContext();
         servletContext.addServlet("HelloWorld", helloWorld).addMapping("/hello");
-//        servletContext.addServlet("UserServlet", userServlet).addMapping("/users/*");
+        servletContext.addServlet("UserServlet", userServlet).addMapping("/users/*");
         servletContext.addServlet("AuthServlet", authServlet).addMapping("/auth");
 
         configureLogback(servletContext);

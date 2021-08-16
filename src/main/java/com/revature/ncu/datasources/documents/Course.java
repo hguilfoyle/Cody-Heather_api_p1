@@ -1,8 +1,11 @@
 package com.revature.ncu.datasources.documents;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 
 // Course POJO
@@ -14,8 +17,9 @@ public class Course {
     private String courseDetail;
     private String professorName;
     //TODO logic for these
-    private LocalDateTime courseOpenDate;
-    private LocalDateTime courseCloseDate;
+    private LocalDate courseOpenDate;
+    private LocalDate courseCloseDate;
+    private Set<String> studentIds;
     private int slotsTaken;
     private int courseCapacity;
 
@@ -35,7 +39,7 @@ public class Course {
 
     // For creating a new course.
     public Course(String cn, String cAbv, String detail, String prof,
-                  LocalDateTime openDate, LocalDateTime closeDate, int cap){
+                  LocalDate openDate, LocalDate closeDate, int cap){
         this.courseName = cn;
         this.courseAbbreviation = cAbv;
         this.courseDetail = detail;
@@ -44,11 +48,12 @@ public class Course {
         this.courseCloseDate = closeDate;
         this.courseCapacity = cap;
         this.slotsTaken = 0;
+        this.studentIds = new HashSet<String>(cap);
     }
 
     // For pulling a course from the database
     public Course(String id, String cn, String cAbv, String detail, String prof,
-                  LocalDateTime openDate, LocalDateTime closeDate, int cap, int slots){
+                  LocalDate openDate, LocalDate closeDate,Set<String> stuId, int cap, int slots){
         this.id = id;
         this.courseName = cn;
         this.courseAbbreviation = cAbv;
@@ -56,6 +61,7 @@ public class Course {
         this.professorName = prof;
         this.courseOpenDate = openDate;
         this.courseCloseDate = closeDate;
+        this.studentIds = stuId;
         this.courseCapacity = cap;
         this.slotsTaken = slots;
     }
@@ -93,13 +99,13 @@ public class Course {
 
     public void setProfessorName(String professorName) { this.professorName = professorName;}
 
-    public LocalDateTime getCourseOpenDate() { return courseOpenDate; }
+    public LocalDate getCourseOpenDate() { return courseOpenDate; }
 
-    public void setCourseOpenDate(LocalDateTime courseOpenDate) { this.courseOpenDate = courseOpenDate; }
+    public void setCourseOpenDate(LocalDate courseOpenDate) { this.courseOpenDate = courseOpenDate; }
 
-    public LocalDateTime getCourseCloseDate() { return courseCloseDate; }
+    public LocalDate getCourseCloseDate() { return courseCloseDate; }
 
-    public void setCourseCloseDate(LocalDateTime courseCloseDate) { this.courseCloseDate = courseCloseDate; }
+    public void setCourseCloseDate(LocalDate courseCloseDate) { this.courseCloseDate = courseCloseDate; }
 
     public int getSlotsTaken() { return slotsTaken; }
 
@@ -108,6 +114,10 @@ public class Course {
     public int getCourseCapacity() { return courseCapacity; }
 
     public void setCourseCapacity(int courseCapacity) { this.courseCapacity = courseCapacity; }
+
+    public Set<String> getStudentIds() { return studentIds; }
+
+    public void setStudentIds(Set<String> studentIds) { this.studentIds = studentIds; }
 
     @Override
     public boolean equals(Object o) {

@@ -16,10 +16,13 @@ public class CourseService {
         this.courseValidatorService = courseValidatorService;
     }
 
+    // For faculty creating a new course
     public Course add(Course newCourse) {
 
+        // Verify that the course data is valid.
         courseValidatorService.newCourseEntryValidator(newCourse);
 
+        // Duplicate prevention
         if (courseRepo.findCourseByName(newCourse.getCourseName()) != null)
         {
             System.out.println("Provided course already exists!");
@@ -31,6 +34,7 @@ public class CourseService {
             throw new ResourcePersistenceException("User provided an abbreviation that already exists.");
         }
 
+        // Save course to database if no issues are found
         return courseRepo.save(newCourse);
 
     }
@@ -76,8 +80,8 @@ public class CourseService {
 
     }
 
-
-    public Course verifyCourse(String abv){
+    // Used to check if the user entered a valid abbreviation
+    public Course findCourseByAbbreviation(String abv){
 
         if(abv==null||abv.trim().equals(""))
         {
@@ -112,7 +116,9 @@ public class CourseService {
         {
             System.out.println("No course found with provided abbreviation!");
             throw new NoSuchCourseException("Invalid course abbreviation provided.");
-       }
+        }
+
+        //TODO time logic
 
         return verifiedCourse;
 
