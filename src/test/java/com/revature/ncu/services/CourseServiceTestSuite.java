@@ -227,7 +227,7 @@ public class CourseServiceTestSuite {
                 "This is a valid course description");
         when(mockCourseRepo.findCourseByAbbreviation(validAbv)).thenReturn(validCourse);
         // Act
-        Course actualResult = sut.verifyCourse(validAbv);
+        Course actualResult = sut.findCourseByAbbreviation(validAbv);
         // Assert
         verify(mockCourseRepo, times(1)).findCourseByAbbreviation(validAbv);
         Assert.assertEquals(expectedResult,actualResult);
@@ -242,7 +242,7 @@ public class CourseServiceTestSuite {
 
         // Act
         try {
-            sut.verifyCourse(invalidAbv);
+            sut.findCourseByAbbreviation(invalidAbv);
         } finally {// Assert
             verify(mockCourseRepo,times(1)).findCourseByAbbreviation(invalidAbv);
         }
@@ -253,7 +253,7 @@ public class CourseServiceTestSuite {
         // Arrange
         String invalidAbv = "";
         // Act
-        sut.verifyCourse(invalidAbv);
+        sut.findCourseByAbbreviation(invalidAbv);
     }
 
     //verifyCourseOpenByAbbreviation Tests
