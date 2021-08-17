@@ -38,7 +38,7 @@ public class MongoClientFactory {
     // Eager singleton, instantiated as soon as the class is loaded.
     private static final MongoClientFactory mongoClientFactory = new MongoClientFactory();
 
-    private final Logger logger = LoggerFactory.getLogger(MongoClientFactory.class);
+   // private final Logger logger = LoggerFactory.getLogger(MongoClientFactory.class);
 
     private MongoClientFactory() {
 
@@ -79,10 +79,11 @@ public class MongoClientFactory {
             this.mongoClient = MongoClients.create(settings);
 
         }catch (FileNotFoundException fnfe) {
-            logger.error("Unable to load database properties file.", fnfe);
+          //  logger.error("Unable to load database properties file.", fnfe);
             throw new DataSourceException(fnfe);
         } catch(Exception e){
-            logger.error("An unexpected exception occurred.", e);
+            e.printStackTrace();
+          //  logger.error("An unexpected exception occurred.", e);
             throw new DataSourceException(e);
         }
 
