@@ -12,11 +12,13 @@ phases:
     commands:
       - echo Build started on 'date'
       - mvn package
-      - mv target/Project_1-1.0-SNAPSHOT.war ./Project_1.war
+      - mv target/*.war ./Project_1.war
   post_build:
     commands:
       - echo Build completed on 'date'
       - unzip bookstore.war -d artifact/
 artifacts:
   files:
-    - Project_1.war
+    - -WEB-INF/**/*
+    name: artifact
+
