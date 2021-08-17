@@ -10,9 +10,7 @@ import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.services.UserValidatorService;
 import com.revature.ncu.services.UserService;
 import com.revature.ncu.util.PasswordUtils;
-import com.revature.ncu.web.servlets.AuthServlet;
-import com.revature.ncu.web.servlets.HelloWorld;
-import com.revature.ncu.web.servlets.UserServlet;
+import com.revature.ncu.web.servlets.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,12 +37,15 @@ public class ContextLoaderListener implements ServletContextListener {
         UserServlet userServlet = new UserServlet(userService, mapper);
         AuthServlet authServlet = new AuthServlet(userService, mapper);
         HelloWorld helloWorld = new HelloWorld();
+        GoodbyeWorld goodbyeWorld= new GoodbyeWorld();
+        HealthCheckServlet healthCheckServlet = new HealthCheckServlet();
 
         ServletContext servletContext = sce.getServletContext();
         servletContext.addServlet("HelloWorld", helloWorld).addMapping("/hello");
         servletContext.addServlet("UserServlet", userServlet).addMapping("/users/*");
         servletContext.addServlet("AuthServlet", authServlet).addMapping("/auth");
-        servletContext.addServlet("GoodbyeWorld", authServlet).addMapping("/goodbye");
+        servletContext.addServlet("GoodbyeWorld", goodbyeWorld).addMapping("/goodbye");
+        servletContext.addServlet("HealthCheckServlet", healthCheckServlet).addMapping("/health");
 
         configureLogback(servletContext);
 
