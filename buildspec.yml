@@ -20,6 +20,6 @@ phases:
       - mv artifact/WEB-INF WEB-INF
 artifacts:
   files:
-    - -WEB-INF/**/*
+    - WEB-INF/**/*
     name: artifact
 
