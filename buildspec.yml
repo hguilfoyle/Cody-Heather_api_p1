@@ -7,7 +7,7 @@ phases:
   pre_build:
     commands:
       - echo Nothing to do in the pre_build phase...
-      - aws s3 cp s3://chp1/application.properties ./src/main/resoures/application.properties
+      - aws s3 cp s3://chp1/application.properties ./src/main/resources/application.properties
   build:
     commands:
       - echo Build started on 'date'
