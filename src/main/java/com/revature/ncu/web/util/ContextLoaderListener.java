@@ -48,6 +48,8 @@ public class ContextLoaderListener implements ServletContextListener {
         HelloWorld helloWorld = new HelloWorld();
         GoodbyeWorld goodbyeWorld= new GoodbyeWorld();
         HealthCheckServlet healthCheckServlet = new HealthCheckServlet();
+        StudentServlet studentServlet = new StudentServlet();
+        StudentCourseServlet studentCourseServlet = new StudentCourseServlet(userService,courseService,userCoursesService,mapper);
 
         ServletContext servletContext = sce.getServletContext();
         servletContext.addServlet("HelloWorld", helloWorld).addMapping("/hello");
@@ -55,6 +57,8 @@ public class ContextLoaderListener implements ServletContextListener {
         servletContext.addServlet("AuthServlet", authServlet).addMapping("/auth");
         servletContext.addServlet("GoodbyeWorld", goodbyeWorld).addMapping("/goodbye");
         servletContext.addServlet("HealthCheckServlet", healthCheckServlet).addMapping("/health");
+        servletContext.addServlet("StudentServlet", studentServlet).addMapping("/student");
+        servletContext.addServlet("StudentCourseServlet", studentCourseServlet).addMapping("/student/courses");
 
         configureLogback(servletContext);
 
