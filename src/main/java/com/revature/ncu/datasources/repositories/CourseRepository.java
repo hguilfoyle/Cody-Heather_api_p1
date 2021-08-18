@@ -114,6 +114,30 @@ public class CourseRepository implements CrudRepository<Course> {
         }
     }
 
+    // When a student joins a course
+    public void addStudentID(Course course,String studentId){
+
+        try {
+            // Search by course ID
+            Document searchDoc = new Document("_id",course.getId());
+
+            // Create $push command to push ID into array on database
+            Document updateDoc = new Document("studentIds", studentId);
+            Document appendDoc = new Document("$push",updateDoc);
+            coursesCollection.updateOne(searchDoc,appendDoc);
+
+            Document slotsDoc = new Document("slotsTaken", 1);
+            Document incDoc = new Document("$inc",slotsDoc);
+            coursesCollection.updateOne(searchDoc,incDoc);
+
+        }catch (Exception e){
+            logger.error("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
+        }
+
+
+    }
+
     // For listing all courses
     @Override
     public List<Course> findAll(){
