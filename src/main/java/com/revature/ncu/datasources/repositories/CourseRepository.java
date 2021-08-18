@@ -52,10 +52,6 @@ public class CourseRepository implements CrudRepository<Course> {
 
     // TODO method for updating all values at once
     public Course updateCourse(Course originalCourse,Course updatedCourse){
-        // Setting updated ID
-        updatedCourse.setId(new ObjectId().toString());
-
-        Document queryDoc = new Document("_id", originalCourse.getId());
 
         return null;
     }
