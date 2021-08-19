@@ -6,6 +6,7 @@ import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.datasources.documents.UserCourses;
 import com.revature.ncu.services.CourseService;
 import com.revature.ncu.services.UserService;
+import com.revature.ncu.util.exceptions.InvalidEntryException;
 import com.revature.ncu.util.exceptions.InvalidRequestException;
 import com.revature.ncu.util.exceptions.ResourcePersistenceException;
 import com.revature.ncu.web.dtos.ErrorResponse;
@@ -66,10 +67,10 @@ public class CourseServlet extends HttpServlet {
             respWriter.write(payload);      //returning the username and ID to the web as a string value
             resp.setStatus(201);            //201: Created
 
-        }catch (InvalidRequestException | MismatchedInputException e) {
-            e.printStackTrace();
+        }catch (InvalidRequestException | InvalidEntryException ie) {
+            ie.printStackTrace();
             resp.setStatus(400); // client's fault
-            ErrorResponse errResp = new ErrorResponse(400, e.getMessage());
+            ErrorResponse errResp = new ErrorResponse(400, ie.getMessage());
             respWriter.write(mapper.writeValueAsString(errResp));
         } catch (ResourcePersistenceException rpe) {
             resp.setStatus(409);   //409 conflict: user/email already exists
