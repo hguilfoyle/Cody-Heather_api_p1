@@ -48,6 +48,8 @@ public class ContextLoaderListener implements ServletContextListener {
         HelloWorld helloWorld = new HelloWorld();
         GoodbyeWorld goodbyeWorld= new GoodbyeWorld();
         HealthCheckServlet healthCheckServlet = new HealthCheckServlet();
+        FacultyServlet facultyServlet = new FacultyServlet();
+        CourseServlet courseServlet = new CourseServlet(userService, courseService, mapper);
         StudentServlet studentServlet = new StudentServlet();
         StudentCourseServlet studentCourseServlet = new StudentCourseServlet(userService,courseService,userCoursesService,mapper);
 
@@ -57,6 +59,8 @@ public class ContextLoaderListener implements ServletContextListener {
         servletContext.addServlet("AuthServlet", authServlet).addMapping("/auth");
         servletContext.addServlet("GoodbyeWorld", goodbyeWorld).addMapping("/goodbye");
         servletContext.addServlet("HealthCheckServlet", healthCheckServlet).addMapping("/health");
+        servletContext.addServlet("FacultyServlet", facultyServlet).addMapping("/faculty");
+        servletContext.addServlet("CourseServlet", courseServlet).addMapping("/faculty/courses");
         servletContext.addServlet("StudentServlet", studentServlet).addMapping("/student");
         servletContext.addServlet("StudentCourseServlet", studentCourseServlet).addMapping("/student/courses");
 
