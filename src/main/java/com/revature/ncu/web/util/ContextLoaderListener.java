@@ -11,7 +11,6 @@ import com.revature.ncu.datasources.repositories.UserRepository;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.services.*;
 import com.revature.ncu.util.PasswordUtils;
-import com.revature.ncu.web.dtos.Principal;
 import com.revature.ncu.web.servlets.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

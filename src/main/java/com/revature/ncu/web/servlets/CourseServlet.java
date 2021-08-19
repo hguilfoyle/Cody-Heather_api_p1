@@ -41,14 +41,22 @@ public class CourseServlet extends HttpServlet {
         PrintWriter respWriter = resp.getWriter();
         resp.setContentType("application/json");
 
+        // Get the session from the request, if it exists (do not create one)
+        HttpSession session = req.getSession(false);
+
+        // If the session is not null, then grab the auth-user attribute from it
+        Principal requestingUser = (session == null) ? null : (Principal) session.getAttribute("auth-user");
+
+        if (requestingUser == null) {
+            String msg = "No session found, please login.";
+            logger.info(msg);
+            resp.setStatus(401);
+            ErrorResponse errResp = new ErrorResponse(401, msg);
+            respWriter.write(mapper.writeValueAsString(errResp));
+            return;
+        }
+
         try{
-
-            // Get the session from the request, if it exists (do not create one)
-            HttpSession session = req.getSession(false);
-
-            // If the session is not null, then grab the auth-user attribute from it
-            Principal requestingUser = (session == null) ? null : (Principal) session.getAttribute("auth-user");
-
             Course newCourse = mapper.readValue(req.getInputStream(), Course.class);
             String ProfName = userService.getProfNameById(requestingUser.getId());
             newCourse.setProfessorName(ProfName);// get professor name
