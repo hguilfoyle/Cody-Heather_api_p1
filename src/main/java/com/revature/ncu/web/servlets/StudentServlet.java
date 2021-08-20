@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 // TODO connect to StudentCourse servlet and logout servlet
 public class StudentServlet extends HttpServlet {
 
-    private final Logger logger = LoggerFactory.getLogger(UserServlet.class);
+    private final Logger logger = LoggerFactory.getLogger(StudentServlet.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException
