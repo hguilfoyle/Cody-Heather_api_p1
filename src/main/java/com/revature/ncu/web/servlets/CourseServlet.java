@@ -55,6 +55,14 @@ public class CourseServlet extends HttpServlet {
             ErrorResponse errResp = new ErrorResponse(401, msg);
             respWriter.write(mapper.writeValueAsString(errResp));
             return;
+        }else if(!requestingUser.isFaculty())
+        {
+            String msg = "You're not supposed to be here. Action has been logged.";
+            logger.info(msg);
+            resp.setStatus(401);
+            ErrorResponse errResp = new ErrorResponse(401, msg);
+            respWriter.write(mapper.writeValueAsString(errResp));
+            return;
         }
 
         try{
@@ -93,6 +101,14 @@ public class CourseServlet extends HttpServlet {
 
         if (requestingUser == null) {
             String msg = "No session found, please login.";
+            logger.info(msg);
+            resp.setStatus(401);
+            ErrorResponse errResp = new ErrorResponse(401, msg);
+            respWriter.write(mapper.writeValueAsString(errResp));
+            return;
+        }else if(!requestingUser.isFaculty())
+        {
+            String msg = "You're not supposed to be here. Action has been logged.";
             logger.info(msg);
             resp.setStatus(401);
             ErrorResponse errResp = new ErrorResponse(401, msg);
