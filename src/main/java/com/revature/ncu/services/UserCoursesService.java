@@ -1,15 +1,12 @@
 package com.revature.ncu.services;
 
-import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.documents.Course;
-import com.revature.ncu.datasources.documents.UserCourses;
 import com.revature.ncu.datasources.repositories.CourseRepository;
 import com.revature.ncu.datasources.repositories.UserCoursesRepository;
 import com.revature.ncu.util.exceptions.AlreadyRegisteredForCourseException;
 import com.revature.ncu.util.exceptions.CourseNotOpenException;
 import com.revature.ncu.util.exceptions.NotRegisteredForCourseException;
 import com.revature.ncu.web.dtos.Principal;
-import com.revature.ncu.web.util.ContextLoaderListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
