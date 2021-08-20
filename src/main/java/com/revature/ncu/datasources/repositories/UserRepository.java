@@ -68,7 +68,7 @@ public class UserRepository implements CrudRepository<AppUser>{
 
             Document queryDoc = new Document("_id", id);
             AppUser prof = usersCollection.find(queryDoc).first();
-            return prof.getFirstName() + " " + prof.getUsername();
+            return prof.getFirstName() + " " + prof.getLastName();
 
         } catch (Exception e) {
             logger.error("An unexpected exception occurred.", e);

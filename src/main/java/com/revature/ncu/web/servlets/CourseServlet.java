@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class CourseServlet extends HttpServlet {
 
@@ -33,6 +34,48 @@ public class CourseServlet extends HttpServlet {
         this.userService = userService;
         this.courseService = courseService;
         this.mapper = mapper;
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(req.getAttribute("filtered"));
+        PrintWriter respWriter = resp.getWriter();
+        resp.setContentType("application/json");
+
+        // Get the session from the request, if it exists (do not create one)
+        HttpSession session = req.getSession(false);
+
+        // If the session is not null, then grab the auth-user attribute from it
+        Principal requestingUser = (session == null) ? null : (Principal) session.getAttribute("auth-user");
+
+        if (requestingUser == null) {
+            String msg = "No session found, please login.";
+            logger.info(msg);
+            resp.setStatus(401);
+            ErrorResponse errResp = new ErrorResponse(401, msg);
+            respWriter.write(mapper.writeValueAsString(errResp));
+            return;
+        }
+
+        try{
+            List catalog = courseService.getCourses();
+            String payload = mapper.writeValueAsString(catalog);  //maps the principal value to a string
+            respWriter.write(payload);      //returning the username and ID to the web as a string value
+            resp.setStatus(201);            //201: Created
+
+        }catch (InvalidRequestException | InvalidEntryException ie) {
+            ie.printStackTrace();
+            resp.setStatus(400); // client's fault
+            ErrorResponse errResp = new ErrorResponse(400, ie.getMessage());
+            respWriter.write(mapper.writeValueAsString(errResp));
+        } catch (ResourcePersistenceException rpe) {
+            resp.setStatus(409);   //409 conflict: user/email already exists
+            ErrorResponse errResp = new ErrorResponse(409, rpe.getMessage());
+            respWriter.write(mapper.writeValueAsString(errResp));
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.setStatus(500);    // server made an oopsie woopsie
+        }
     }
 
     @Override
