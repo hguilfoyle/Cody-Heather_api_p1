@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseServlet extends HttpServlet {
@@ -117,14 +118,14 @@ public class CourseServlet extends HttpServlet {
         }
 
         try{
-            Course newCourse = mapper.readValue(req.getInputStream(), Course.class);
-            String ProfName = userService.getProfNameById(requestingUser.getId());
-            newCourse.setProfessorName(ProfName);// get professor name
-            courseService.add(newCourse);
+                Course newCourse = mapper.readValue(req.getInputStream(), Course.class);
+                String ProfName = userService.getProfNameById(requestingUser.getId());
+                newCourse.setProfessorName(ProfName);// get professor name
+                courseService.add(newCourse);
 
-            String payload = mapper.writeValueAsString(newCourse);  //maps the principal value to a string
-            respWriter.write(payload);      //returning the username and ID to the web as a string value
-            resp.setStatus(201);            //201: Created
+                String payload = mapper.writeValueAsString(newCourse);  //maps the principal value to a string
+                respWriter.write(payload);      //returning the username and ID to the web as a string value
+                resp.setStatus(201);            //201: Created
 
         }catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();
@@ -195,7 +196,7 @@ public class CourseServlet extends HttpServlet {
     }
 
 
-    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         System.out.println(req.getAttribute("filtered"));
         PrintWriter respWriter = resp.getWriter();
@@ -223,14 +224,21 @@ public class CourseServlet extends HttpServlet {
             respWriter.write(mapper.writeValueAsString(errResp));
             return;
         }
-
+            String editParam = req.getParameter("edit");
         try{
-            Course newCourse = mapper.readValue(req.getInputStream(), Course.class);
+            if(editParam == null){
+                String response = "Invalid course provided";
+                respWriter.write(response);
+                ErrorResponse errResp = new ErrorResponse(400, response);
+                return;
+            }
+            Course original = courseService.findCourseByAbbreviation(editParam);
+            Course editCourse = mapper.readValue(req.getInputStream(), Course.class);
             String ProfName = userService.getProfNameById(requestingUser.getId());
-            newCourse.setProfessorName(ProfName);// get professor name
-            courseService.add(newCourse);
+            editCourse.setProfessorName(ProfName);// get professor name
+            editCourse = courseService.updateCourse(original, editCourse);
 
-            String payload = mapper.writeValueAsString(newCourse);  //maps the principal value to a string
+            String payload = mapper.writeValueAsString(editCourse);  //maps the principal value to a string
             respWriter.write(payload);      //returning the username and ID to the web as a string value
             resp.setStatus(201);            //201: Created
 
