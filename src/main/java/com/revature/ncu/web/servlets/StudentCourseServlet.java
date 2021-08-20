@@ -70,7 +70,7 @@ public class StudentCourseServlet extends HttpServlet {
             respWriter.write(mapper.writeValueAsString(errResp));
             return;
         }
-
+          //TODO String act = req.getParameter("action");
         try{
             List catalog = courseService.getCourses();
             String payload = mapper.writeValueAsString(catalog);  //maps the principal value to a string
