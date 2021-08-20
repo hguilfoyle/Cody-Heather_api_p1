@@ -31,18 +31,19 @@ public class ContextLoaderListener implements ServletContextListener {
         UserValidatorService userValidatorService = new UserValidatorService();
         CourseValidatorService courseValidatorService = new CourseValidatorService();
 
+
         ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
         UserRepository userRepo = new UserRepository(mongoClient);
-        UserService userService = new UserService(userRepo, userValidatorService, passwordUtils);
-
         CourseRepository courseRepository = new CourseRepository(mongoClient);
-        CourseService courseService = new CourseService(courseRepository, courseValidatorService);
-
         UserCoursesRepository userCoursesRepository = new UserCoursesRepository(mongoClient);
+
+
+        UserService userService = new UserService(userRepo, userValidatorService, passwordUtils);
+        CourseService courseService = new CourseService(courseRepository, courseValidatorService, userCoursesRepository);
         UserCoursesService userCoursesService = new UserCoursesService(userCoursesRepository, courseValidatorService, courseRepository);
 
-        UserServlet userServlet = new UserServlet(userService, mapper);
+        UserServlet userServlet = new UserServlet(userService, mapper, userCoursesService);
         AuthServlet authServlet = new AuthServlet(userService, mapper);
         HelloWorld helloWorld = new HelloWorld();
         GoodbyeWorld goodbyeWorld= new GoodbyeWorld();

@@ -2,7 +2,6 @@ package com.revature.ncu.datasources.documents;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,11 +18,16 @@ public class Course {
     //TODO logic for these
     private LocalDate courseOpenDate;
     private LocalDate courseCloseDate;
-    private Set<String> studentIds;
+    private Set<String> studentUsernames = new HashSet<String>();
     private int slotsTaken;
     private int courseCapacity;
 
     public Course(){ super(); }
+
+    // For holding the abbreviation
+    public Course(String cAbv){
+        this.courseAbbreviation = cAbv;
+    }
 
     public Course(String cn, String cAbv){
         this.courseName = cn;
@@ -47,12 +51,11 @@ public class Course {
         this.courseCloseDate = closeDate;
         this.courseCapacity = cap;
         this.slotsTaken = 0;
-        this.studentIds = new HashSet<String>(cap);
     }
 
     // For pulling a course from the database
     public Course(String id, String cn, String cAbv, String detail, String prof,
-                  LocalDate openDate, LocalDate closeDate,Set<String> stuId, int cap, int slots){
+                  LocalDate openDate, LocalDate closeDate,Set<String> stuUn, int cap, int slots){
         this.id = id;
         this.courseName = cn;
         this.courseAbbreviation = cAbv;
@@ -60,7 +63,7 @@ public class Course {
         this.professorName = prof;
         this.courseOpenDate = openDate;
         this.courseCloseDate = closeDate;
-        this.studentIds = stuId;
+        this.studentUsernames = stuUn;
         this.courseCapacity = cap;
         this.slotsTaken = slots;
     }
@@ -112,9 +115,9 @@ public class Course {
 
     public void setCourseCapacity(int courseCapacity) { this.courseCapacity = courseCapacity; }
 
-    public Set<String> getStudentIds() { return studentIds; }
+    public Set<String> getStudentUsernames() { return studentUsernames; }
 
-    public void setStudentIds(Set<String> studentIds) { this.studentIds = studentIds; }
+    public void setStudentUsernames(Set<String> studentUsernames) { this.studentUsernames = studentUsernames; }
 
     @Override
     public boolean equals(Object o) {

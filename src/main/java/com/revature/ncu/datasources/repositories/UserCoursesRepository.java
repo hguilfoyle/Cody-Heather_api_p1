@@ -53,7 +53,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
         }
     }
 
-    public void removeCourseFromUserList(String course, String username){
+    public void removeCourseFromUserList(String username, String course){
         try {
             // Search by username
             Document searchDoc = new Document("username",username);
@@ -70,6 +70,7 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
         }
     }
 
+    // TODO: Call this when course is updated
     public void updateCourseNameInAllUserLists(String originalName, String newName){
         try {
             // Search

@@ -61,9 +61,9 @@ public class StudentCourseServlet extends HttpServlet {
             ErrorResponse errResp = new ErrorResponse(401, msg);
             respWriter.write(mapper.writeValueAsString(errResp));
             return;
-        }else if(!requestingUser.isFaculty())
+        }else if(requestingUser.isFaculty())
         {
-            String msg = "You're not supposed to be here. Action has been logged.";
+            String msg = "Hey, you're faculty, go to your dashboard.";
             logger.info(msg);
             resp.setStatus(401);
             ErrorResponse errResp = new ErrorResponse(401, msg);
@@ -112,9 +112,9 @@ public class StudentCourseServlet extends HttpServlet {
             ErrorResponse errResp = new ErrorResponse(401, msg);
             respWriter.write(mapper.writeValueAsString(errResp));
             return;
-        }else if(!requestingUser.isFaculty())
+        }else if(requestingUser.isFaculty())
         {
-            String msg = "You're not supposed to be here. Action has been logged.";
+            String msg = "Hey, you're faculty, go to your dashboard.";
             logger.info(msg);
             resp.setStatus(401);
             ErrorResponse errResp = new ErrorResponse(401, msg);
@@ -123,12 +123,9 @@ public class StudentCourseServlet extends HttpServlet {
         }
 
         try{
-            Course newCourse = mapper.readValue(req.getInputStream(), Course.class);
-            String ProfName = userService.getProfNameById(requestingUser.getId());
-            newCourse.setProfessorName(ProfName);// get professor name
-            courseService.add(newCourse);
-
-            String payload = mapper.writeValueAsString(newCourse);  //maps the principal value to a string
+            Course course = mapper.readValue(req.getInputStream(), Course.class);
+            userCoursesService.joinCourse(course.getCourseAbbreviation(), requestingUser.getUsername());
+            String payload = "Course joined!";  //maps the principal value to a string
             respWriter.write(payload);      //returning the username and ID to the web as a string value
             resp.setStatus(201);            //201: Created
 
@@ -168,9 +165,9 @@ public class StudentCourseServlet extends HttpServlet {
             ErrorResponse errResp = new ErrorResponse(401, msg);
             respWriter.write(mapper.writeValueAsString(errResp));
             return;
-        }else if(!requestingUser.isFaculty())
+        }else if(requestingUser.isFaculty())
         {
-            String msg = "You're not supposed to be here. Action has been logged.";
+            String msg = "Hey, you're faculty, go to your dashboard.";
             logger.info(msg);
             resp.setStatus(401);
             ErrorResponse errResp = new ErrorResponse(401, msg);
@@ -179,10 +176,14 @@ public class StudentCourseServlet extends HttpServlet {
         }
 
         try{
+            // Get abbreviation from frontend and map it to remove
             Course remove = mapper.readValue(req.getInputStream(), Course.class);
-            courseService.removeCourse(remove);
-            String payload = "Successfully removed course, the garbage is happy.";  //maps the principal value to a string
-            respWriter.write(payload);      //returning the username and ID to the web as a string value
+            String removeAbv = remove.getCourseAbbreviation();
+            userCoursesService.leaveCourse(requestingUser.getUsername(), removeAbv);
+            courseService.removeStudent(requestingUser.getUsername(), removeAbv);
+            // Inform user of successful action
+            String payload = "Successfully withdrew from course!";
+            respWriter.write(payload);
             resp.setStatus(204);            //204: No Content so it went bye-bye
 
         }catch (InvalidRequestException | InvalidEntryException ie) {

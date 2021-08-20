@@ -1,5 +1,6 @@
 package com.revature.ncu.services;
 
+import com.revature.ncu.datasources.repositories.UserCoursesRepository;
 import com.revature.ncu.util.exceptions.*;
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.datasources.repositories.CourseRepository;
@@ -10,14 +11,15 @@ public class CourseService {
 
     private final CourseRepository courseRepo;
     private final CourseValidatorService courseValidatorService;
+    private final UserCoursesRepository userCoursesRepo;
 
-    public CourseService(CourseRepository courseRepo, CourseValidatorService courseValidatorService) {
+    public CourseService(CourseRepository courseRepo, CourseValidatorService courseValidatorService, UserCoursesRepository userCoursesRepository) {
         this.courseRepo = courseRepo;
         this.courseValidatorService = courseValidatorService;
+        this.userCoursesRepo = userCoursesRepository;
     }
 
     // For faculty creating a new course
-    // TODO: Grab professor's first name and last name and .setProfessorName(fn+ln) in the CourseServlet;
     public Course add(Course newCourse) {
 
         // Verify that the course data is valid.
@@ -43,6 +45,7 @@ public class CourseService {
     public void removeCourse(Course course){
 
         courseRepo.removeCourseByAbbreviation(course);
+        userCoursesRepo.removeCourseFromAllUserLists(course.getCourseName());
 
     }
 
@@ -176,5 +179,12 @@ public class CourseService {
         }
 
         return courses;
+    }
+
+    public void removeStudent(String username, String courseAbv) {
+        // is there even any need for validating this
+
+        courseRepo.removeStudent(username, courseAbv);
+
     }
 }

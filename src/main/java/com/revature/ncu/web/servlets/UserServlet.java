@@ -1,9 +1,10 @@
 package com.revature.ncu.web.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.ncu.datasources.documents.AppUser;
+import com.revature.ncu.services.UserCoursesService;
 import com.revature.ncu.services.UserService;
+import com.revature.ncu.util.exceptions.InvalidEntryException;
 import com.revature.ncu.util.exceptions.InvalidRequestException;
 import com.revature.ncu.util.exceptions.ResourceNotFoundException;
 import com.revature.ncu.util.exceptions.ResourcePersistenceException;
@@ -26,11 +27,13 @@ public class UserServlet extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(UserServlet.class);
     private final UserService userService;
+    UserCoursesService userCoursesService;
     private final ObjectMapper mapper;
 
-    public UserServlet(UserService userService, ObjectMapper mapper){
+    public UserServlet(UserService userService, ObjectMapper mapper, UserCoursesService userCoursesService){
         this.userService = userService;
         this.mapper = mapper;
+        this.userCoursesService = userCoursesService;
     }
 
     // For viewing users (admin only)
@@ -100,16 +103,17 @@ public class UserServlet extends HttpServlet {
 
         try {
             //when a POST request is sent to the servlet, it reads the body and attempts to map it to a new AppUser
-            AppUser newUser = mapper.readValue(req.getInputStream(), AppUser.class);
+            AppUser newUser = mapper.readValue(req.getInputStream(), AppUser.class); // JS will set new users to student
             Principal principal = new Principal(userService.register(newUser)); // after this, the newUser should have a new id
+            userCoursesService.initialize(newUser.getUsername());
             String payload = mapper.writeValueAsString(principal);  //maps the principal value to a string
             respWriter.write(payload);      //returning the username and ID to the web as a string value
             resp.setStatus(201);            //201: Created
 
-        } catch (InvalidRequestException | MismatchedInputException e) {
-            e.printStackTrace();
+        } catch (InvalidRequestException | InvalidEntryException ie) {
+            ie.printStackTrace();
             resp.setStatus(400); // client's fault
-            ErrorResponse errResp = new ErrorResponse(400, e.getMessage());
+            ErrorResponse errResp = new ErrorResponse(400, ie.getMessage());
             respWriter.write(mapper.writeValueAsString(errResp));
         } catch (ResourcePersistenceException rpe) {
             resp.setStatus(409);   //409 conflict: user/email already exists

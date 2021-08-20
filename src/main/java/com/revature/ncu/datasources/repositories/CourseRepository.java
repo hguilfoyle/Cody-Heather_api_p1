@@ -128,14 +128,14 @@ public class CourseRepository implements CrudRepository<Course> {
     }
 
     // When a student joins a course
-    public void addStudentID(Course course,String studentId){
+    public void addStudentUsername(String course, String studentUsername){
 
         try {
             // Search by course ID
-            Document searchDoc = new Document("_id",course.getId());
+            Document searchDoc = new Document("courseAbbreviation",course);
 
             // Create $push command to push ID into array on database
-            Document updateDoc = new Document("studentIds", studentId);
+            Document updateDoc = new Document("studentUsernames", studentUsername);
             Document appendDoc = new Document("$push",updateDoc);
             coursesCollection.updateOne(searchDoc,appendDoc);
 
@@ -174,6 +174,22 @@ public class CourseRepository implements CrudRepository<Course> {
             throw new DataSourceException(e);
         }
 
+    }
+
+    public void removeStudent(String username, String courseAbv) {
+
+        // Search by course ID
+        Document searchDoc = new Document("courseAbbreviation", courseAbv);
+
+        // Create $push command to push ID into array on database
+        Document updateDoc = new Document("studentUsernames", username);
+        Document appendDoc = new Document("$pull",updateDoc);
+        coursesCollection.updateOne(searchDoc,appendDoc);
+
+        // Send $inc command to add 1 to slotsTaken on database.
+        Document slotsDoc = new Document("slotsTaken", -1);
+        Document incDoc = new Document("$inc",slotsDoc);
+        coursesCollection.updateOne(searchDoc,incDoc);
     }
 
     // For listing all courses
@@ -226,5 +242,6 @@ public class CourseRepository implements CrudRepository<Course> {
     public boolean deleteById(String id) {
         return false;
     }
+
 
 }

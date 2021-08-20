@@ -1,15 +1,13 @@
 package com.revature.ncu.services;
 
-import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.datasources.documents.UserCourses;
 import com.revature.ncu.datasources.repositories.CourseRepository;
 import com.revature.ncu.datasources.repositories.UserCoursesRepository;
 import com.revature.ncu.util.exceptions.AlreadyRegisteredForCourseException;
 import com.revature.ncu.util.exceptions.CourseNotOpenException;
+import com.revature.ncu.util.exceptions.NoSuchCourseException;
 import com.revature.ncu.util.exceptions.NotRegisteredForCourseException;
-import com.revature.ncu.web.dtos.Principal;
-import com.revature.ncu.web.util.ContextLoaderListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,28 +33,37 @@ public class UserCoursesService {
     }
 
     // Initialize a user's course list on the database when they register
-    public void initialize(){
+    public void initialize(String username){
+        UserCourses newUserCourseList = new UserCourses(username);
+        userCourseListRepo.save(newUserCourseList);
     }
 
     // Checks to see if the user has already joined a course, passes the course requested and the username to the Repo if not
-    public void joinCourse(Course joiningCourse, Principal principal){
+    public void joinCourse(String joiningCourseAbv, String username){
+
+        Course course = courseRepository.findCourseByAbbreviation(joiningCourseAbv);
+
+        if(course==null){
+
+            throw new NoSuchCourseException("No such course found!");
+        }
 
         // Making sure course is open
-        if(!courseValidatorService.isOpen(joiningCourse)) {
+        if(!courseValidatorService.isOpen(course)) {
             logger.info("User tried to register for course that was closed");
             throw new CourseNotOpenException("Course is closed!");
         }
 
         // Making sure user is not already registered
-        for(String id : joiningCourse.getStudentIds()) {
-            if(id.equals(principal.getId())) {
+        for(String id : course.getStudentUsernames()) {
+            if(id.equals(username)) {
                 logger.info("User tried to join a course they were already registered for");
                 throw new AlreadyRegisteredForCourseException("User already registered for this course!");
             }
         }
 
-        userCourseListRepo.joinCourse(joiningCourse.getCourseName(),principal.getUsername());
-        courseRepository.addStudentID(joiningCourse, principal.getId());
+        userCourseListRepo.joinCourse(joiningCourseAbv,username);
+        courseRepository.addStudentUsername(joiningCourseAbv, username);
     }
 
 
@@ -75,9 +82,22 @@ public class UserCoursesService {
 
     }
 
-    // Verifies if a user is in any courses before attempting to remove the course.
-    public void leaveCourse(String courseToLeave) {
+    // Verifies if a user is in any courses before attempting to remove the course, and that it is within window.
+    public void leaveCourse(String username, String courseToLeave) {
+        Course course = courseRepository.findCourseByAbbreviation(courseToLeave);
+        if (course==null){
+            throw new NoSuchCourseException("This course does not exist!");
+        }
+        if(!courseValidatorService.isOpen(course)){
+            throw new CourseNotOpenException("Course withdrawal window has ended!");
+        }
+        // Making sure user is not already registered
+        if(!course.getStudentUsernames().contains(username)) {
+             logger.info("User tried to leave a course they were already registered for");
+             throw new NotRegisteredForCourseException("User isn't registered for this course!");
+        }
 
+        userCourseListRepo.removeCourseFromUserList(username, courseToLeave);
     }
 
     public List<String> getCourses(){

@@ -138,23 +138,23 @@ public class UserCoursesServiceTestSuite {
     }
 
     // leaveCourse tests
-    @Test
-    public void leaveCourse_executesSuccessfully_whenUser_hasRegistered_forCourse(){
-        // Arrange
-        String validCourseToLeave = "Course1";
-        List<String> validCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
-
-        when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(validCourseList);
-
-        // Act
-        sut.leaveCourse(validCourseToLeave);
-        // Assert
-
-        verify(mockUserCourseRepo,times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
-        verify(mockUserCourseRepo,times(1))
-                .removeCourseFromUserList(validCourseToLeave,mockUser.getUsername());
-
-    }
+//    @Test
+//    public void leaveCourse_executesSuccessfully_whenUser_hasRegistered_forCourse(){
+//        // Arrange
+//        String validCourseToLeave = "Course1";
+//        List<String> validCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
+//
+//        when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(validCourseList);
+//
+//        // Act
+//        sut.leaveCourse(validCourseToLeave);
+//        // Assert
+//
+//        verify(mockUserCourseRepo,times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
+//        verify(mockUserCourseRepo,times(1))
+//                .removeCourseFromUserList(validCourseToLeave,mockUser.getUsername());
+//
+//    }
 
     @Test(expected = NoCoursesJoinedException.class)
     public void leaveCourse_throwsException_whenUser_hasNotRegistered_forAnyCourse(){
