@@ -165,5 +165,16 @@ public class CourseService {
 
         return openCourses;
     }
+    public List<Course> getAllCourses(){
 
+        List<Course> courses = courseRepo.findAll();
+
+        if(courses.isEmpty())
+        {
+            System.out.println("There are no courses! What kind of university is this?");
+            throw new NoOpenCoursesException("No courses found.");
+        }
+
+        return courses;
+    }
 }
