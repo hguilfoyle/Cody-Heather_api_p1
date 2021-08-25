@@ -70,13 +70,20 @@ public class StudentCourseServlet extends HttpServlet {
             respWriter.write(mapper.writeValueAsString(errResp));
             return;
         }
-          //TODO String act = req.getParameter("action");
+           String act = req.getParameter("action");
         try{
-            List catalog = courseService.getCourses();
-            String payload = mapper.writeValueAsString(catalog);  //maps the principal value to a string
-            respWriter.write(payload);      //returning the username and ID to the web as a string value
-            resp.setStatus(201);            //201: Created
-
+            if(act.equals("view")) {
+                List catalog = courseService.getCourses();
+                String payload = mapper.writeValueAsString(catalog);  //maps the principal value to a string
+                respWriter.write(payload);      //returning the username and ID to the web as a string value
+                resp.setStatus(201);            //201: Created
+            }
+            if(act.equals("schedule")) {
+                List schedule = userCoursesService.getCourses(requestingUser.getUsername());
+                String payload = mapper.writeValueAsString(schedule);  //maps the principal value to a string
+                respWriter.write(payload);      //returning the username and ID to the web as a string value
+                resp.setStatus(201);            //201: Created
+            }
         }catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();
             resp.setStatus(400); // client's fault

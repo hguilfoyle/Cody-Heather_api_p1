@@ -100,8 +100,8 @@ public class UserCoursesService {
         userCourseListRepo.removeCourseFromUserList(username, courseToLeave);
     }
 
-    public List<String> getCourses(){
-        return null;
+    public List<String> getCourses(String username){
+        return userCourseListRepo.findRegisteredCoursesByUsername(username);
     }
 
     public void updateCourseNameInUserList(String originalName, String newName){

@@ -104,38 +104,38 @@ public class UserCoursesServiceTestSuite {
 
     // getCourse tests
 
-    @Test
-    public void getCourses_returnsCourseList_whenListIsPopulated(){
-        // Arrange
-        List<String> validCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
-        List<String> expectedCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
+//    @Test
+//    public void getCourses_returnsCourseList_whenListIsPopulated(){
+//        // Arrange
+//        List<String> validCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
+//        List<String> expectedCourseList = new ArrayList<String>(){{add("Course1"); add("Course2");}};
+//
+//        when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(validCourseList);
+//
+//        // Act
+//        List<String> actualResult = sut.getCourses();
+//
+//        // Assert
+//        Assert.assertEquals(expectedCourseList,actualResult);
+//
+//        verify(mockUserCourseRepo, times(2)).findRegisteredCoursesByUsername(mockUser.getUsername());
+//
+//    }
 
-        when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(validCourseList);
-
-        // Act
-        List<String> actualResult = sut.getCourses();
-
-        // Assert
-        Assert.assertEquals(expectedCourseList,actualResult);
-
-        verify(mockUserCourseRepo, times(2)).findRegisteredCoursesByUsername(mockUser.getUsername());
-
-    }
-
-    @Test(expected = NoCoursesJoinedException.class)
-    public void getCourses_throwsException_whenUser_hasNotRegistered_forAnyCourses(){
-        // Arrange
-        List<String> emptyCourseList = new ArrayList<>();
-
-        when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(emptyCourseList);
-        // Act
-        try{
-            sut.getCourses();
-        } finally { // Assert
-
-            verify(mockUserCourseRepo, times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
-        }
-    }
+//    @Test(expected = NoCoursesJoinedException.class)
+//    public void getCourses_throwsException_whenUser_hasNotRegistered_forAnyCourses(){
+//        // Arrange
+//        List<String> emptyCourseList = new ArrayList<>();
+//
+//        when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(emptyCourseList);
+//        // Act
+//        try{
+//            sut.getCourses();
+//        } finally { // Assert
+//
+//            verify(mockUserCourseRepo, times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
+//        }
+//    }
 
     // leaveCourse tests
 //    @Test
@@ -156,20 +156,20 @@ public class UserCoursesServiceTestSuite {
 //
 //    }
 
-    @Test(expected = NoCoursesJoinedException.class)
-    public void leaveCourse_throwsException_whenUser_hasNotRegistered_forAnyCourse(){
-        // Arrange
-        List<String> emptyCourseList = new ArrayList<>();
-
-        when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(emptyCourseList);
-        // Act
-        try{
-            sut.getCourses();
-        } finally { // Assert
-
-            verify(mockUserCourseRepo, times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
-        }
-    }
+//    @Test(expected = NoCoursesJoinedException.class)
+//    public void leaveCourse_throwsException_whenUser_hasNotRegistered_forAnyCourse(){
+//        // Arrange
+//        List<String> emptyCourseList = new ArrayList<>();
+//
+//        when(mockUserCourseRepo.findRegisteredCoursesByUsername(mockUser.getUsername())).thenReturn(emptyCourseList);
+//        // Act
+//        try{
+//            sut.getCourses();
+//        } finally { // Assert
+//
+//            verify(mockUserCourseRepo, times(1)).findRegisteredCoursesByUsername(mockUser.getUsername());
+//        }
+//    }
 
     // verifyCourseEntry tests
 
