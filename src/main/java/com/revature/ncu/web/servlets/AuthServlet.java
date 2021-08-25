@@ -41,15 +41,11 @@ public class AuthServlet extends HttpServlet {
 
             // Prints out username and ID
             String payload = mapper.writeValueAsString(principal);
-
+            respWriter.write(payload);
 
             // Creates and sets session of currently authorized user
             HttpSession session = req.getSession();
             session.setAttribute("auth-user", principal);
-
-            resp.setHeader("JSESSIONID",session.getId());
-
-            respWriter.write(payload);
 
         } catch (AuthenticationException ae) { //woops wrong creds
             resp.setStatus(401); // user's fault
