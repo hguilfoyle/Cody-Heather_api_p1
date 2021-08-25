@@ -1,10 +1,9 @@
 package com.revature.ncu.web.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.ncu.datasources.documents.Course;
-import com.revature.ncu.datasources.documents.UserCourses;
 import com.revature.ncu.services.CourseService;
+import com.revature.ncu.services.UserCoursesService;
 import com.revature.ncu.services.UserService;
 import com.revature.ncu.util.exceptions.InvalidEntryException;
 import com.revature.ncu.util.exceptions.InvalidRequestException;
@@ -18,10 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CourseServlet extends HttpServlet {
@@ -29,11 +26,13 @@ public class CourseServlet extends HttpServlet {
     private final Logger logger = LoggerFactory.getLogger(CourseServlet.class);
     private final UserService userService;
     private final CourseService courseService;
+    private final UserCoursesService userCourseService;
     private final ObjectMapper mapper;
 
-    public CourseServlet(UserService userService, CourseService courseService, ObjectMapper mapper){
+    public CourseServlet(UserService userService, CourseService courseService, UserCoursesService userCoursesService, ObjectMapper mapper){
         this.userService = userService;
         this.courseService = courseService;
+        this.userCourseService = userCoursesService;
         this.mapper = mapper;
     }
 
@@ -167,6 +166,7 @@ public class CourseServlet extends HttpServlet {
         try{
             Course remove = mapper.readValue(req.getInputStream(), Course.class);
             courseService.removeCourse(remove);
+
             String payload = "Successfully removed course, the garbage is happy.";  //maps the principal value to a string
             respWriter.write(payload);      //returning the username and ID to the web as a string value
             resp.setStatus(204);            //204: No Content so it went bye-bye
@@ -186,7 +186,7 @@ public class CourseServlet extends HttpServlet {
         }
     }
 
-
+    @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         System.out.println(req.getAttribute("filtered"));

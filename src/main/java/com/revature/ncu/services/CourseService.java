@@ -53,6 +53,11 @@ public class CourseService {
 
         courseValidatorService.courseUpdateValidator(original, update);
 
+        if(!original.getCourseAbbreviation().equals(update.getCourseAbbreviation())){
+            userCoursesRepo.updateCourseAbvInAllUserLists(original.getCourseAbbreviation(),
+                    update.getCourseAbbreviation());
+        }
+
         courseRepo.updateCourse(original,update);
         return update;
     }

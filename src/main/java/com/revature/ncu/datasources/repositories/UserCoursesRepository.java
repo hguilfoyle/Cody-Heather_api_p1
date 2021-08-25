@@ -70,14 +70,13 @@ public class UserCoursesRepository implements CrudRepository<UserCourses> {
         }
     }
 
-    // TODO: Call this when course is updated
-    public void updateCourseNameInAllUserLists(String originalName, String newName){
+    public void updateCourseAbvInAllUserLists(String originalAbv, String newAbv){
         try {
             // Search
-            Document searchDoc = new Document("courses", originalName);
+            Document searchDoc = new Document("courses", originalAbv);
 
             // Push the new name
-            Document updateDoc = new Document("courses", newName);
+            Document updateDoc = new Document("courses", newAbv);
             Document pushDoc = new Document("$push",updateDoc);
             userCoursesCollection.updateMany(searchDoc, pushDoc);
 

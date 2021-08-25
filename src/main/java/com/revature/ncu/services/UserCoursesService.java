@@ -104,18 +104,4 @@ public class UserCoursesService {
         return userCourseListRepo.findRegisteredCoursesByUsername(username);
     }
 
-    public void updateCourseNameInUserList(String originalName, String newName){
-
-        //TODO Could check if any users have registered for this course?
-        userCourseListRepo.updateCourseNameInAllUserLists(originalName, newName);
-
-    }
-
-    public void expungeCourse(String courseName){
-
-        //TODO Could check if any users have registered for this course?
-        userCourseListRepo.removeCourseFromAllUserLists(courseName);
-
-    }
-
 }
