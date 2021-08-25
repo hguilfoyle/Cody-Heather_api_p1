@@ -28,7 +28,6 @@ public class AuthFilter extends HttpFilter {
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
-        System.out.println("Request intercepted by AuthFilter!");
         parseToken(req);
         chain.doFilter(req, resp);
     }
@@ -42,7 +41,6 @@ public class AuthFilter extends HttpFilter {
             System.out.println("Header value: " + header);
 
             if (header == null || !header.startsWith(jwtConfig.getPrefix())) {
-                System.out.println("Request originates from an unauthenticated source.");
                 logger.warn("Request originates from an unauthenticated source.");
                 return;
             }
@@ -55,7 +53,6 @@ public class AuthFilter extends HttpFilter {
                     .getBody();
 
             req.setAttribute("principal", new Principal(jwtClaims));
-            System.out.println("Principal added as attribute to request!");
 
         } catch (Exception e) {
             e.printStackTrace();

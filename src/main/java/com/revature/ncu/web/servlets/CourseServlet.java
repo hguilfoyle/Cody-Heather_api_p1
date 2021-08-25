@@ -67,7 +67,7 @@ public class CourseServlet extends HttpServlet {
             List catalog = courseService.getAllCourses();
             String payload = mapper.writeValueAsString(catalog);  //maps the principal value to a string
             respWriter.write(payload);      //returning the username and ID to the web as a string value
-            resp.setStatus(201);            //201: Created
+            resp.setStatus(200);            //200: Created
 
         }catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();

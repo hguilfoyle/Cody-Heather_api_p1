@@ -57,41 +57,6 @@ public class CourseService {
         return update;
     }
 
-//    public void updateCourseName(Course editingCourse, String newName){
-//
-//
-//        courseValidatorService.newCourseNameValidator(editingCourse, newName);
-//
-//        if (courseRepo.findCourseByName(newName) != null)
-//        {
-//            System.out.println("A course by that name already exists!");
-//            throw new ResourcePersistenceException("User provided a course name that already exists.");
-//        }
-//
-//        courseRepo.updatingCourseName(editingCourse, newName);
-//
-//    }
-//    public void updateCourseAbv(Course editingCourse, String newAbv){
-//
-//        courseValidatorService.newCourseAbvValidator(editingCourse, newAbv);
-//
-//        if (courseRepo.findCourseByAbbreviation(newAbv) != null)
-//        {
-//            System.out.println("A course with that abbreviation already exists!");
-//            throw new ResourcePersistenceException("User provided an abbreviation that already exists.");
-//        }
-//
-//        courseRepo.updatingCourseAbv(editingCourse, newAbv);
-//
-//    }
-//    public void updateCourseDesc(Course editingCourse, String newDesc){
-//
-//        courseValidatorService.newCourseDetailsValidator(newDesc);
-//
-//        courseRepo.updatingCourseDesc(editingCourse, newDesc);
-//
-//    }
-
     // Used to check if the user entered a valid abbreviation
     public Course findCourseByAbbreviation(String abv){
 
