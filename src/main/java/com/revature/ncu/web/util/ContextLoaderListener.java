@@ -11,14 +11,20 @@ import com.revature.ncu.datasources.repositories.UserRepository;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.services.*;
 import com.revature.ncu.util.PasswordUtils;
+import com.revature.ncu.web.filters.AuthFilter;
 import com.revature.ncu.web.servlets.*;
+import com.revature.ncu.web.util.security.JwtConfig;
+import com.revature.ncu.web.util.security.TokenGenerator;
+import jdk.nashorn.internal.parser.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.File;
+import java.util.EnumSet;
 
 public class ContextLoaderListener implements ServletContextListener {
 
@@ -29,9 +35,13 @@ public class ContextLoaderListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce){
         MongoClient mongoClient = MongoClientFactory.getInstance().getConnection();
         PasswordUtils passwordUtils = new PasswordUtils();
+
         UserValidatorService userValidatorService = new UserValidatorService();
         CourseValidatorService courseValidatorService = new CourseValidatorService();
 
+        JwtConfig jwtConfig = new JwtConfig();
+        TokenGenerator tokenGenerator = new TokenGenerator(jwtConfig);
+        AuthFilter authFilter = new AuthFilter(jwtConfig);
 
         ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
@@ -45,9 +55,8 @@ public class ContextLoaderListener implements ServletContextListener {
         UserCoursesService userCoursesService = new UserCoursesService(userCoursesRepository, courseValidatorService, courseRepository);
 
         UserServlet userServlet = new UserServlet(userService, mapper, userCoursesService);
-        AuthServlet authServlet = new AuthServlet(userService, mapper);
-        HelloWorld helloWorld = new HelloWorld();
-        GoodbyeWorld goodbyeWorld= new GoodbyeWorld();
+        AuthServlet authServlet = new AuthServlet(userService, mapper, tokenGenerator);
+
         HealthCheckServlet healthCheckServlet = new HealthCheckServlet();
         FacultyServlet facultyServlet = new FacultyServlet();
         CourseServlet courseServlet = new CourseServlet(userService, courseService, mapper);
@@ -55,10 +64,11 @@ public class ContextLoaderListener implements ServletContextListener {
         StudentCourseServlet studentCourseServlet = new StudentCourseServlet(userService,courseService,userCoursesService,mapper);
 
         ServletContext servletContext = sce.getServletContext();
-        servletContext.addServlet("HelloWorld", helloWorld).addMapping("/hello");
+
+
+        servletContext.addFilter("AuthFilter", authFilter).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
         servletContext.addServlet("UserServlet", userServlet).addMapping("/users/*");
         servletContext.addServlet("AuthServlet", authServlet).addMapping("/auth");
-        servletContext.addServlet("GoodbyeWorld", goodbyeWorld).addMapping("/goodbye");
         servletContext.addServlet("HealthCheckServlet", healthCheckServlet).addMapping("/health");
         servletContext.addServlet("FacultyServlet", facultyServlet).addMapping("/faculty");
         servletContext.addServlet("CourseServlet", courseServlet).addMapping("/faculty/courses");
