@@ -43,13 +43,10 @@ public class UserServlet extends HttpServlet {
         PrintWriter respWriter = resp.getWriter();
         resp.setContentType("application/json");
 
-        // Get the session from the request, if it exists (do not create one)
-        HttpSession session = req.getSession(false);
+        // Get the principal information from the request, if it exists.
+        Principal requestingUser = (Principal) req.getAttribute("principal");
 
-        // If the session is not null, then grab the auth-user attribute from it
-        Principal requestingUser = (session == null) ? null : (Principal) session.getAttribute("auth-user");
-
-        // Check to see if there was a valid auth-user attribute
+        // Check to see if there was a valid principal attribute
         if (requestingUser == null) {
             String msg = "No session found, please login.";
             logger.info(msg);

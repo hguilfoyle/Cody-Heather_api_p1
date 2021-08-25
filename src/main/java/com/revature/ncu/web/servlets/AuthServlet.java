@@ -6,6 +6,8 @@ import com.revature.ncu.util.exceptions.AuthenticationException;
 import com.revature.ncu.web.dtos.Credentials;
 import com.revature.ncu.web.dtos.ErrorResponse;
 import com.revature.ncu.web.dtos.Principal;
+import com.revature.ncu.web.util.security.TokenGenerator;
+import jdk.nashorn.internal.parser.Token;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,10 +21,12 @@ public class AuthServlet extends HttpServlet {
 
     private final UserService userService;
     private final ObjectMapper mapper;
+    private final TokenGenerator tokenGenerator;
 
-    public AuthServlet(UserService userService, ObjectMapper mapper) {
+    public AuthServlet(UserService userService, ObjectMapper mapper, TokenGenerator tokenGenerator) {
         this.userService = userService;
         this.mapper =mapper;
+        this.tokenGenerator = tokenGenerator;
     }
 
     @Override
@@ -44,8 +48,8 @@ public class AuthServlet extends HttpServlet {
             respWriter.write(payload);
 
             // Creates and sets session of currently authorized user
-            HttpSession session = req.getSession();
-            session.setAttribute("auth-user", principal);
+            String token = tokenGenerator.createToken(principal);
+            resp.setHeader(tokenGenerator.getJwtConfig().getHeader(), token);
 
         } catch (AuthenticationException ae) { //woops wrong creds
             resp.setStatus(401); // user's fault

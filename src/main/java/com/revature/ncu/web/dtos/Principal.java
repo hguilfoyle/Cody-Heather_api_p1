@@ -1,6 +1,7 @@
 package com.revature.ncu.web.dtos;
 
 import com.revature.ncu.datasources.documents.AppUser;
+import io.jsonwebtoken.Claims;
 
 import java.util.Objects;
 
@@ -18,6 +19,12 @@ public class Principal {
         this.id = subject.getId();
         this.username = subject.getUsername();
         this.faculty = subject.isFaculty();
+    }
+
+    public Principal(Claims jwtClaims) {
+        this.id = jwtClaims.getId();
+        this.username = jwtClaims.getSubject();
+        this.faculty = jwtClaims.get("faculty", Boolean.class);
     }
 
     public String getId() {
