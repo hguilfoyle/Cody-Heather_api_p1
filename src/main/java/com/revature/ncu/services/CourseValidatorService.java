@@ -155,7 +155,7 @@ public class CourseValidatorService {
 //        return true;
 //    }
 
-    // Returns false if within registration window and course is not full.
+    // Check if within registration window and course is not full.
     public boolean isOpen(Course course){
         return (course.getCourseOpenDate().isBefore(LocalDate.now())
                 || course.getCourseOpenDate().isEqual(LocalDate.now()))
@@ -216,10 +216,10 @@ public class CourseValidatorService {
             logger.error("Provided course open date is after course close date.");
             throw new InvalidCourseDateException("Course open date after course close date.");
         }
-        else if(updatingCourse.getCourseOpenDate().isBefore(LocalDate.now()))
+        else if(updatingCourse.getCourseCloseDate().isBefore(LocalDate.now()))
         {
-            logger.error("Provided course open date is before today.");
-            throw new InvalidCourseDateException("Course open date before current date.");
+            logger.error("Provided course close date is before today.");
+            throw new InvalidCourseDateException("Course close date before current date.");
         }
         return false;
     }

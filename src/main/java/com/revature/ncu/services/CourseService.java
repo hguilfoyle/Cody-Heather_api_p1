@@ -54,6 +54,9 @@ public class CourseService {
         courseValidatorService.courseUpdateValidator(original, update);
 
         if(!original.getCourseAbbreviation().equals(update.getCourseAbbreviation())){
+
+            //TODO check if abbreviation already exists
+
             userCoursesRepo.updateCourseAbvInAllUserLists(original.getCourseAbbreviation(),
                     update.getCourseAbbreviation());
         }
