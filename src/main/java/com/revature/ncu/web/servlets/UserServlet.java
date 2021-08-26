@@ -11,6 +11,7 @@ import com.revature.ncu.util.exceptions.ResourcePersistenceException;
 import com.revature.ncu.web.dtos.AppUserDTO;
 import com.revature.ncu.web.dtos.ErrorResponse;
 import com.revature.ncu.web.dtos.Principal;
+import com.revature.ncu.web.util.security.TokenGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -29,11 +29,14 @@ public class UserServlet extends HttpServlet {
     private final UserService userService;
     UserCoursesService userCoursesService;
     private final ObjectMapper mapper;
+    private final TokenGenerator tokenGenerator;
 
-    public UserServlet(UserService userService, ObjectMapper mapper, UserCoursesService userCoursesService){
+    public UserServlet(UserService userService, ObjectMapper mapper, UserCoursesService userCoursesService,
+                       TokenGenerator tokenGenerator){
         this.userService = userService;
         this.mapper = mapper;
         this.userCoursesService = userCoursesService;
+        this.tokenGenerator = tokenGenerator;
     }
 
     // For viewing users (admin only)
@@ -106,6 +109,9 @@ public class UserServlet extends HttpServlet {
             String payload = mapper.writeValueAsString(principal);  //maps the principal value to a string
             respWriter.write(payload);      //returning the username and ID to the web as a string value
             resp.setStatus(201);            //201: Created
+
+            String token = tokenGenerator.createToken(principal);
+            resp.setHeader(tokenGenerator.getJwtConfig().getHeader(), token);
 
         } catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();
