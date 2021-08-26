@@ -56,14 +56,31 @@ public class CourseService {
 
     public Course updateCourse(Course original, Course update){
 
+        // Verify information is valid.
         courseValidatorService.courseUpdateValidator(original, update);
 
-        if(!original.getCourseAbbreviation().equals(update.getCourseAbbreviation())){
+        String originalAbv = original.getCourseAbbreviation();
+        String newAbv = update.getCourseAbbreviation();
 
-            //TODO check if abbreviation already exists
+        // Check for duplicate abbreviation
+        if(!originalAbv.equals(newAbv)) {
+            if(courseRepo.findCourseByAbbreviation(newAbv)!=null)
+            {
+                throw new ResourcePersistenceException("Course abbreviation already exists!");
+            }
 
             userCoursesRepo.updateCourseAbvInAllUserLists(original.getCourseAbbreviation(),
                     update.getCourseAbbreviation());
+        }
+
+        String originalName = original.getCourseName();
+        String newName = update.getCourseName();
+
+        // Check for duplicate course name
+        if(!originalName.equals(newName)) {
+            if(courseRepo.findCourseByName(newName)!=null) {
+                throw new ResourcePersistenceException("Course name already exists!");
+            }
         }
 
         courseRepo.updateCourse(original,update);

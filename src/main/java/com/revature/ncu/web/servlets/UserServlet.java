@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+
+// Servlet for creating or viewing users.
 public class UserServlet extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(UserServlet.class);
@@ -49,7 +51,7 @@ public class UserServlet extends HttpServlet {
         // Get the principal information from the request, if it exists.
         Principal requestingUser = (Principal) req.getAttribute("principal");
 
-        // Check to see if there was a valid principal attribute
+        // Check to see if the user is logged in
         if (requestingUser == null) {
             String msg = "No session found, please login.";
             logger.info(msg);
@@ -102,29 +104,31 @@ public class UserServlet extends HttpServlet {
         resp.setContentType("application/json");            //always gotta set this, he mentioned it several times
 
         try {
-            //when a POST request is sent to the servlet, it reads the body and attempts to map it to a new AppUser
-            AppUser newUser = mapper.readValue(req.getInputStream(), AppUser.class); // JS will set new users to student
-            Principal principal = new Principal(userService.register(newUser)); // after this, the newUser should have a new id
+            AppUser newUser = mapper.readValue(req.getInputStream(), AppUser.class);
+            Principal principal = new Principal(userService.register(newUser));
             userCoursesService.initialize(newUser.getUsername());
-            String payload = mapper.writeValueAsString(principal);  //maps the principal value to a string
-            respWriter.write(payload);      //returning the username and ID to the web as a string value
-            resp.setStatus(201);            //201: Created
+            String payload = mapper.writeValueAsString(principal);
+            respWriter.write(payload);
+            resp.setStatus(201);
 
             String token = tokenGenerator.createToken(principal);
             resp.setHeader(tokenGenerator.getJwtConfig().getHeader(), token);
 
         } catch (InvalidRequestException | InvalidEntryException ie) {
+            // Duplicate/invalid data provided.
             ie.printStackTrace();
-            resp.setStatus(400); // client's fault
+            resp.setStatus(400);
             ErrorResponse errResp = new ErrorResponse(400, ie.getMessage());
             respWriter.write(mapper.writeValueAsString(errResp));
         } catch (ResourcePersistenceException rpe) {
-            resp.setStatus(409);   //409 conflict: user/email already exists
+            // Duplicate information
+            resp.setStatus(409);
             ErrorResponse errResp = new ErrorResponse(409, rpe.getMessage());
             respWriter.write(mapper.writeValueAsString(errResp));
         } catch (Exception e) {
+            // Server error
             e.printStackTrace();
-            resp.setStatus(500);    // server made an oopsie woopsie
+            resp.setStatus(500);
         }
 
 
