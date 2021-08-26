@@ -166,10 +166,9 @@ public class CourseServlet extends HttpServlet {
         try{
             Course remove = mapper.readValue(req.getInputStream(), Course.class);
             courseService.removeCourse(remove);
-
-            String payload = "Successfully removed course, the garbage is happy.";  //maps the principal value to a string
-            respWriter.write(payload);      //returning the username and ID to the web as a string value
-            resp.setStatus(204);            //204: No Content so it went bye-bye
+            String payload = "Successfully removed course!";
+            respWriter.write(payload);
+            resp.setStatus(204);            //204: No Content
 
         }catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();

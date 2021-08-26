@@ -77,10 +77,8 @@ public class CourseService {
         String newName = update.getCourseName();
 
         // Check for duplicate course name
-        if(!originalName.equals(newName)) {
-            if(courseRepo.findCourseByName(newName)!=null) {
-                throw new ResourcePersistenceException("Course name already exists!");
-            }
+        if (!originalName.equals(newName) && courseRepo.findCourseByName(newName) != null) {
+            throw new ResourcePersistenceException("Course name already exists!");
         }
 
         courseRepo.updateCourse(original,update);
