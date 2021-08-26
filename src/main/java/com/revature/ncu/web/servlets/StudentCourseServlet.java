@@ -125,7 +125,7 @@ public class StudentCourseServlet extends HttpServlet {
         try{
             Course course = mapper.readValue(req.getInputStream(), Course.class);
             userCoursesService.joinCourse(course.getCourseAbbreviation(), requestingUser.getUsername());
-            String payload = "Course joined!";  //maps the principal value to a string
+            String payload = "Course joined";  //maps the principal value to a string
             respWriter.write(payload);      //returning the username and ID to the web as a string value
             resp.setStatus(201);            //201: Created
 
