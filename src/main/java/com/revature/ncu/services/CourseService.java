@@ -44,6 +44,11 @@ public class CourseService {
 
     public void removeCourse(Course course){
 
+        if(courseRepo.findCourseByAbbreviation(course.getCourseAbbreviation())==null)
+        {
+            throw new InvalidEntryException("Course does not exist!");
+        }
+
         courseRepo.removeCourseByAbbreviation(course);
         userCoursesRepo.removeCourseFromAllUserLists(course.getCourseName());
 
