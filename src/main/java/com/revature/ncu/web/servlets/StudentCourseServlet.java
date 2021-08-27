@@ -10,6 +10,7 @@ import com.revature.ncu.util.exceptions.InvalidRequestException;
 import com.revature.ncu.util.exceptions.ResourcePersistenceException;
 import com.revature.ncu.web.dtos.ErrorResponse;
 import com.revature.ncu.web.dtos.Principal;
+import com.revature.ncu.web.dtos.SuccessResponse;
 import com.revature.ncu.web.dtos.UserCourseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,10 +180,10 @@ public class StudentCourseServlet extends HttpServlet {
             String removeAbv = remove.getCourseAbbreviation();
             userCoursesService.leaveCourse(requestingUser.getUsername(), removeAbv);
             courseService.removeStudent(requestingUser.getUsername(), removeAbv);
+
             // Inform user of successful action
-            String payload = "Successfully withdrew from course!";
-            respWriter.write(payload);
-            resp.setStatus(204);            //204: No Content so it went bye-bye
+            SuccessResponse susResp = new SuccessResponse(204, "Successfully withdrew from course!");
+            respWriter.write(mapper.writeValueAsString(susResp));
 
         }catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();
