@@ -10,6 +10,7 @@ import com.revature.ncu.util.exceptions.InvalidRequestException;
 import com.revature.ncu.util.exceptions.ResourcePersistenceException;
 import com.revature.ncu.web.dtos.ErrorResponse;
 import com.revature.ncu.web.dtos.Principal;
+import com.revature.ncu.web.dtos.SuccessResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -166,9 +167,8 @@ public class CourseServlet extends HttpServlet {
         try{
             Course remove = mapper.readValue(req.getInputStream(), Course.class);
             courseService.removeCourse(remove);
-            String payload = "Successfully removed course!";
-            respWriter.write(payload);
-            resp.setStatus(204);            //204: No Content
+            SuccessResponse susResp = new SuccessResponse(204, "Successfully removed course!");
+            respWriter.write(mapper.writeValueAsString(susResp));
 
         }catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();
@@ -223,11 +223,10 @@ public class CourseServlet extends HttpServlet {
             Course editCourse = mapper.readValue(req.getInputStream(), Course.class);
             String ProfName = userService.getProfNameById(requestingUser.getId());
             editCourse.setProfessorName(ProfName);// get professor name
-            editCourse = courseService.updateCourse(original, editCourse);
+            courseService.updateCourse(original, editCourse);
 
-            String payload = mapper.writeValueAsString(editCourse);  //maps the principal value to a string
-            respWriter.write(payload);      //returning the username and ID to the web as a string value
-            resp.setStatus(201);            //201: Created
+            SuccessResponse susResp = new SuccessResponse(201, "Course updated!");
+            respWriter.write(mapper.writeValueAsString(susResp));
 
         }catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();

@@ -72,14 +72,14 @@ public class StudentCourseServlet extends HttpServlet {
         try{
             if(act.equals("view")) {
                 List<Course> catalog = courseService.getCourses();
-                String payload = mapper.writeValueAsString(catalog);  //maps the principal value to a string
-                respWriter.write(payload);      //returning the username and ID to the web as a string value
-                resp.setStatus(200);            //200: Success
+                String payload = mapper.writeValueAsString(catalog);
+                respWriter.write(payload);      // Returning all open courses
+                resp.setStatus(200);            // 200: Success
             }
             if(act.equals("schedule")) {
                 List<UserCourseDTO> schedule = courseService.getCoursesByUsername(requestingUser.getUsername());
-                String payload = mapper.writeValueAsString(schedule);  //maps the principal value to a string
-                respWriter.write(payload);      //returning the username and ID to the web as a string value
+                String payload = mapper.writeValueAsString(schedule);
+                respWriter.write(payload);      // Returning Student schedule
                 resp.setStatus(200);            //200: Success
             }
         }catch (InvalidRequestException | InvalidEntryException ie) {
@@ -127,9 +127,8 @@ public class StudentCourseServlet extends HttpServlet {
         try{
             Course course = mapper.readValue(req.getInputStream(), Course.class);
             userCoursesService.joinCourse(course.getCourseAbbreviation(), requestingUser.getUsername());
-            String payload = "Course joined";  //maps the principal value to a string
-            respWriter.write(payload);      //returning the username and ID to the web as a string value
-            resp.setStatus(201);            //201: Created
+            SuccessResponse susResp = new SuccessResponse(201, "Successfully joined course!");
+            respWriter.write(mapper.writeValueAsString(susResp));
 
         }catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();
