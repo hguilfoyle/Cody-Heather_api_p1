@@ -10,6 +10,7 @@ import com.revature.ncu.util.exceptions.InvalidRequestException;
 import com.revature.ncu.util.exceptions.ResourcePersistenceException;
 import com.revature.ncu.web.dtos.ErrorResponse;
 import com.revature.ncu.web.dtos.Principal;
+import com.revature.ncu.web.dtos.UserCourseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,13 +70,13 @@ public class StudentCourseServlet extends HttpServlet {
            String act = req.getParameter("action");
         try{
             if(act.equals("view")) {
-                List catalog = courseService.getCourses();
+                List<Course> catalog = courseService.getCourses();
                 String payload = mapper.writeValueAsString(catalog);  //maps the principal value to a string
                 respWriter.write(payload);      //returning the username and ID to the web as a string value
                 resp.setStatus(200);            //200: Success
             }
             if(act.equals("schedule")) {
-                List schedule = userCoursesService.getCourses(requestingUser.getUsername());
+                List<UserCourseDTO> schedule = courseService.getCoursesByUsername(requestingUser.getUsername());
                 String payload = mapper.writeValueAsString(schedule);  //maps the principal value to a string
                 respWriter.write(payload);      //returning the username and ID to the web as a string value
                 resp.setStatus(200);            //200: Success

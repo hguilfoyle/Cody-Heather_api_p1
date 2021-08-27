@@ -7,6 +7,7 @@ import com.mongodb.client.model.Updates;
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.util.exceptions.DataSourceException;
 import com.revature.ncu.util.exceptions.NoOpenCoursesException;
+import com.revature.ncu.web.dtos.UserCourseDTO;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // Repository for performing CRUD operations on the Mongo courses collection
 
@@ -244,4 +246,21 @@ public class CourseRepository implements CrudRepository<Course> {
     }
 
 
+    public List<UserCourseDTO> findCoursesByUsername(String username) {
+
+        List<Course> courses = new ArrayList<>();
+        List<UserCourseDTO> userCourses;
+
+        Document searchDoc = new Document("studentUsernames", username);
+        try{
+            coursesCollection.find(searchDoc).into(courses);
+            userCourses = courses.stream().map(UserCourseDTO::new).collect(Collectors.toList());
+        }catch (Exception e) {
+            logger.error("An unexpected exception occurred.", e);
+            throw new DataSourceException(e);
+        }
+
+        return userCourses;
+
+    }
 }

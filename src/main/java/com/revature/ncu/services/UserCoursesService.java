@@ -23,13 +23,10 @@ public class UserCoursesService {
 
     private final Logger logger = LoggerFactory.getLogger(UserCoursesService.class);
 
-
-
     public UserCoursesService(UserCoursesRepository userCourseRepo, CourseValidatorService cVS, CourseRepository courseRepo) {
         this.userCourseListRepo = userCourseRepo;
         this.courseValidatorService = cVS;
         this.courseRepository = courseRepo;
-
     }
 
     // Initialize a user's course list on the database when they register
@@ -65,7 +62,6 @@ public class UserCoursesService {
         userCourseListRepo.joinCourse(joiningCourseAbv,username);
         courseRepository.addStudentUsername(joiningCourseAbv, username);
     }
-
 
     // Compares user's entered course against a list of the user's courses, ignores case.
     // Returns proper case if the course is found.

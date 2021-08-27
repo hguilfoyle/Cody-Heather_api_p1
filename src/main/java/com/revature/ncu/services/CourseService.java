@@ -4,6 +4,7 @@ import com.revature.ncu.datasources.repositories.UserCoursesRepository;
 import com.revature.ncu.util.exceptions.*;
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.datasources.repositories.CourseRepository;
+import com.revature.ncu.web.dtos.UserCourseDTO;
 
 import java.util.List;
 
@@ -161,6 +162,7 @@ public class CourseService {
 
         return openCourses;
     }
+
     public List<Course> getAllCourses(){
 
         List<Course> courses = courseRepo.findAll();
@@ -169,6 +171,18 @@ public class CourseService {
         {
             System.out.println("There are no courses! What kind of university is this?");
             throw new NoOpenCoursesException("No courses found.");
+        }
+
+        return courses;
+    }
+
+    public List<UserCourseDTO> getCoursesByUsername(String username){
+        List<UserCourseDTO> courses = courseRepo.findCoursesByUsername(username);
+
+        if(courses.isEmpty())
+        {
+            System.out.println("Not enrolled for any courses");
+            throw new NoOpenCoursesException("You're not enrolled for any courses right now!");
         }
 
         return courses;
