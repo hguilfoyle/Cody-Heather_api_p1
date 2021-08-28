@@ -67,9 +67,9 @@ public class CourseServlet extends HttpServlet {
 
         try{
             List<Course> catalog = courseService.getAllCourses();
-            String payload = mapper.writeValueAsString(catalog);  //maps the principal value to a string
-            respWriter.write(payload);      //returning the username and ID to the web as a string value
-            resp.setStatus(200);            //200: Created
+            String payload = mapper.writeValueAsString(catalog);
+            respWriter.write(payload);
+            resp.setStatus(200);
 
         }catch (InvalidRequestException | InvalidEntryException ie) {
             ie.printStackTrace();
@@ -111,8 +111,8 @@ public class CourseServlet extends HttpServlet {
 
         try{
                 Course newCourse = mapper.readValue(req.getInputStream(), Course.class);
-                String ProfName = userService.getProfNameById(requestingUser.getId());
-                newCourse.setProfessorName(ProfName);// get professor name
+                String profName = userService.getProfNameById(requestingUser.getId());
+                newCourse.setProfessorName(profName);// get professor name
                 courseService.add(newCourse);
 
                 String payload = mapper.writeValueAsString(newCourse);  //maps the principal value to a string

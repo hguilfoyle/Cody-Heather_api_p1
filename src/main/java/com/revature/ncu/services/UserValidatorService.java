@@ -1,8 +1,9 @@
 package com.revature.ncu.services;
 
 import com.revature.ncu.datasources.documents.AppUser;
-import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.util.exceptions.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +18,8 @@ import java.util.regex.Pattern;
  */
 
 public class UserValidatorService {
+
+    private final Logger logger = LoggerFactory.getLogger(UserValidatorService.class);
 
     // User restrictions are defined here.
     private static final int MIN_USERNAME = 4;
@@ -39,28 +42,28 @@ public class UserValidatorService {
         if(user.getUsername().trim().equals("")||user.getPassword().trim().equals("")||user.getFirstName().trim().equals("")
                 ||user.getLastName().trim().equals("")||user.getEmail().trim().equals(""))
         {
-            System.out.println("Fields cannot be blank!");
-            throw new InvalidEntryException("Blank fields detected.");
+            logger.error("Blank fields detected.");
+            throw new InvalidEntryException("Fields cannot be blank!");
         }
         else if(user.getUsername().length() < MIN_USERNAME)
         {
-            System.out.println("Username must be at least 4 characters.");
-            throw new InvalidUsernameException("Entered username below the minimum character limit.");
+            logger.error("Entered username below the minimum character limit.");
+            throw new InvalidUsernameException("Username must be at least 4 characters.");
         }
         else if(userMatch.find())
         {
-            System.out.println("Username contains invalid characters.");
-            throw  new InvalidUsernameException("Invalid characters entered in username.");
+            logger.error("Invalid characters entered in username.");
+            throw  new InvalidUsernameException("Username contains invalid characters.");
         }
         else if(user.getPassword().length() < MIN_PASSWORD)
         {
-            System.out.println("Password must be at least 8 characters.");
-            throw new InvalidPasswordException("Entered password below the minimum character limit.");
+            logger.error("Entered password below the minimum character limit.");
+            throw new InvalidPasswordException("Password must be at least 8 characters.");
         }
         else if(!emailMatch.find())
         {
-            System.out.println("Please enter a valid email address.");
-            throw new InvalidEmailException("Invalid email address entered.");
+            logger.error("Invalid email address entered.");
+            throw new InvalidEmailException("Please enter a valid email address.");
         }
 
         return true;

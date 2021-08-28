@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -78,11 +77,11 @@ public class MongoClientFactory {
             this.mongoClient = MongoClients.create(settings);
 
         }catch (FileNotFoundException fnfe) {
-            logger.error("Unable to load database properties file.", fnfe);
+            logger.error("Unable to load database properties file.");
             throw new DataSourceException(fnfe);
         } catch(Exception e){
             e.printStackTrace();
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
 

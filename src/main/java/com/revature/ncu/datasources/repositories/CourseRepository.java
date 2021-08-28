@@ -36,7 +36,7 @@ public class CourseRepository implements CrudRepository<Course> {
         try {
             return coursesCollection.find(new Document("courseName",courseName)).first();
         } catch (Exception e) {
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
     }
@@ -46,15 +46,15 @@ public class CourseRepository implements CrudRepository<Course> {
             return coursesCollection.find(new Document("courseAbbreviation", courseAbv)).first();
 
         } catch (Exception e) {
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
     }
 
+    // For updating a course's values.
     public Course updateCourse(Course originalCourse,Course updatedCourse){
 
         try{
-            // Professor name will automatically be set by grabbing the Facultyuser's FN/LN when a course is created
             coursesCollection.updateOne(Filters.eq("_id", originalCourse.getId()), Updates.combine(
                     Updates.set("courseName", updatedCourse.getCourseName()),
                     Updates.set("courseAbbreviation", updatedCourse.getCourseAbbreviation()),
@@ -79,7 +79,7 @@ public class CourseRepository implements CrudRepository<Course> {
             Document queryDoc = new Document("courseAbbreviation", course.getCourseAbbreviation());
             coursesCollection.findOneAndDelete(queryDoc);
         }catch (Exception e){
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
     }
@@ -102,12 +102,10 @@ public class CourseRepository implements CrudRepository<Course> {
             coursesCollection.updateOne(searchDoc,incDoc);
 
         }catch (Exception e){
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
     }
-
-
 
     public List<Course> retrieveOpenCourses() {
 
@@ -121,13 +119,13 @@ public class CourseRepository implements CrudRepository<Course> {
             if(openCourses.isEmpty())
             {
                 logger.info("hey make some open courses first geez");
-                throw new NoOpenCoursesException("There are no Courses open...:(");
+                throw new NoOpenCoursesException("There are no Courses open.");
             }
 
             return openCourses;
 
         }catch(Exception e){
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
 
@@ -158,7 +156,7 @@ public class CourseRepository implements CrudRepository<Course> {
         try{
             coursesCollection.find().into(courses);
         }catch (Exception e) {
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
         return courses;
@@ -171,7 +169,7 @@ public class CourseRepository implements CrudRepository<Course> {
             Document queryDoc = new Document("_id", id);
             return coursesCollection.find(queryDoc).first();
         }catch (Exception e) {
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
     }
@@ -185,7 +183,7 @@ public class CourseRepository implements CrudRepository<Course> {
             return newCourse;
 
         } catch (Exception e) {
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
     }
@@ -211,7 +209,7 @@ public class CourseRepository implements CrudRepository<Course> {
             coursesCollection.find(searchDoc).into(courses);
             userCourses = courses.stream().map(UserCourseDTO::new).collect(Collectors.toList());
         }catch (Exception e) {
-            logger.error("An unexpected exception occurred.", e);
+            logger.error("An unexpected exception occurred.");
             throw new DataSourceException(e);
         }
 

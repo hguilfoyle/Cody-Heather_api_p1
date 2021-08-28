@@ -33,7 +33,6 @@ import java.util.EnumSet;
 public class ContextLoaderListener implements ServletContextListener {
 
     private final Logger logger = LoggerFactory.getLogger(ContextLoaderListener.class);
-    private com.revature.ncu.datasources.documents.Course Course;
 
     @Override
     public void contextInitialized(ServletContextEvent sce){

@@ -1,15 +1,11 @@
 package com.revature.ncu.services;
 
-import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.util.exceptions.*;
-import com.revature.ncu.web.util.ContextLoaderListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *  Class for validating user input

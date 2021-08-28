@@ -7,7 +7,6 @@ import com.revature.ncu.web.dtos.UserCourseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,13 +32,13 @@ public class CourseService {
         // Duplicate prevention
         if (courseRepo.findCourseByName(newCourse.getCourseName()) != null)
         {
-            System.out.println("Provided course already exists!");
+            logger.error("Provided course already exists!");
             throw new ResourcePersistenceException("User provided a course name that already exists.");
         }
         if (courseRepo.findCourseByAbbreviation(newCourse.getCourseAbbreviation()) != null)
         {
-            System.out.println("A course with the existing abbreviation already exists!");
-            throw new ResourcePersistenceException("User provided an abbreviation that already exists.");
+            logger.error("User provided an abbreviation that already exists.");
+            throw new ResourcePersistenceException("A course with the existing abbreviation already exists!");
         }
 
         // Save course to database if no issues are found
@@ -66,11 +65,8 @@ public class CourseService {
         String newAbv = update.getCourseAbbreviation();
 
         // Check for duplicate abbreviation
-        if(!originalAbv.equals(newAbv)) {
-            if(courseRepo.findCourseByAbbreviation(newAbv)!=null)
-            {
-                throw new ResourcePersistenceException("Course abbreviation already exists!");
-            }
+        if (!originalAbv.equals(newAbv) && courseRepo.findCourseByAbbreviation(newAbv) != null) {
+            throw new ResourcePersistenceException("Course abbreviation already exists!");
         }
 
         String originalName = original.getCourseName();
@@ -117,8 +113,8 @@ public class CourseService {
 
         if (verifiedCourse == null)
         {
-            logger.error("No course found with provided abbreviation!");
-            throw new ResourcePersistenceException("No course found with provided abbreviation.");
+            logger.error("No course found with provided abbreviation.");
+            throw new ResourcePersistenceException("No course found with provided abbreviation!");
         }
 
         return verifiedCourse;
@@ -131,8 +127,8 @@ public class CourseService {
 
         if(openCourses.isEmpty())
         {
-            System.out.println("There are no open courses! Please contact your student manager.");
-            throw new NoOpenCoursesException("No open courses found.");
+            logger.error("No open courses found.");
+            throw new NoOpenCoursesException("There are no open courses! Please contact your student manager.");
         }
 
         return openCourses;
@@ -144,8 +140,8 @@ public class CourseService {
 
         if(courses.isEmpty())
         {
-            System.out.println("There are no courses! What kind of university is this?");
-            throw new NoOpenCoursesException("No courses found.");
+            logger.error("No courses found.");
+            throw new NoOpenCoursesException("There are no courses! What kind of university is this?");
         }
 
         return courses;
@@ -156,7 +152,7 @@ public class CourseService {
 
         if(courses.isEmpty())
         {
-            System.out.println("Not enrolled for any courses");
+            logger.error("User not enrolled for any courses");
             throw new NoOpenCoursesException("You're not enrolled for any courses right now!");
         }
 
