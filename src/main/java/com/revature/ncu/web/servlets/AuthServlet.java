@@ -7,16 +7,20 @@ import com.revature.ncu.web.dtos.Credentials;
 import com.revature.ncu.web.dtos.ErrorResponse;
 import com.revature.ncu.web.dtos.Principal;
 import com.revature.ncu.web.util.security.TokenGenerator;
-import jdk.nashorn.internal.parser.Token;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
+/**
+ * Authorization Servlet
+ * - Logs user in
+ * - Provides a JWT token for session management
+ */
 public class AuthServlet extends HttpServlet {
 
     private final UserService userService;
@@ -32,7 +36,6 @@ public class AuthServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        System.out.println(req.getAttribute("filtered"));
         PrintWriter respWriter = resp.getWriter();
         resp.setContentType("application/json");
 

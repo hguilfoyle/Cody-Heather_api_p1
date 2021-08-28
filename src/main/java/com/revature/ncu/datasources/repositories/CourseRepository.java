@@ -19,8 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Repository for performing CRUD operations on the Mongo courses collection
-
+/**
+ * Repository for performing CRUD operations on the Mongo courses collection
+ * */
 public class CourseRepository implements CrudRepository<Course> {
 
     private final Logger logger = LoggerFactory.getLogger(CourseRepository.class);
@@ -71,53 +72,6 @@ public class CourseRepository implements CrudRepository<Course> {
         return null;
     }
 
-//    public void updatingCourseName(Course original,String newName){
-//        try {
-//            // Append $set to "courseName" : newName
-//            Document updateDoc = new Document("courseName", newName);
-//            Document appendDoc = new Document("$set",updateDoc);
-//            // Search for "courseName" : original courseName
-//            Document searchDoc = new Document("courseName",original.getCourseName());
-//            // Update course name
-//            coursesCollection.updateOne(searchDoc,appendDoc);
-//        } catch (Exception e) {
-//            logger.error("An unexpected exception occurred.", e);
-//            throw new DataSourceException(e);
-//        }
-//
-//    }
-//
-//    public void updatingCourseAbv(Course original, String newAbv){
-//        try {
-//            Document updateDoc = new Document("courseAbbreviation", newAbv);
-//            Document appendDoc = new Document("$set",updateDoc);
-//            Document searchDoc = new Document("courseAbbreviation", original.getCourseAbbreviation());
-//
-//            coursesCollection.updateOne(searchDoc,appendDoc);
-//
-//        } catch (Exception e) {
-//            logger.error("An unexpected exception occurred.", e);
-//            throw new DataSourceException(e);
-//        }
-//
-//    }
-//
-//    public void updatingCourseDesc(Course original, String newDesc){
-//        try {
-//            Document updateDoc = new Document("courseDetail", newDesc);
-//            Document appendDoc = new Document("$set",updateDoc);
-//            Document searchDoc = new Document("courseAbbreviation",original.getCourseAbbreviation());
-//
-//            coursesCollection.updateOne(searchDoc,appendDoc);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            logger.error("An unexpected exception occurred.", e);
-//            throw new DataSourceException(e);
-//        }
-//
-//    }
-
-
     // Remove a course from the database
     public void removeCourseByAbbreviation(Course course){
         try {
@@ -150,9 +104,9 @@ public class CourseRepository implements CrudRepository<Course> {
             logger.error("An unexpected exception occurred.", e);
             throw new DataSourceException(e);
         }
-
-
     }
+
+
 
     public List<Course> retrieveOpenCourses() {
 

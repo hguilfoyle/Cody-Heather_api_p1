@@ -7,7 +7,7 @@ import com.revature.ncu.util.exceptions.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*
+/**
  *  Class for validating user input to check for:
  *  Empty values,
  *  Password security, (Minimum of 8 characters)

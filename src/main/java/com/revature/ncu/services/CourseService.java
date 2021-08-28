@@ -1,23 +1,26 @@
 package com.revature.ncu.services;
 
-import com.revature.ncu.datasources.repositories.UserCoursesRepository;
 import com.revature.ncu.util.exceptions.*;
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.datasources.repositories.CourseRepository;
 import com.revature.ncu.web.dtos.UserCourseDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * Service for handling course business logic and passing information into the Relevant repository
+ */
 public class CourseService {
 
+    private final Logger logger = LoggerFactory.getLogger(CourseService.class);
     private final CourseRepository courseRepo;
     private final CourseValidatorService courseValidatorService;
-    private final UserCoursesRepository userCoursesRepo;
 
-    public CourseService(CourseRepository courseRepo, CourseValidatorService courseValidatorService, UserCoursesRepository userCoursesRepository) {
+    public CourseService(CourseRepository courseRepo, CourseValidatorService courseValidatorService) {
         this.courseRepo = courseRepo;
         this.courseValidatorService = courseValidatorService;
-        this.userCoursesRepo = userCoursesRepository;
     }
 
     // For faculty creating a new course
@@ -51,8 +54,6 @@ public class CourseService {
         }
 
         courseRepo.removeCourseByAbbreviation(course);
-        userCoursesRepo.removeCourseFromAllUserLists(course.getCourseName());
-
     }
 
     public Course updateCourse(Course original, Course update){
@@ -69,9 +70,6 @@ public class CourseService {
             {
                 throw new ResourcePersistenceException("Course abbreviation already exists!");
             }
-
-            userCoursesRepo.updateCourseAbvInAllUserLists(original.getCourseAbbreviation(),
-                    update.getCourseAbbreviation());
         }
 
         String originalName = original.getCourseName();
@@ -86,64 +84,40 @@ public class CourseService {
         return update;
     }
 
+
+    // Checks to see if the user has already joined a course, passes the course requested and the username to the Repo if not
+    public void joinCourse(String joiningCourseAbv, String username){
+
+        Course course = courseRepo.findCourseByAbbreviation(joiningCourseAbv);
+
+        if(course==null){
+            throw new NoSuchCourseException("No such course found!");
+        }
+
+        // Making sure course is open
+        if(!courseValidatorService.isOpen(course)) {
+            logger.error("User tried to register for course that was closed.");
+            throw new CourseNotOpenException("Course is closed!");
+        }
+
+        // Making sure user is not already registered
+        course.getStudentUsernames().stream().filter(id -> id.equals(username)).forEach(id -> {
+            logger.info("User tried to join a course they were already registered for.");
+            throw new AlreadyRegisteredForCourseException("You are already registered for this course!");
+        });
+
+        courseRepo.addStudentUsername(joiningCourseAbv, username);
+    }
+
     // Used to check if the user entered a valid abbreviation
     public Course findCourseByAbbreviation(String abv){
 
-        if(abv==null||abv.trim().equals(""))
-        {
-            System.out.println("Abbreviation cannot be blank!");
-            throw new InvalidEntryException("Invalid abbreviation provided.");
-        }
-
         Course verifiedCourse = courseRepo.findCourseByAbbreviation(abv);
 
         if (verifiedCourse == null)
         {
-            System.out.println("No course found with provided abbreviation!");
+            logger.error("No course found with provided abbreviation!");
             throw new ResourcePersistenceException("No course found with provided abbreviation.");
-        }
-
-        return verifiedCourse;
-
-    }
-
-    public Course verifyCourseOpenByAbbreviation(String abv){
-
-        if(abv==null||abv.trim().equals(""))
-        {
-            System.out.println("Invalid entry!");
-            throw new InvalidEntryException("Blank entry.");
-
-        }
-
-        Course verifiedCourse = courseRepo.findCourseByAbbreviation(abv);
-
-        if (verifiedCourse == null)
-        {
-            System.out.println("No course found with provided abbreviation!");
-            throw new NoSuchCourseException("Invalid course abbreviation provided.");
-        }
-
-        //TODO time logic
-
-        return verifiedCourse;
-
-    }
-
-    public Course verifyCourseOpenByName(String courseName){
-
-        if(courseName==null||courseName.trim().equals(""))
-        {
-            throw new InvalidEntryException("Invalid course name provided");
-
-        }
-
-        Course verifiedCourse = courseRepo.findCourseByName(courseName);
-
-        if (verifiedCourse == null)
-        {
-            System.out.println("No course found with provided name!");
-            throw new NoSuchCourseException("No course found with provided name!");
         }
 
         return verifiedCourse;

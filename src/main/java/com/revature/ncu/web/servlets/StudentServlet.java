@@ -11,8 +11,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-// Dashboard for student options.
-// TODO connect to StudentCourse servlet and logout servlet
+/**
+ * Student servlet, unused -- would be for changing student profile info, etc.
+ */
 public class StudentServlet extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(StudentServlet.class);
@@ -24,10 +25,10 @@ public class StudentServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>");
-        out.println("<title>Student Dashboard</title>");
+        out.println("<title>Student Profile</title>");
         out.println("</head>");
         out.println("<body>");
-        out.println("<h1>This will be the student dashboard!</h1>");
+        out.println("<h1>This could be the student profile!</h1>");
         out.println("</body>");
         out.println("</html>");
     }

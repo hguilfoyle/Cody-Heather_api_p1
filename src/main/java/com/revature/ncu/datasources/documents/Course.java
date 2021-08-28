@@ -7,7 +7,9 @@ import java.util.Objects;
 import java.util.Set;
 
 
-// Course POJO
+/**
+ * The Course POJO for holding a user's information to be delivered to the database.
+ * */
 public class Course {
 
     private String id;
@@ -15,7 +17,6 @@ public class Course {
     private String courseAbbreviation;
     private String courseDetail;
     private String professorName;
-    //TODO logic for these
     private LocalDate courseOpenDate;
     private LocalDate courseCloseDate;
     private Set<String> studentUsernames = new HashSet<String>();

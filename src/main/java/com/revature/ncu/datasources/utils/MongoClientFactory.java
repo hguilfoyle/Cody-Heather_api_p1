@@ -23,7 +23,7 @@ import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-/*
+/**
  *  An eager Singleton Factory pattern for supplying DAO (data access object)
  *  classes with a connection to the Mongo Database
  *

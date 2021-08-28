@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//Repository for performing CRUD operations on the Mongo user collection.
+/**
+ * Repository for performing CRUD operations on the Mongo user collection.
+ * */
 public class UserRepository implements CrudRepository<AppUser>{
 
     private final Logger logger = LoggerFactory.getLogger(UserRepository.class);

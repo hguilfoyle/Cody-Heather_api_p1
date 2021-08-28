@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Faculty servlet, unused -- would be for changing faculty profile info, etc.
+ */
 public class FacultyServlet extends HttpServlet {
     private final Logger logger = LoggerFactory.getLogger(FacultyServlet.class);
 
@@ -22,10 +25,10 @@ public class FacultyServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>");
-        out.println("<title>Faculty Dashboard</title>");
+        out.println("<title>Faculty Profile</title>");
         out.println("</head>");
         out.println("<body>");
-        out.println("<h1>This will be the faculty dashboard!</h1>");
+        out.println("<h1>This could be the faculty profile!</h1>");
         out.println("</body>");
         out.println("</html>");
     }

@@ -3,7 +3,6 @@ package com.revature.ncu.web.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.services.CourseService;
-import com.revature.ncu.services.UserCoursesService;
 import com.revature.ncu.services.UserService;
 import com.revature.ncu.util.exceptions.InvalidEntryException;
 import com.revature.ncu.util.exceptions.InvalidRequestException;
@@ -22,24 +21,27 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+
+/**
+ * Faculty servlet, unused -- would be for changing student profile info.
+ */
+
 public class CourseServlet extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(CourseServlet.class);
     private final UserService userService;
     private final CourseService courseService;
-    private final UserCoursesService userCourseService;
     private final ObjectMapper mapper;
 
-    public CourseServlet(UserService userService, CourseService courseService, UserCoursesService userCoursesService, ObjectMapper mapper){
+    public CourseServlet(UserService userService, CourseService courseService, ObjectMapper mapper){
         this.userService = userService;
         this.courseService = courseService;
-        this.userCourseService = userCoursesService;
         this.mapper = mapper;
     }
 
+    // For viewing all courses.
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(req.getAttribute("filtered"));
         PrintWriter respWriter = resp.getWriter();
         resp.setContentType("application/json");
 
@@ -74,20 +76,16 @@ public class CourseServlet extends HttpServlet {
             resp.setStatus(400); // client's fault
             ErrorResponse errResp = new ErrorResponse(400, ie.getMessage());
             respWriter.write(mapper.writeValueAsString(errResp));
-        } catch (ResourcePersistenceException rpe) {
-            resp.setStatus(409);   //409 conflict: user/email already exists
-            ErrorResponse errResp = new ErrorResponse(409, rpe.getMessage());
-            respWriter.write(mapper.writeValueAsString(errResp));
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
-            resp.setStatus(500);    // server made an oopsie woopsie
+            resp.setStatus(500);
         }
     }
 
+    // For adding a course
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        System.out.println(req.getAttribute("filtered"));
         PrintWriter respWriter = resp.getWriter();
         resp.setContentType("application/json");
 
@@ -137,10 +135,11 @@ public class CourseServlet extends HttpServlet {
 
 
     }
+
+    // For removing a course.
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        System.out.println(req.getAttribute("filtered"));
         PrintWriter respWriter = resp.getWriter();
         resp.setContentType("application/json");
 
@@ -185,10 +184,10 @@ public class CourseServlet extends HttpServlet {
         }
     }
 
+    // For updating a course.
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        System.out.println(req.getAttribute("filtered"));
         PrintWriter respWriter = resp.getWriter();
         resp.setContentType("application/json");
 
@@ -217,6 +216,7 @@ public class CourseServlet extends HttpServlet {
                 String response = "Invalid course provided";
                 respWriter.write(response);
                 ErrorResponse errResp = new ErrorResponse(400, response);
+                respWriter.write(mapper.writeValueAsString(errResp));
                 return;
             }
             Course original = courseService.findCourseByAbbreviation(editParam);
