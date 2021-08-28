@@ -16,8 +16,8 @@ import java.io.PrintWriter;
  */
 public class StudentServlet extends HttpServlet {
 
-    private final Logger logger = LoggerFactory.getLogger(StudentServlet.class);
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException
     {

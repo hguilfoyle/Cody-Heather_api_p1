@@ -14,8 +14,6 @@ import java.io.PrintWriter;
  * Faculty servlet, unused -- would be for changing faculty profile info, etc.
  */
 public class FacultyServlet extends HttpServlet {
-    private final Logger logger = LoggerFactory.getLogger(FacultyServlet.class);
-
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
