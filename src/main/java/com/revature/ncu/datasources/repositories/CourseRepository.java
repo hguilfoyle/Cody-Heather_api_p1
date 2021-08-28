@@ -59,6 +59,7 @@ public class CourseRepository implements CrudRepository<Course> {
                     Updates.set("courseName", updatedCourse.getCourseName()),
                     Updates.set("courseAbbreviation", updatedCourse.getCourseAbbreviation()),
                     Updates.set("courseDetail", updatedCourse.getCourseDetail()),
+                    Updates.set("professorName", updatedCourse.getCourseDetail()),
                     Updates.set("courseOpenDate", updatedCourse.getCourseOpenDate()),
                     Updates.set("courseCloseDate", updatedCourse.getCourseCloseDate()),
                     Updates.set("courseCapacity", updatedCourse.getCourseCapacity())));

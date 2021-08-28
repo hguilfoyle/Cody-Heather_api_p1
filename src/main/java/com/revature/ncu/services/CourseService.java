@@ -7,6 +7,7 @@ import com.revature.ncu.web.dtos.UserCourseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

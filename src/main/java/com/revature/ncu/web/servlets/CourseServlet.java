@@ -66,7 +66,7 @@ public class CourseServlet extends HttpServlet {
         }
 
         try{
-            List catalog = courseService.getAllCourses();
+            List<Course> catalog = courseService.getAllCourses();
             String payload = mapper.writeValueAsString(catalog);  //maps the principal value to a string
             respWriter.write(payload);      //returning the username and ID to the web as a string value
             resp.setStatus(200);            //200: Created
@@ -221,8 +221,8 @@ public class CourseServlet extends HttpServlet {
             }
             Course original = courseService.findCourseByAbbreviation(editParam);
             Course editCourse = mapper.readValue(req.getInputStream(), Course.class);
-            String ProfName = userService.getProfNameById(requestingUser.getId());
-            editCourse.setProfessorName(ProfName);// get professor name
+            String profName = userService.getProfNameById(requestingUser.getId());
+            editCourse.setProfessorName(profName);// get professor name
             courseService.updateCourse(original, editCourse);
 
             SuccessResponse susResp = new SuccessResponse(201, "Course updated!");

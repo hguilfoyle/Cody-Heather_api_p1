@@ -41,6 +41,9 @@ public class StudentCourseServlet extends HttpServlet {
         this.courseService = courseService;
     }
 
+
+    // For retrieving all open courses or
+    // Retrieving registered courses.
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter respWriter = resp.getWriter();
@@ -100,6 +103,7 @@ public class StudentCourseServlet extends HttpServlet {
         }
     }
 
+    // For registering for a course
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -148,6 +152,8 @@ public class StudentCourseServlet extends HttpServlet {
 
 
     }
+
+    // For withdrawing from a course
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
