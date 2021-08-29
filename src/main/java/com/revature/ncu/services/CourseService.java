@@ -7,6 +7,7 @@ import com.revature.ncu.web.dtos.UserCourseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -160,7 +161,23 @@ public class CourseService {
     }
 
     public void removeStudent(String username, String courseAbv) {
-        // is there even any need for validating this
+
+        Course withdraw = courseRepo.findCourseByAbbreviation(courseAbv);
+
+        if(withdraw == null){
+            logger.error("User entered an invalid abbreviation when attempting to withdraw.");
+            throw new NoSuchCourseException("No course found with that Abbreviation!");
+        }
+
+        if(!withdraw.getStudentUsernames().contains(username)){
+            logger.error("User attempted to withdraw from a course they are not registered for.");
+            throw new NotRegisteredForCourseException("You are not registered for that course!");
+        }
+
+        if(withdraw.getCourseCloseDate().isBefore(LocalDate.now())){
+            logger.error("User attempted to withdraw from a course that is closed.");
+            throw new CourseNotOpenException("Withdraw window for this course is closed.");
+        }
 
         courseRepo.removeStudent(username, courseAbv);
 
