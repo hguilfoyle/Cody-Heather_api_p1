@@ -1,14 +1,12 @@
 package com.revature.ncu.web.dtos;
 
-/*
- * DTO = Data Transfer object.
- * This is a wrapper for an object to be transferred to the front end.
- */
-
 import com.revature.ncu.datasources.documents.Course;
-
 import java.util.Objects;
 
+/**
+ * DTO = Data Transfer object.
+ * Wrapper for displaying course information to non-admin users, hides usernames of registered users.
+ */
 public class UserCourseDTO {
 
     private String id;

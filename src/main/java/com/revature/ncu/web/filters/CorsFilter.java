@@ -8,6 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+/**
+ * The bane of your existence.
+ * */
+
 @WebFilter ("/*")
 public class CorsFilter extends HttpFilter {
 

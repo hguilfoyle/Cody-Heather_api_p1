@@ -2,7 +2,6 @@ package com.revature.ncu.web.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ncu.datasources.documents.AppUser;
-import com.revature.ncu.services.UserCoursesService;
 import com.revature.ncu.services.UserService;
 import com.revature.ncu.util.exceptions.InvalidEntryException;
 import com.revature.ncu.util.exceptions.InvalidRequestException;
@@ -24,27 +23,25 @@ import java.io.PrintWriter;
 import java.util.List;
 
 
-// Servlet for creating or viewing users.
+/**
+ * Servlet for creating or viewing users.
+ * */
 public class UserServlet extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(UserServlet.class);
     private final UserService userService;
-    UserCoursesService userCoursesService;
     private final ObjectMapper mapper;
     private final TokenGenerator tokenGenerator;
 
-    public UserServlet(UserService userService, ObjectMapper mapper, UserCoursesService userCoursesService,
-                       TokenGenerator tokenGenerator){
+    public UserServlet(UserService userService, ObjectMapper mapper, TokenGenerator tokenGenerator){
         this.userService = userService;
         this.mapper = mapper;
-        this.userCoursesService = userCoursesService;
         this.tokenGenerator = tokenGenerator;
     }
 
     // For viewing users (admin only)
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(req.getAttribute("filtered"));
         PrintWriter respWriter = resp.getWriter();
         resp.setContentType("application/json");
 
@@ -99,14 +96,12 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        System.out.println(req.getAttribute("filtered")); //servlet request, get attribute, used to read incoming input
-        PrintWriter respWriter = resp.getWriter();          //response writer, for replying
-        resp.setContentType("application/json");            //always gotta set this, he mentioned it several times
+        PrintWriter respWriter = resp.getWriter();
+        resp.setContentType("application/json");
 
         try {
             AppUser newUser = mapper.readValue(req.getInputStream(), AppUser.class);
             Principal principal = new Principal(userService.register(newUser));
-            userCoursesService.initialize(newUser.getUsername());
             String payload = mapper.writeValueAsString(principal);
             respWriter.write(payload);
             resp.setStatus(201);

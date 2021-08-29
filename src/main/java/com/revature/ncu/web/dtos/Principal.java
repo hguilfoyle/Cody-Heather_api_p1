@@ -5,6 +5,9 @@ import io.jsonwebtoken.Claims;
 
 import java.util.Objects;
 
+/**
+ * Wrapper for a User's session.
+ * */
 public class Principal {
 
     private String id;

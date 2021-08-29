@@ -13,8 +13,11 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
+
+/**
+ * AuthFilter for setting JWT token header.
+ **/
 public class AuthFilter extends HttpFilter {
 
     private final Logger logger = LoggerFactory.getLogger(AuthFilter.class);
@@ -22,7 +25,7 @@ public class AuthFilter extends HttpFilter {
     private final JwtConfig jwtConfig;
 
     public AuthFilter(JwtConfig jwtConfig) {
-        System.out.println("AuthFilter instantiated!");
+        logger.info("AuthFilter instantiated!");
         this.jwtConfig = jwtConfig;
     }
 
@@ -35,10 +38,7 @@ public class AuthFilter extends HttpFilter {
     public void parseToken(HttpServletRequest req) {
 
         try {
-
             String header = req.getHeader(jwtConfig.getHeader());
-
-            System.out.println("Header value: " + header);
 
             if (header == null || !header.startsWith(jwtConfig.getPrefix())) {
                 logger.warn("Request originates from an unauthenticated source.");

@@ -1,11 +1,11 @@
 package com.revature.ncu.web.dtos;
 
-
-// Class for sending a proper error response to the user.
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Class for sending a proper Success Response to the user.
+ * */
 public class ErrorResponse {
 
     private int statusCode;

@@ -6,7 +6,6 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoClient;
 import com.revature.ncu.datasources.repositories.CourseRepository;
-import com.revature.ncu.datasources.repositories.UserCoursesRepository;
 import com.revature.ncu.datasources.repositories.UserRepository;
 import com.revature.ncu.datasources.utils.MongoClientFactory;
 import com.revature.ncu.services.*;
@@ -15,7 +14,6 @@ import com.revature.ncu.web.filters.AuthFilter;
 import com.revature.ncu.web.servlets.*;
 import com.revature.ncu.web.util.security.JwtConfig;
 import com.revature.ncu.web.util.security.TokenGenerator;
-import jdk.nashorn.internal.parser.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,10 +24,15 @@ import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.util.EnumSet;
 
+/**
+ *
+ * Listener for instantiating and injecting app components.
+ *
+ * */
+
 public class ContextLoaderListener implements ServletContextListener {
 
     private final Logger logger = LoggerFactory.getLogger(ContextLoaderListener.class);
-    private com.revature.ncu.datasources.documents.Course Course;
 
     @Override
     public void contextInitialized(ServletContextEvent sce){
@@ -47,21 +50,18 @@ public class ContextLoaderListener implements ServletContextListener {
 
         UserRepository userRepo = new UserRepository(mongoClient);
         CourseRepository courseRepository = new CourseRepository(mongoClient);
-        UserCoursesRepository userCoursesRepository = new UserCoursesRepository(mongoClient);
-
 
         UserService userService = new UserService(userRepo, userValidatorService, passwordUtils);
-        CourseService courseService = new CourseService(courseRepository, courseValidatorService, userCoursesRepository);
-        UserCoursesService userCoursesService = new UserCoursesService(userCoursesRepository, courseValidatorService, courseRepository);
+        CourseService courseService = new CourseService(courseRepository, courseValidatorService);
 
-        UserServlet userServlet = new UserServlet(userService, mapper, userCoursesService, tokenGenerator);
+        UserServlet userServlet = new UserServlet(userService, mapper, tokenGenerator);
         AuthServlet authServlet = new AuthServlet(userService, mapper, tokenGenerator);
 
         HealthCheckServlet healthCheckServlet = new HealthCheckServlet();
         FacultyServlet facultyServlet = new FacultyServlet();
-        CourseServlet courseServlet = new CourseServlet(userService, courseService, userCoursesService, mapper);
+        CourseServlet courseServlet = new CourseServlet(userService, courseService, mapper);
         StudentServlet studentServlet = new StudentServlet();
-        StudentCourseServlet studentCourseServlet = new StudentCourseServlet(userService,courseService,userCoursesService,mapper);
+        StudentCourseServlet studentCourseServlet = new StudentCourseServlet(courseService, mapper);
 
         ServletContext servletContext = sce.getServletContext();
 
