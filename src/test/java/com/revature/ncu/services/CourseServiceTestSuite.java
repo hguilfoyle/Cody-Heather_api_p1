@@ -3,6 +3,7 @@ package com.revature.ncu.services;
 import com.revature.ncu.datasources.documents.Course;
 import com.revature.ncu.datasources.repositories.CourseRepository;
 import com.revature.ncu.util.exceptions.*;
+import com.revature.ncu.web.dtos.UserCourseDTO;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -358,5 +359,63 @@ public class CourseServiceTestSuite {
         sut.getCourses();
 
     }
+
+
+    // getAllCourses tests
+
+    @Test
+    public void getAllCourses_returnsCourseList_whenSuccessful(){
+        // Arrange
+        Course course1 = new Course("ONE");
+        Course course2 = new Course("TWO");
+        Course course3 = new Course("THREE");
+        List<Course> validCourseList = new ArrayList<Course>(){{add(course1);add(course2);add(course3);}};
+        when(mockCourseRepo.findAll()).thenReturn(validCourseList);
+
+        // Act
+        List<Course> actualResult = sut.getAllCourses();
+
+        // Assert
+        verify(mockCourseRepo,times(1)).findAll();
+        Assert.assertEquals(actualResult,validCourseList);
+
+    }
+
+    @Test(expected = NoOpenCoursesException.class)
+    public void getAllCourses_throwsException_whenNoCoursesFound(){
+        // Arrange
+        List<Course> emptyCourseList = new ArrayList<>();
+        when(mockCourseRepo.findAll()).thenReturn(emptyCourseList);
+
+        // Act
+        try{
+            sut.getAllCourses();
+        } finally { // Assert
+            verify(mockCourseRepo,times(1)).findAll();
+        }
+
+    }
+
+    // getCoursesByUsername tests
+    @Test
+    public void getCoursesByUsername_returnsSuccessfully_whenCoursesWithUser_areFound(){
+        // Arrange
+        String username = "testUsername";
+        Course course = new Course("ValidCourse","VLD101","This is a valid course.",
+                LocalDate.parse("2020-11-11"),LocalDate.parse("2022-11-13"),13);
+        UserCourseDTO courseDTO = new UserCourseDTO(course);
+        List<UserCourseDTO> validCourseList = new ArrayList<UserCourseDTO>(){{add(courseDTO);}};
+        when(mockCourseRepo.findCoursesByUsername(username)).thenReturn(validCourseList);
+        // Act
+        List<UserCourseDTO> actualResult = sut.getCoursesByUsername(username);
+        // Assert
+        verify(mockCourseRepo,times(1)).findCoursesByUsername(username);
+        Assert.assertEquals(validCourseList,actualResult);
+    }
+
+
+
+
+    // removeStudent tests
 
 }
