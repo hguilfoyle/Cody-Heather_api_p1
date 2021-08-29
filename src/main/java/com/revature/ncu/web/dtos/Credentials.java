@@ -3,7 +3,7 @@ package com.revature.ncu.web.dtos;
 import java.util.Objects;
 
 /**
-* For wrapping a user's credentials on request.
+ * For wrapping a user's credentials on request.
  * */
 public class Credentials {
 

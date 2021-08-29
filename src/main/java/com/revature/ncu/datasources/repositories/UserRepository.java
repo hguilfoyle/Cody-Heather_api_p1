@@ -63,7 +63,8 @@ public class UserRepository implements CrudRepository<AppUser>{
         }
     }
 
-    // For grabbing professor name when creating a new course.
+    // For grabbing professor name when creating a new course or
+    // updating the professor name if a different professor edits the course.
     public String getProfName(String id) {
 
         try {

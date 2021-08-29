@@ -5,7 +5,6 @@ import java.util.Objects;
 
 /**
  * Class for sending a proper Success Response to the user.
- *
  * */
 public class SuccessResponse {
 

@@ -32,6 +32,7 @@ public class CourseRepository implements CrudRepository<Course> {
         this.coursesCollection = mongoClient.getDatabase("p1").getCollection("courses", Course.class);
     }
 
+    // For finding a course by name (mostly to prevent duplicate course names)
     public Course findCourseByName(String courseName) {
         try {
             return coursesCollection.find(new Document("courseName",courseName)).first();
@@ -41,6 +42,7 @@ public class CourseRepository implements CrudRepository<Course> {
         }
     }
 
+    // For finding a course by Abbreviation (preferred course retrieval method)
     public Course findCourseByAbbreviation(String courseAbv) {
         try {
             return coursesCollection.find(new Document("courseAbbreviation", courseAbv)).first();
@@ -107,6 +109,7 @@ public class CourseRepository implements CrudRepository<Course> {
         }
     }
 
+    // Retrieves all Courses that are within window
     public List<Course> retrieveOpenCourses() {
 
         List<Course> openCourses = new ArrayList<>();
@@ -131,6 +134,7 @@ public class CourseRepository implements CrudRepository<Course> {
 
     }
 
+    // When a student withdraws from a course
     public void removeStudent(String username, String courseAbv) {
 
         // Search by course ID

@@ -24,7 +24,7 @@ public class CourseValidatorService {
     private static final int MIN_COURSE_CAP = 12;
     private static final int MAX_COURSE_CAP = 100;
 
-     // Validator for adding a new Course
+    // Validator for adding a new Course
     public boolean newCourseEntryValidator(Course course){
 
         if(course.getCourseName().trim().equals("")||course.getCourseAbbreviation().trim().equals("")||course.getCourseDetail().trim().equals(""))
