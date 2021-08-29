@@ -40,28 +40,23 @@ public class UserValidatorService {
         Matcher emailMatch = emailPattern.matcher(user.getEmail());
 
         if(user.getUsername().trim().equals("")||user.getPassword().trim().equals("")||user.getFirstName().trim().equals("")
-                ||user.getLastName().trim().equals("")||user.getEmail().trim().equals(""))
-        {
+                ||user.getLastName().trim().equals("")||user.getEmail().trim().equals("")) {
             logger.error("Blank fields detected.");
             throw new InvalidEntryException("Fields cannot be blank!");
         }
-        else if(user.getUsername().length() < MIN_USERNAME)
-        {
+        else if(user.getUsername().length() < MIN_USERNAME) {
             logger.error("Entered username below the minimum character limit.");
             throw new InvalidUsernameException("Username must be at least 4 characters.");
         }
-        else if(userMatch.find())
-        {
+        else if(userMatch.find()) {
             logger.error("Invalid characters entered in username.");
             throw  new InvalidUsernameException("Username contains invalid characters.");
         }
-        else if(user.getPassword().length() < MIN_PASSWORD)
-        {
+        else if(user.getPassword().length() < MIN_PASSWORD) {
             logger.error("Entered password below the minimum character limit.");
             throw new InvalidPasswordException("Password must be at least 8 characters.");
         }
-        else if(!emailMatch.find())
-        {
+        else if(!emailMatch.find()) {
             logger.error("Invalid email address entered.");
             throw new InvalidEmailException("Please enter a valid email address.");
         }

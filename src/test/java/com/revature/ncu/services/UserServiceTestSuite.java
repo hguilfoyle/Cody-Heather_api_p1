@@ -2,6 +2,7 @@ package com.revature.ncu.services;
 
 import com.revature.ncu.datasources.documents.AppUser;
 import com.revature.ncu.datasources.repositories.UserRepository;
+import com.revature.ncu.util.PasswordUtils;
 import com.revature.ncu.util.exceptions.AuthenticationException;
 import com.revature.ncu.util.exceptions.InvalidEntryException;
 import org.junit.After;
@@ -18,25 +19,23 @@ public class UserServiceTestSuite {
 
     // Mock dependencies required for the system under test
     private UserRepository mockUserRepo;
-//    private UserSession mockSession;
     private UserValidatorService mockValidator;
+    private PasswordUtils mockPasswordUtils;
 
     // Initialize objects before testing
     @Before
     public void setup(){
-
         mockUserRepo = mock(UserRepository.class);
-//        mockSession = mock(UserSession.class);
         mockValidator = mock(UserValidatorService.class);
-//        sut = new UserService( mockUserRepo, mockSession, mockValidator);
-
+        mockPasswordUtils = mock(PasswordUtils.class);
     }
 
     // Clear out objects after testing by setting them to null
     @After
     public void cleanUp(){
         mockUserRepo = null;
-//        mockSession = null;
+        mockValidator = null;
+        mockPasswordUtils = null;
         sut = null;
     }
 
@@ -103,51 +102,22 @@ public class UserServiceTestSuite {
 //
 //    }
 
-    @Test(expected = InvalidEntryException.class)
-    public void register_throwsException_whenGivenUser_withBlankValues(){
-        //Arrange
-        AppUser invalidUser = new AppUser("","","","","",false);
-        when(mockValidator.newUserEntryValidator(invalidUser)).thenThrow(InvalidEntryException.class);
-
-        //Act
-        try{
-            sut.register(invalidUser);
-        } finally{
-            // Assert
-            verify(mockValidator, times(1)).newUserEntryValidator(invalidUser);
-            verify(mockUserRepo, times(0)).save(invalidUser);
-        }
-
-    }
-
-//    @Test
-//    public void login_returnsSuccessfully_whenGivenValidCredentials(){
-//        // Arrange
-//        String validUsername = "valid";
-//        String validPassword = "valid-password";
-//        AppUser expectedUser = new AppUser("test","tester","test@test.test","valid","valid-password",false);
-//        when(mockUserRepo.findUserByCredentials(validUsername,validPassword)).thenReturn(expectedUser);
+//    @Test(expected = InvalidEntryException.class)
+//    public void register_throwsException_whenGivenUser_withBlankValues(){
+//        //Arrange
+//        AppUser invalidUser = new AppUser("","","","","",false);
+//        when(mockValidator.newUserEntryValidator(invalidUser)).thenThrow(InvalidEntryException.class);
 //
-//        // Act
-//        AppUser actualUser = sut.login(validUsername, validPassword);
-//
-//        // Assert
-//        Assert.assertEquals(expectedUser,actualUser);
-//        verify(mockUserRepo, times(1)).findUserByCredentials(validUsername,validPassword);
-////        verify(mockSession, times(1)).setCurrentUser(actualUser);
+//        //Act
+//        try{
+//            sut.register(invalidUser);
+//        } finally{
+//            // Assert
+//            verify(mockValidator, times(1)).newUserEntryValidator(invalidUser);
+//            verify(mockUserRepo, times(0)).save(invalidUser);
+//        }
 //
 //    }
-
-    @Test(expected = AuthenticationException.class)
-    public void login_throwsException_whenProvidedWith_InvalidCredentials(){
-        // Arrange
-        String invalidUsername = "invalid";
-        String invalidPassword = "invalid-password";
-        when(mockUserRepo.findUserByCredentials(invalidUsername,invalidPassword)).thenReturn(null);
-        // Act
-        sut.login(invalidUsername, invalidPassword);
-    }
-
 
 
 

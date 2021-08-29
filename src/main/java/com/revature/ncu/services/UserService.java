@@ -97,7 +97,6 @@ public class UserService {
     public String getProfNameById(String id){
 
         // shouldn't need to check ID
-
         return userRepo.getProfName(id);
     }
 
