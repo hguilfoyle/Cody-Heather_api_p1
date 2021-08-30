@@ -42,7 +42,7 @@ public class UserService {
         }
 
         if (userRepo.findUserByEmail(newUser.getEmail()) != null) {
-            throw new ResourcePersistenceException("Provided username is already taken!");
+            throw new ResourcePersistenceException("Provided email is already taken!");
         }
 
         // Encrypt password for sending to server storage
@@ -95,9 +95,6 @@ public class UserService {
     }
 
     public String getProfNameById(String id){
-
-        // shouldn't need to check ID
-
         return userRepo.getProfName(id);
     }
 

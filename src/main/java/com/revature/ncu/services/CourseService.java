@@ -178,8 +178,6 @@ public class CourseService {
             logger.error("User attempted to withdraw from a course that is closed.");
             throw new CourseNotOpenException("Withdraw window for this course is closed.");
         }
-
         courseRepo.removeStudent(username, courseAbv);
-
     }
 }
